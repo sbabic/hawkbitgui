@@ -35,7 +35,7 @@
 }
 
 .main ol {
-  font-family: var(--font-geist-mono);
+  font-family: var(--font-geist-mono), serif;
   padding-left: 0;
   margin: 0;
   font-size: 14px;
@@ -163,6 +163,5 @@ a.secondary {
 
 @media (prefers-color-scheme: dark) {
   .logo {
-    filter: invert();
   }
 }
