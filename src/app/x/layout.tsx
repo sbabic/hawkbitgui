@@ -1,13 +1,9 @@
-import Layout from "@/app/components/layout";
+import Layout from '@/app/components/layout';
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-      <Layout>
-          {children}
-      </Layout>
-  );
+    return <Layout>{children}</Layout>;
 }

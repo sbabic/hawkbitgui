@@ -4,128 +4,127 @@ $sidebar-width: 225px;
 $sidebar-collapsed: 60px;
 
 .layout {
-  display: flex;
-  height: 100vh;
-  background: #f8f9fa;
+    display: flex;
+    height: 100vh;
+    background: #f8f9fa;
 }
 
 .sidebar {
-  width: $sidebar-width;
-  background: #fff;
-  transition: width 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  inset: 0 auto 0 0;
-  z-index: 50;
-
-  &.collapsed {
-    width: $sidebar-collapsed;
-  }
-
-  .sidebarHeader {
+    width: $sidebar-width;
+    background: #fff;
+    transition: width 0.3s ease-in-out;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px;
+    flex-direction: column;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 50;
 
-    .brand {
-      font-weight: bold;
-      color: $accent-color;
+    &.collapsed {
+        width: $sidebar-collapsed;
     }
 
-    .toggleBtn {
-      cursor: pointer;
-    }
-  }
-
-
-
-  .logout {
-    padding: 12px;
-  }
-}
-
-.main {
-  flex-grow: 1;
-  margin-left: $sidebar-width;
-  transition: margin-left 0.3s ease-in-out;
-
-  &.expanded {
-    margin-left: $sidebar-collapsed;
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background: white;
-
-    .searchBar {
-      position: relative;
-
-      input {
-        padding: 0.5rem 2rem;
-        border-radius: 1rem;
-        border: 1px solid #ccc;
-        outline: none;
-      }
-
-      .searchIcon {
-        position: absolute;
-        left: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: gray;
-      }
-    }
-
-    .headerActions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-
-      .profile {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: gray;
+    .sidebarHeader {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: bold;
-        color: white;
-      }
-    }
-  }
+        padding: 12px;
 
-  .content {
-  }
+        .brand {
+            font-weight: bold;
+            color: $accent-color;
+        }
+
+        .toggleBtn {
+            cursor: pointer;
+        }
+    }
+
+    .logout {
+        padding: 12px;
+    }
+}
+
+.main {
+    flex-grow: 1;
+    margin-left: $sidebar-width;
+    transition: margin-left 0.3s ease-in-out;
+
+    &.expanded {
+        margin-left: $sidebar-collapsed;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: white;
+
+        .searchBar {
+            position: relative;
+
+            input {
+                padding: 0.5rem 2rem;
+                border-radius: 1rem;
+                border: 1px solid #ccc;
+                outline: none;
+            }
+
+            .searchIcon {
+                position: absolute;
+                left: 0.75rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: gray;
+            }
+        }
+
+        .headerActions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .profile {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: gray;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                color: white;
+            }
+        }
+    }
+
+    .content {
+    }
 }
 
 .nav {
-  flex-grow: 1;
-  padding: 12px;
+    flex-grow: 1;
+    padding: 12px;
 }
 
 .navItem {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 16px;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: $primary-text-color;
-  text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 16px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: $primary-text-color;
+    text-decoration: none;
 
-  &:hover, &.active {
-    background: $accent-color;
-    color: $bright-text-color;
-  }
+    &:hover,
+    &.active {
+        background: $accent-color;
+        color: $bright-text-color;
+    }
 
-  .label {
-    flex: 1;
-  }
+    .label {
+        flex: 1;
+    }
 }

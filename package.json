@@ -1,27 +1,31 @@
 {
-  "name": "hawkbit",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "15.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hook-form": "^7.54.2",
-    "sass": "^1.85.1"
-  },
-  "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.2.0",
-    "@eslint/eslintrc": "^3"
-  }
+    "name": "hawkbit",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev --turbopack",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "dependencies": {
+        "next": "15.2.0",
+        "prettier": "^3.5.3",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "react-hook-form": "^7.54.2",
+        "sass": "^1.85.1"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "15.2.0",
+        "eslint-config-prettier": "^10.0.2",
+        "typescript": "^5"
+    }
 }

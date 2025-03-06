@@ -1,21 +1,19 @@
-import type { Metadata } from "next";
-import "./globals.scss";
+import type { Metadata } from 'next';
+import './globals.scss';
 
 export const metadata: Metadata = {
-  title: "Hawkbit",
-  description: "Hawkbit",
+    title: 'Hawkbit',
+    description: 'Hawkbit',
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body >
-        {children}
-      </body>
-    </html>
-  );
+    return (
+        <html lang='en'>
+            <body>{children}</body>
+        </html>
+    );
 }
