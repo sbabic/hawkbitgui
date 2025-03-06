@@ -43,10 +43,6 @@ export default function Card({ children }: { children?: React.ReactNode }) {
         return () => resizeObserver.disconnect();
     }, []);
 
-    useEffect(() => {
-        console.log(`Width: ${parentWidth}, Height: ${parentHeight}`);
-    }, [parentWidth, parentHeight]);
-
     return (
         <motion.div
             ref={cardRef}
@@ -66,8 +62,7 @@ export default function Card({ children }: { children?: React.ReactNode }) {
             transition={{ duration: 0.4, ease: 'easeInOut' }}
             onClick={() => setIsExpanded(!isExpanded)}
         >
-            <h2>{isExpanded ? 'Expanded View' : 'Click to Expand'}</h2>
-            {isExpanded && <p>Click outside to close.</p>}
+            {children}
         </motion.div>
     );
 }
