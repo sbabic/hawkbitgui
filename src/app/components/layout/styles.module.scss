@@ -5,6 +5,7 @@ $sidebar-collapsed: 60px;
 
 .layout {
     display: flex;
+    width: 100%;
     height: 100vh;
     background: #f8f9fa;
 }
@@ -15,7 +16,6 @@ $sidebar-collapsed: 60px;
     transition: width 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
-    position: fixed;
     inset: 0 auto 0 0;
     z-index: 50;
 
@@ -45,8 +45,9 @@ $sidebar-collapsed: 60px;
 }
 
 .main {
-    flex-grow: 1;
-    margin-left: $sidebar-width;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     transition: margin-left 0.3s ease-in-out;
 
     &.expanded {
@@ -99,6 +100,10 @@ $sidebar-collapsed: 60px;
     }
 
     .content {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        overflow: scroll;
     }
 }
 
