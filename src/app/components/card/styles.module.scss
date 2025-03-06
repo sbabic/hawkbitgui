@@ -1,0 +1,9 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border-radius: 16px;
+    background: white;
+}
