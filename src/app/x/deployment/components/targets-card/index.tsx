@@ -13,7 +13,8 @@ export default function TargetsCard() {
                     <Button>Search</Button>
                 </div>
                 <div className={styles.actionButtons}>
-                    <Button color={'outline'}>+ target</Button>
+                    <Button>+ New target</Button>
+                    <Button color={'outline'}>Bulk Upload Targets</Button>
                 </div>
                 <div className={styles.table}></div>
             </div>

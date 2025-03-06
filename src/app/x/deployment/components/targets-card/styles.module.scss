@@ -16,4 +16,10 @@
             color: $primary-text-color;
         }
     }
+
+    .actionButtons {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+    }
 }

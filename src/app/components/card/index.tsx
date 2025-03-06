@@ -47,17 +47,14 @@ export default function Card({ children }: { children?: React.ReactNode }) {
         <motion.div
             ref={cardRef}
             className={`${styles.card} ${isExpanded ? styles.expanded : ''}`}
-            initial={{ width: 300, height: 200 }}
+            initial={{ minWidth: 300, height: 200 }}
             animate={
                 isExpanded
                     ? {
                           width: parentWidth,
                           height: parentHeight,
                       }
-                    : {
-                          width: '100%',
-                          maxWidth: 300,
-                      }
+                    : {}
             }
             transition={{ duration: 0.4, ease: 'easeInOut' }}
             onClick={() => setIsExpanded(!isExpanded)}
