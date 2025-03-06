@@ -31,13 +31,13 @@ export default function Login() {
                 <LoginForm className={styles.form}/>
                 <div className={styles.policiesSection}>
                     <div>
-                        <a href={'https://www.eclipse.org/legal/epl-2.0/'}>About Us</a>
+                        <a href={'https://www.eclipse.org/org/'}>About Us</a>
                         <p>|</p>
-                        <a href={'https://www.eclipse.org/legal/epl-2.0/'}>Contact Us</a>
+                        <a href={'https://www.eclipse.org/org/foundation/contact.php'}>Contact Us</a>
                         <p>|</p>
-                        <a href={'https://www.eclipse.org/legal/epl-2.0/'}>Donate</a>
+                        <a href={'https://www.eclipse.org/donate'}>Donate</a>
                         <p>|</p>
-                        <a href={'https://www.eclipse.org/legal/'}>Governance</a>
+                        <a href={'https://www.eclipse.org/org/documents/'}>Governance</a>
                     </div>
                 </div>
             </div>
