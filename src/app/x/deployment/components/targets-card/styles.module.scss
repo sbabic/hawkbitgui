@@ -21,5 +21,13 @@
         display: flex;
         flex-direction: row;
         gap: 16px;
+
+        .bulkUploadButton {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
     }
 }
