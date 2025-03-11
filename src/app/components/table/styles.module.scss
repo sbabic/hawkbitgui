@@ -1,0 +1,89 @@
+@use 'src/app/styles/variables' as *;
+
+.tableContainer {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+
+    table {
+        width: 100%;
+        min-width: 100%;
+        border-radius: 8px;
+        border-collapse: collapse;
+        overflow: hidden;
+
+        thead {
+            width: 100%;
+            background-color: $secondary-color;
+
+            tr {
+                width: 100%;
+            }
+
+            th {
+                padding: 8px;
+                text-align: left;
+
+                &:first-child {
+                    border-top-left-radius: 8px;
+                    border-bottom-left-radius: 8px;
+                }
+
+                &:last-child {
+                    border-top-right-radius: 8px;
+                    border-bottom-right-radius: 8px;
+                }
+
+                &:not(:last-child) {
+                    border-right: 2px solid #e6eafb;
+                }
+            }
+        }
+
+        tbody {
+            overflow: scroll;
+            width: 100%;
+            tr {
+                width: 100%;
+                &:hover {
+                    background-color: #fafafa;
+                }
+            }
+
+            td {
+                padding: 8px;
+                border-bottom: 2px solid #e6eafb;
+            }
+        }
+    }
+}
+
+/* Base class for the status indicator dot */
+.statusIndicator {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+/* Color-coded statuses */
+.statusDelivered {
+    background-color: green;
+}
+
+.statusError {
+    background-color: red;
+}
+
+.statusPending {
+    background-color: gold;
+}
+
+.statusOverdue {
+    background-color: red;
+}
+
+.statusUnknown {
+    background-color: gray;
+}

@@ -47,7 +47,7 @@ export default function Card({ children }: { children?: React.ReactNode }) {
         <motion.div
             ref={cardRef}
             className={`${styles.card} ${isExpanded ? styles.expanded : ''}`}
-            initial={{ minWidth: 300, height: 200 }}
+            initial={{ minWidth: 300, minHeight: 200 }}
             animate={
                 isExpanded
                     ? {

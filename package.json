@@ -11,6 +11,7 @@
         "format:check": "prettier --check ."
     },
     "dependencies": {
+        "@tanstack/react-table": "^8.21.2",
         "framer-motion": "^12.4.10",
         "next": "15.2.0",
         "prettier": "^3.5.3",

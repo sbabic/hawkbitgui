@@ -17,7 +17,7 @@
         &:hover,
         &:active,
         &:focus {
-            background: darken($accent-color, 10%);
+            background: rgba($accent-color, 0.8);
         }
     }
 

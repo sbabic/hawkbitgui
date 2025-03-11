@@ -1,14 +1,9 @@
 @use 'src/app/styles/variables' as *;
 
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 10;
-    cursor: pointer;
-}
-
 .card {
+    display: flex;
+    height: fit-content;
+    max-height: 100%;
     background: white;
     padding: 16px;
     border-radius: 16px;
