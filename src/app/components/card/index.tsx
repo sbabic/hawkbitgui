@@ -4,9 +4,13 @@ import { motion } from 'framer-motion';
 import styles from './styles.module.scss';
 import { useEffect, useRef, useState } from 'react';
 
-export default function Card({ children }: { children?: React.ReactNode }) {
-    const [isExpanded, setIsExpanded] = useState(false);
-
+export default function Card({
+    children,
+    expanded = false,
+}: {
+    children?: React.ReactNode;
+    expanded?: boolean;
+}) {
     const [parentWidth, setParentWidth] = useState(300); // Default width
     const [parentHeight, setParentHeight] = useState(200); // Default height
     const cardRef = useRef<HTMLDivElement | null>(null);
@@ -46,10 +50,10 @@ export default function Card({ children }: { children?: React.ReactNode }) {
     return (
         <motion.div
             ref={cardRef}
-            className={`${styles.card} ${isExpanded ? styles.expanded : ''}`}
+            className={`${styles.card} ${expanded ? styles.expanded : ''}`}
             initial={{ minWidth: 300, minHeight: 200 }}
             animate={
-                isExpanded
+                expanded
                     ? {
                           width: parentWidth,
                           height: parentHeight,
@@ -57,7 +61,6 @@ export default function Card({ children }: { children?: React.ReactNode }) {
                     : {}
             }
             transition={{ duration: 0.4, ease: 'easeInOut' }}
-            onClick={() => setIsExpanded(!isExpanded)}
         >
             {children}
         </motion.div>
