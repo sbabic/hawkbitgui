@@ -57,33 +57,3 @@
         }
     }
 }
-
-/* Base class for the status indicator dot */
-.statusIndicator {
-    display: inline-block;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    margin-right: 0.5rem;
-}
-
-/* Color-coded statuses */
-.statusDelivered {
-    background-color: green;
-}
-
-.statusError {
-    background-color: red;
-}
-
-.statusPending {
-    background-color: gold;
-}
-
-.statusOverdue {
-    background-color: red;
-}
-
-.statusUnknown {
-    background-color: gray;
-}

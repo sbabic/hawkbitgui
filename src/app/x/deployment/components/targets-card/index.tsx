@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 import Card from '@/app/components/card';
 import Button from '@/app/components/button';
 import FolderIcon from '@/app/components/icons/folder-icon';
-import Table from '@/app/components/table';
+import TargetTable from '@/app/components/target-table';
 
 export default function TargetsCard() {
     return (
@@ -25,7 +25,7 @@ export default function TargetsCard() {
                     </Button>
                 </div>
                 <div className={styles.table}>
-                    <Table />
+                    <TargetTable />
                 </div>
             </div>
         </Card>
