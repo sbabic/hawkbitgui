@@ -1,5 +1,27 @@
 @use 'src/app/styles/variables' as *;
 
+.statusCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .status {
+        padding: 8px 12px;
+        background-color: $secondary-color;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
+
+.actionButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
 .statusIndicator {
     display: inline-block;
     width: 0.5rem;

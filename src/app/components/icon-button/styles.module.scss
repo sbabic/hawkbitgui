@@ -1,0 +1,16 @@
+@use 'src/app/styles/variables' as *;
+
+.iconButton {
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    height: 24px;
+    width: 24px;
+    color: #898b90;
+
+    &:hover {
+        background: $secondary-color;
+    }
+}
