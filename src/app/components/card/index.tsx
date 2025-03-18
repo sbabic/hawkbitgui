@@ -58,7 +58,9 @@ export default function Card({
                           width: parentWidth,
                           height: parentHeight,
                       }
-                    : {}
+                    : {
+                          width: 'fit-content',
+                      }
             }
             transition={{ duration: 0.4, ease: 'easeInOut' }}
         >

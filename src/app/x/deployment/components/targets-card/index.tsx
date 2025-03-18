@@ -47,7 +47,7 @@ export default function TargetsCard() {
                     </Button>
                 </div>
                 <div className={styles.table}>
-                    <TargetTable />
+                    <TargetTable expanded={isExpanded} />
                 </div>
             </div>
         </Card>

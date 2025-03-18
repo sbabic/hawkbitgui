@@ -7,6 +7,9 @@
     width: 100%;
 
     .status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 8px 12px;
         background-color: $secondary-color;
         border-radius: 8px;
