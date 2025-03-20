@@ -5,10 +5,12 @@ export default function Button({
     children,
     className,
     color = 'default',
+    onClick,
 }: {
     children?: React.ReactNode;
     className?: string;
     color?: 'default' | 'outline';
+    onClick?: () => void;
 }) {
     const getStyleByColor = (color: string) => {
         switch (color) {
@@ -23,6 +25,7 @@ export default function Button({
     return (
         <button
             className={`${styles.button} ${getStyleByColor(color)} ${className}`}
+            onClick={onClick}
         >
             {children}
         </button>

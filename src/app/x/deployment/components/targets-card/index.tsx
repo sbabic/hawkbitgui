@@ -10,46 +10,65 @@ import SearchIcon from '@/app/components/icons/search-icon';
 import ExpandIcon from '@/app/components/icons/expand-icon';
 import { useState } from 'react';
 import MinimizeIcon from '@/app/components/icons/minimize-icon';
+import Modal from '@/app/components/modal';
 
 export default function TargetsCard() {
     const [isExpanded, setIsExpanded] = useState(false);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleExpand = () => {
         setIsExpanded((prev) => !prev);
     };
 
     return (
-        <Card expanded={isExpanded}>
-            <div className={styles.cardBody}>
-                <div className={`${styles.header}`}>
-                    <h2>Targets</h2>
-                    <div className={`${styles.headerButtons}`}>
-                        <IconButton width={'30px'} height={'30px'}>
-                            <SearchIcon />
-                        </IconButton>
-                        <IconButton
-                            width={'30px'}
-                            height={'30px'}
-                            onClick={handleExpand}
+        <>
+            <Card expanded={isExpanded}>
+                <div className={styles.cardBody}>
+                    <div className={`${styles.header}`}>
+                        <h2>Targets</h2>
+                        <div className={`${styles.headerButtons}`}>
+                            <IconButton width={'30px'} height={'30px'}>
+                                <SearchIcon />
+                            </IconButton>
+                            <IconButton
+                                width={'30px'}
+                                height={'30px'}
+                                onClick={handleExpand}
+                            >
+                                {isExpanded ? <MinimizeIcon /> : <ExpandIcon />}
+                            </IconButton>
+                        </div>
+                    </div>
+                    <div className={styles.actionButtons}>
+                        <Button
+                            onClick={() => {
+                                setIsModalOpen(true);
+                            }}
                         >
-                            {isExpanded ? <MinimizeIcon /> : <ExpandIcon />}
-                        </IconButton>
+                            + New target
+                        </Button>
+                        <Button
+                            color={'outline'}
+                            className={styles.bulkUploadButton}
+                        >
+                            <FolderIcon />
+                            Bulk Upload Targets
+                        </Button>
+                    </div>
+                    <div className={styles.table}>
+                        <TargetTable expanded={isExpanded} />
                     </div>
                 </div>
-                <div className={styles.actionButtons}>
-                    <Button>+ New target</Button>
-                    <Button
-                        color={'outline'}
-                        className={styles.bulkUploadButton}
-                    >
-                        <FolderIcon />
-                        Bulk Upload Targets
-                    </Button>
-                </div>
-                <div className={styles.table}>
-                    <TargetTable expanded={isExpanded} />
-                </div>
-            </div>
-        </Card>
+            </Card>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <div
+                    style={{
+                        width: '200px',
+                        height: '200px',
+                    }}
+                ></div>
+            </Modal>
+        </>
     );
 }
