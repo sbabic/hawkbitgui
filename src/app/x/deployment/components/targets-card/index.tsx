@@ -11,6 +11,7 @@ import ExpandIcon from '@/app/components/icons/expand-icon';
 import { useState } from 'react';
 import MinimizeIcon from '@/app/components/icons/minimize-icon';
 import Modal from '@/app/components/modal';
+import TargetInfoModal from '@/app/components/target-info-modal';
 
 export default function TargetsCard() {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -61,14 +62,10 @@ export default function TargetsCard() {
                     </div>
                 </div>
             </Card>
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <div
-                    style={{
-                        width: '200px',
-                        height: '200px',
-                    }}
-                ></div>
-            </Modal>
+            <TargetInfoModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </>
     );
 }
