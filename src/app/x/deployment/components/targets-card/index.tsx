@@ -10,7 +10,6 @@ import SearchIcon from '@/app/components/icons/search-icon';
 import ExpandIcon from '@/app/components/icons/expand-icon';
 import { useState } from 'react';
 import MinimizeIcon from '@/app/components/icons/minimize-icon';
-import Modal from '@/app/components/modal';
 import TargetInfoModal from '@/app/components/target-info-modal';
 
 export default function TargetsCard() {

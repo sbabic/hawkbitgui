@@ -12,7 +12,6 @@ export default function Modal({
     isOpen?: boolean;
     onClose?: () => void;
 }) {
-    console.log('isOpen', isOpen);
     useEffect(() => {
         function handler(e: KeyboardEvent) {
             if (e.key === 'Escape') onClose?.();

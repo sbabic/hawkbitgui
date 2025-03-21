@@ -1,7 +1,7 @@
 'use client';
-import styles from './styles.module.scss';
 import Modal from '@/app/components/modal';
 import CardWithSidebar from '@/app/components/card-with-sidebar';
+import TargetDetails from '@/app/components/target-info-modal/components/target-details';
 
 export default function TargetInfoModal({
     isOpen,
@@ -14,7 +14,7 @@ export default function TargetInfoModal({
         <Modal isOpen={isOpen} onClose={onClose}>
             <CardWithSidebar
                 content={[
-                    { title: 'Details', component: <div>Attributes</div> },
+                    { title: 'Details', component: <TargetDetails /> },
                     { title: 'Attributes', component: <div>Attributes</div> },
                     { title: 'Assigned', component: <div>Assigned</div> },
                     { title: 'Installed', component: <div>Installed</div> },

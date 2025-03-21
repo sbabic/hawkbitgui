@@ -30,7 +30,7 @@
                 cursor: pointer;
                 text-align: left;
 
-                &.selected,
+                &.active,
                 &:hover {
                     border-radius: 16px;
                     color: white;
@@ -43,9 +43,7 @@
     .content {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
+        padding: 32px 20px;
         flex-grow: 1;
     }
 }
