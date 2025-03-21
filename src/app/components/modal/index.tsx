@@ -2,6 +2,8 @@
 import './styles.scss';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import IconButton from '@/app/components/icon-button';
+import XIcon from '@/app/components/icons/x-icon';
 
 export default function Modal({
     isOpen,
@@ -30,6 +32,12 @@ export default function Modal({
                 className={'modalContent'}
                 onClick={(e) => e.stopPropagation()}
             >
+                <IconButton
+                    className={'quitButton'}
+                    onClick={() => onClose?.()}
+                >
+                    <XIcon />
+                </IconButton>
                 {children}
             </div>
         </div>,
