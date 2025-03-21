@@ -2,6 +2,10 @@
 import Modal from '@/app/components/modal';
 import CardWithSidebar from '@/app/components/card-with-sidebar';
 import TargetDetails from '@/app/components/target-info-modal/components/target-details';
+import TargetAttributes from '@/app/components/target-info-modal/components/target-attributes';
+import TargetAssigned from '@/app/components/target-info-modal/components/target-assigned';
+import TargetInstalled from '@/app/components/target-info-modal/components/target-installed';
+import TargetLogs from '@/app/components/target-info-modal/components/target-logs';
 
 export default function TargetInfoModal({
     isOpen,
@@ -15,11 +19,11 @@ export default function TargetInfoModal({
             <CardWithSidebar
                 content={[
                     { title: 'Details', component: <TargetDetails /> },
-                    { title: 'Attributes', component: <div>Attributes</div> },
-                    { title: 'Assigned', component: <div>Assigned</div> },
-                    { title: 'Installed', component: <div>Installed</div> },
+                    { title: 'Attributes', component: <TargetAttributes /> },
+                    { title: 'Assigned', component: <TargetAssigned /> },
+                    { title: 'Installed', component: <TargetInstalled /> },
                     { title: 'Tags', component: <div>Tags</div> },
-                    { title: 'Logs', component: <div>Logs</div> },
+                    { title: 'Logs', component: <TargetLogs /> },
                     { title: 'Metadata', component: <div>Metadata</div> },
                 ]}
             />
