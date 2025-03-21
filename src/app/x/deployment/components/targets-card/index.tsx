@@ -41,13 +41,7 @@ export default function TargetsCard() {
                         </div>
                     </div>
                     <div className={styles.actionButtons}>
-                        <Button
-                            onClick={() => {
-                                setIsModalOpen(true);
-                            }}
-                        >
-                            + New target
-                        </Button>
+                        <Button>+ New target</Button>
                         <Button
                             color={'outline'}
                             className={styles.bulkUploadButton}
@@ -57,7 +51,12 @@ export default function TargetsCard() {
                         </Button>
                     </div>
                     <div className={styles.table}>
-                        <TargetTable expanded={isExpanded} />
+                        <TargetTable
+                            expanded={isExpanded}
+                            onTargetNameClick={() => {
+                                setIsModalOpen(true);
+                            }}
+                        />
                     </div>
                 </div>
             </Card>

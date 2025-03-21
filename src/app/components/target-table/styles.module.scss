@@ -18,6 +18,17 @@
     }
 }
 
+.linkButton {
+    all: unset;
+    cursor: pointer;
+    color: $accent-color;
+    font-weight: 400;
+    font-size: 16px;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .actionButtons {
     display: flex;
     justify-content: center;
