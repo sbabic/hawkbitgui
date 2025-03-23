@@ -2,9 +2,6 @@
 
 import { useForm } from 'react-hook-form';
 import styles from './styles.module.scss';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { AppRoutes } from '@/utils/routes';
 
 type FormValues = {
     username: string;
@@ -13,38 +10,18 @@ type FormValues = {
 
 export interface LoginFormProps {
     className?: string;
+    onSubmit: (data: FormValues) => Promise<void>;
 }
 
-export default function LoginForm(props: LoginFormProps) {
-    const router = useRouter();
-
+export default function LoginForm({ className, onSubmit }: LoginFormProps) {
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<FormValues>();
 
-    const onSubmit = async (data: FormValues) => {
-        try {
-            const result = await signIn('credentials', {
-                username: data.username,
-                password: data.password,
-                redirect: false,
-            });
-
-            if (result?.error) {
-                return;
-            }
-
-            router.push(AppRoutes.deployment);
-            router.refresh();
-        } catch (error) {
-            // handle error
-        }
-    };
-
     return (
-        <div className={`${styles.container} ${props.className}`}>
+        <div className={`${styles.container} ${className}`}>
             <div className={styles.card}>
                 <h2 className={styles.title}>Login to Account</h2>
                 <p className={styles.subtitle}>

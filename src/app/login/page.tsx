@@ -1,6 +1,7 @@
 import LoginForm from './components/login-form';
 import styles from './styles.module.scss';
 import Image from 'next/image';
+import LoginFormContainer from '@/app/login/containers/login-form-container';
 
 export default function Login() {
     return (
@@ -47,7 +48,7 @@ export default function Login() {
                 </div>
             </div>
             <div className={`${styles.loginSection}`}>
-                <LoginForm className={styles.form} />
+                <LoginFormContainer className={styles.form} />
                 <div className={styles.policiesSection}>
                     <div>
                         <a href={'https://www.eclipse.org/org/'}>About Us</a>
