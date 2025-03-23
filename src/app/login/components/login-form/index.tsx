@@ -2,6 +2,9 @@
 
 import { useForm } from 'react-hook-form';
 import styles from './styles.module.scss';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { AppRoutes } from '@/utils/routes';
 
 type FormValues = {
     username: string;
@@ -13,15 +16,31 @@ export interface LoginFormProps {
 }
 
 export default function LoginForm(props: LoginFormProps) {
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<FormValues>();
 
-    const onSubmit = (data: FormValues) => {
-        console.log('Login Data:', data);
-        // Handle authentication logic here
+    const onSubmit = async (data: FormValues) => {
+        try {
+            const result = await signIn('credentials', {
+                username: data.username,
+                password: data.password,
+                redirect: false,
+            });
+
+            if (result?.error) {
+                return;
+            }
+
+            router.push(AppRoutes.deployment);
+            router.refresh();
+        } catch (error) {
+            // handle error
+        }
     };
 
     return (
@@ -64,7 +83,11 @@ export default function LoginForm(props: LoginFormProps) {
                         )}
                     </div>
                     <div style={{ height: 40 }}></div>
-                    <button type='submit' className={styles.button}>
+                    <button
+                        type='submit'
+                        className={styles.button}
+                        disabled={isSubmitting}
+                    >
                         Sign In
                     </button>
                 </form>

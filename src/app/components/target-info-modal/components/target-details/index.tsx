@@ -22,5 +22,6 @@ export default function TargetDetails({
         { title: 'Security Token', value: securityToken },
         { title: 'Description', value: description },
     ];
+
     return <ListWithTitle title={'Details'} items={items} />;
 }

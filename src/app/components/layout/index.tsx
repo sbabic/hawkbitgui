@@ -12,6 +12,7 @@ import { usePathname } from 'next/navigation';
 import ClickIcon from '@/app/components/icons/click-icon';
 import WebIcon from '@/app/components/icons/web-icon';
 import GearIcon from '@/app/components/icons/gear-icon';
+import { signOut } from 'next-auth/react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,6 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         label='Logout'
                         icon={LogoutIcon}
                         expanded={sidebarOpen}
+                        onClick={signOut}
                     />
                 </div>
             </aside>
@@ -95,13 +97,27 @@ function NavItem({
     icon: Icon,
     expanded,
     isActive,
+    onClick,
 }: {
     href: string;
     label: string;
     icon: ElementType;
     expanded: boolean;
     isActive?: boolean;
+    onClick?: () => void;
 }) {
+    if (onClick) {
+        return (
+            <button
+                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                onClick={onClick}
+            >
+                <Icon />
+                {expanded && <span className={styles.label}>{label}</span>}
+            </button>
+        );
+    }
+
     return (
         <Link
             href={href}
