@@ -22,3 +22,9 @@ body {
     font-family: 'Nunito Sans', sans-serif;
     overflow: auto;
 }
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}

@@ -11,11 +11,14 @@ import ExpandIcon from '@/app/components/icons/expand-icon';
 import { useState } from 'react';
 import MinimizeIcon from '@/app/components/icons/minimize-icon';
 import TargetInfoModal from '@/app/components/target-info-modal';
+import Modal from '@/app/components/modal';
+import CreateTargetForm from '@/app/components/create-target-form';
 
 export default function TargetsCard() {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isTargetInfoModalOpen, setIsTargetInfoModalOpen] = useState(false);
+    const [isCreateTargetFormOpen, setIsCreateTargetFormOpen] = useState(false);
 
     const handleExpand = () => {
         setIsExpanded((prev) => !prev);
@@ -41,7 +44,9 @@ export default function TargetsCard() {
                         </div>
                     </div>
                     <div className={styles.actionButtons}>
-                        <Button>+ New target</Button>
+                        <Button onClick={() => setIsCreateTargetFormOpen(true)}>
+                            + New target
+                        </Button>
                         <Button
                             color={'outline'}
                             className={styles.bulkUploadButton}
@@ -54,16 +59,22 @@ export default function TargetsCard() {
                         <TargetTable
                             expanded={isExpanded}
                             onTargetNameClick={() => {
-                                setIsModalOpen(true);
+                                setIsTargetInfoModalOpen(true);
                             }}
                         />
                     </div>
                 </div>
             </Card>
             <TargetInfoModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                isOpen={isTargetInfoModalOpen}
+                onClose={() => setIsTargetInfoModalOpen(false)}
             />
+            <Modal
+                isOpen={isCreateTargetFormOpen}
+                onClose={() => setIsCreateTargetFormOpen(false)}
+            >
+                <CreateTargetForm onSubmit={() => {}} />
+            </Modal>
         </>
     );
 }
