@@ -1,0 +1,73 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #5a3b69;
+}
+
+.input,
+.textarea,
+.select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border 0.2s ease-in-out;
+
+    &:focus {
+        border-color: #7a4988;
+    }
+}
+
+.textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.button {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.cancelButton {
+    background: transparent;
+    border: 1px solid #7a4988;
+    color: #7a4988;
+
+    &:hover {
+        background: #e9d6f3;
+    }
+}
+
+.saveButton {
+    background: #7a4988;
+    color: white;
+    border: none;
+
+    &:hover {
+        background: #5a3b69;
+    }
+}
