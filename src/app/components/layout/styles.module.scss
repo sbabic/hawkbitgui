@@ -113,8 +113,10 @@ $sidebar-collapsed: 60px;
 }
 
 .navItem {
+    all: unset;
     display: flex;
     align-items: center;
+    width: 100%;
     gap: 1rem;
     padding: 16px;
     border-radius: 16px;
@@ -122,6 +124,7 @@ $sidebar-collapsed: 60px;
     transition: all 0.2s;
     color: $primary-text-color;
     text-decoration: none;
+    box-sizing: border-box;
 
     &:hover,
     &.active {

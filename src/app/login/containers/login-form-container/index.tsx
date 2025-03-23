@@ -23,6 +23,8 @@ export default function LoginFormContainer({
             });
 
             if (result?.error) {
+                console.log('Login error:', result.error);
+                console.log(result);
                 return;
             }
 
