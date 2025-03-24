@@ -1,0 +1,14 @@
+services:
+  app:
+    container_name: app
+    build:
+      context: ./
+      target: development-build-stage
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./:/app
+      - /app/node_modules
