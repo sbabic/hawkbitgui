@@ -1,0 +1,30 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 16px;
+    font-weight: 400;
+    color: $light-primary-text-color;
+
+    .select {
+        border-radius: 8px;
+        padding: 16px;
+        background-color: $secondary-color;
+        color: $light-primary-text-color;
+        font-weight: 400;
+        font-size: 16px;
+        border: 1px solid #e4e7f2;
+
+        option {
+            color: $light-primary-text-color;
+        }
+    }
+
+    .error {
+        color: $error-color;
+        font-size: 12px;
+        margin: 0;
+    }
+}

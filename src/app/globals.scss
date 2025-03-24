@@ -1,3 +1,5 @@
+@use 'src/app/styles/variables' as *;
+
 @font-face {
     font-family: 'Nunito Sans';
     src: url('/fonts/nunito-sans/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf')
@@ -27,4 +29,11 @@ body {
 *::before,
 *::after {
     box-sizing: border-box;
+}
+
+h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    color: $accent-color;
 }

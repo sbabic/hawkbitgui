@@ -3,71 +3,55 @@
 .container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-    max-width: 400px;
+    gap: 28px;
+    padding: 32px 42px;
+    width: 100vw;
+    max-width: 518px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #5a3b69;
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-.input,
-.textarea,
-.select {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    transition: border 0.2s ease-in-out;
+.inputContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 
-    &:focus {
-        border-color: #7a4988;
+    .input {
+        width: 100%;
+        max-width: 300px;
     }
-}
 
-.textarea {
-    min-height: 80px;
-    resize: vertical;
+    .label {
+        font-size: 16px;
+        font-weight: 600;
+        color: $light-primary-text-color;
+    }
+
+    .textarea {
+        width: 100%;
+        max-width: 300px;
+        min-height: 80px;
+        resize: vertical;
+    }
+
+    .select {
+        width: 100%;
+        max-width: 300px;
+    }
 }
 
 .buttonContainer {
     display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-}
-
-.button {
-    padding: 10px 16px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s ease-in-out;
-}
-
-.cancelButton {
-    background: transparent;
-    border: 1px solid #7a4988;
-    color: #7a4988;
-
-    &:hover {
-        background: #e9d6f3;
-    }
-}
-
-.saveButton {
-    background: #7a4988;
-    color: white;
-    border: none;
-
-    &:hover {
-        background: #5a3b69;
-    }
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
 }
