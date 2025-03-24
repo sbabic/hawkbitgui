@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.scss';
 import { getServerSession } from 'next-auth';
 import Providers from './providers';
-import { authOptions } from './api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth-options';
 
 export const metadata: Metadata = {
     title: 'Hawkbit',

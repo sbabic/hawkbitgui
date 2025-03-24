@@ -33,7 +33,7 @@ export default function TargetTable({
     const statusAccessor = useMemo(() => {
         return {
             header: 'Status',
-            cell: (info: CellContext<TargetWithStatus, any>) => {
+            cell: (info: CellContext<TargetWithStatus, string>) => {
                 const status = info.getValue();
                 let statusClass = '';
 

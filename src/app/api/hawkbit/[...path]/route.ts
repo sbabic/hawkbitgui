@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
 import { environment } from '@/config/env';
 import axios, { AxiosError } from 'axios';
+import { authOptions } from '@/lib/auth-options';
 
 const handleApiError = (error: unknown) => {
     if (error instanceof AxiosError) {
@@ -37,8 +37,9 @@ const handleApiError = (error: unknown) => {
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { path: string[] } }
+    context: { params: Promise<{ path: string[] }> }
 ) {
+    const { params } = context;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.auth) {
@@ -73,8 +74,9 @@ export async function GET(
 
 export async function POST(
     request: NextRequest,
-    { params }: { params: { path: string[] } }
+    context: { params: Promise<{ path: string[] }> }
 ) {
+    const { params } = context;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.auth) {
