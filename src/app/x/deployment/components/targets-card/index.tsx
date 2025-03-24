@@ -13,12 +13,16 @@ import MinimizeIcon from '@/app/components/icons/minimize-icon';
 import TargetInfoModal from '@/app/components/target-info-modal';
 import Modal from '@/app/components/modal';
 import CreateTargetForm from '@/app/components/create-target-form';
+import FilterIcon from '@/app/components/icons/filter-icon';
+import TargetFilters from '@/app/components/target-filters';
 
 export default function TargetsCard() {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const [isTargetInfoModalOpen, setIsTargetInfoModalOpen] = useState(false);
     const [isCreateTargetFormOpen, setIsCreateTargetFormOpen] = useState(false);
+    const [isTargetFiltersModalOpen, setIsTargetFiltersModalOpen] =
+        useState(false);
 
     const handleExpand = () => {
         setIsExpanded((prev) => !prev);
@@ -54,6 +58,12 @@ export default function TargetsCard() {
                             <FolderIcon />
                             Bulk Upload Targets
                         </Button>
+                        <IconButton
+                            className={styles.filterButton}
+                            onClick={() => setIsTargetFiltersModalOpen(true)}
+                        >
+                            <FilterIcon />
+                        </IconButton>
                     </div>
                     <div className={styles.table}>
                         <TargetTable
@@ -74,6 +84,12 @@ export default function TargetsCard() {
                 onClose={() => setIsCreateTargetFormOpen(false)}
             >
                 <CreateTargetForm onSubmit={() => {}} />
+            </Modal>
+            <Modal
+                isOpen={isTargetFiltersModalOpen}
+                onClose={() => setIsTargetFiltersModalOpen(false)}
+            >
+                <TargetFilters />
             </Modal>
         </>
     );

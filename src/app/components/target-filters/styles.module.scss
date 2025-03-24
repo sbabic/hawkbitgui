@@ -1,0 +1,30 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 32px 42px;
+
+    .filters {
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+
+        .filter {
+            all: unset;
+            border-radius: 16px;
+            padding: 8px 24px;
+            color: $primary-text-color;
+            cursor: pointer;
+            &:hover,
+            .active {
+                color: white;
+                background-color: $accent-color;
+            }
+        }
+    }
+
+    .content {
+    }
+}
