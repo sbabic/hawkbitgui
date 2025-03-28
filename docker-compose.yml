@@ -1,14 +1,26 @@
 services:
   app:
-    container_name: app
     build:
       context: ./
       target: development-build-stage
       dockerfile: Dockerfile
     env_file:
       - ./.env
+    environment:
+      - NEXT_PUBLIC_HAWKBIT_API_URL=http://hawkbit:8080
     ports:
       - '3000:3000'
     volumes:
       - ./:/app
       - /app/node_modules
+
+  hawkbit:
+    image: hawkbit/hawkbit-update-server:latest
+    ports:
+      - '8080:8080'
+    volumes:
+      - artifactrepo:/artifactrepo
+
+volumes:
+  artifactrepo:
+    driver: local

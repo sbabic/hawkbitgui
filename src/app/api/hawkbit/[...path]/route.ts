@@ -57,7 +57,7 @@ export async function GET(
     try {
         const path = (await params).path.join('/');
         const response = await axios.get(
-            `${environment.hawkbitManagementApiUrl}/rest/v1/${path}`,
+            `${environment.hawkbitApiUrl}/rest/v1/${path}`,
             {
                 headers: {
                     Authorization: `Basic ${session.user.auth}`,
@@ -96,7 +96,7 @@ export async function POST(
         const body = await request.json();
 
         const response = await axios.post(
-            `${environment.hawkbitManagementApiUrl}/rest/v1/${path}`,
+            `${environment.hawkbitApiUrl}/rest/v1/${path}`,
             body,
             {
                 headers: {

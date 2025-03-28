@@ -14,7 +14,7 @@ export const authOptions: AuthOptions = {
             async authorize(credentials) {
                 try {
                     const response = await axios.get(
-                        `${environment.hawkbitManagementApiUrl}/rest/v1/userinfo`,
+                        `${environment.hawkbitApiUrl}/rest/v1/userinfo`,
                         {
                             headers: {
                                 Authorization: `Basic ${Buffer.from(`${credentials?.username}:${credentials?.password}`).toString('base64')}`,
