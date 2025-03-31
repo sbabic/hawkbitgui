@@ -4,36 +4,30 @@ import React, { useMemo } from 'react';
 import { createColumnHelper, CellContext } from '@tanstack/react-table';
 import styles from './styles.module.scss';
 import Table from '@/app/components/table';
-import { generateMockData, Target } from '@/entities';
+import { Target } from '@/entities';
 import IconButton from '@/app/components/icon-button';
 import PinIcon from '@/app/components/icons/pin-icon';
 import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import dayjs from 'dayjs';
 
-export type TargetWithStatus = Target & { status: string };
-
-// Sample data array
-const data: TargetWithStatus[] = generateMockData(20).map((target, index) => ({
-    ...target,
-    status: index % 4 === 0 ? 'Error' : 'Delivered',
-}));
-
 export type TargetTableProps = {
     expanded?: boolean;
     onTargetNameClick?: (target: Target) => void;
+    targets?: Target[];
 };
 
 export default function TargetTable({
     expanded,
     onTargetNameClick,
+    targets = [],
 }: TargetTableProps) {
-    const columnHelper = createColumnHelper<TargetWithStatus>();
+    const columnHelper = createColumnHelper<Target>();
 
     const statusAccessor = useMemo(() => {
         return {
             header: 'Status',
-            cell: (info: CellContext<TargetWithStatus, string>) => {
+            cell: (info: CellContext<Target, string>) => {
                 const status = info.getValue();
                 let statusClass = '';
 
@@ -82,7 +76,7 @@ export default function TargetTable({
                     </button>
                 ),
             }),
-            columnHelper.accessor('status', statusAccessor),
+            columnHelper.accessor('updateStatus', statusAccessor),
             columnHelper.display({
                 id: 'actions',
                 header: 'Actions',
@@ -120,7 +114,7 @@ export default function TargetTable({
                 header: 'Controller Id',
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor('createdDate', {
+            columnHelper.accessor('createdAt', {
                 header: 'Created Date',
                 cell: (info) =>
                     dayjs(info.getValue()).format('YYYY-MM-DD HH:mm:ss'),
@@ -129,16 +123,16 @@ export default function TargetTable({
                 header: 'Created By',
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor('modifiedDate', {
+            columnHelper.accessor('lastModifiedAt', {
                 header: 'Modified Date',
                 cell: (info) =>
                     dayjs(info.getValue()).format('YYYY-MM-DD HH:mm:ss'),
             }),
-            columnHelper.accessor('modifiedBy', {
+            columnHelper.accessor('lastModifiedBy', {
                 header: 'Modified By',
                 cell: (info) => info.getValue(),
             }),
-            columnHelper.accessor('status', statusAccessor),
+            columnHelper.accessor('updateStatus', statusAccessor),
             columnHelper.display({
                 id: 'actions',
                 header: 'Actions',
@@ -160,6 +154,6 @@ export default function TargetTable({
     }, [columnHelper, onTargetNameClick, statusAccessor]);
 
     return (
-        <Table columns={expanded ? fullColumns : shortColumns} data={data} />
+        <Table columns={expanded ? fullColumns : shortColumns} data={targets} />
     );
 }

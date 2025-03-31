@@ -4,17 +4,17 @@ import styles from './styles.module.scss';
 import Card from '@/app/components/card';
 import Button from '@/app/components/button';
 import FolderIcon from '@/app/components/icons/folder-icon';
-import TargetTable from '@/app/components/target-table';
 import IconButton from '@/app/components/icon-button';
 import SearchIcon from '@/app/components/icons/search-icon';
 import ExpandIcon from '@/app/components/icons/expand-icon';
 import { useState } from 'react';
 import MinimizeIcon from '@/app/components/icons/minimize-icon';
-import TargetInfoModal from '@/app/components/target-info-modal';
+import TargetInfo from '@/app/components/target-info-modal';
 import Modal from '@/app/components/modal';
-import CreateTargetForm from '@/app/components/create-target-form';
 import FilterIcon from '@/app/components/icons/filter-icon';
 import TargetFilters from '@/app/components/target-filters';
+import TargetTableContainer from '@/app/containers/target-table-container';
+import CreateTargetFormContainer from '@/app/containers/create-target-form-container';
 
 export default function TargetsCard() {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -66,24 +66,24 @@ export default function TargetsCard() {
                         </IconButton>
                     </div>
                     <div className={styles.table}>
-                        <TargetTable
-                            expanded={isExpanded}
-                            onTargetNameClick={() => {
-                                setIsTargetInfoModalOpen(true);
-                            }}
-                        />
+                        <TargetTableContainer />
                     </div>
                 </div>
             </Card>
-            <TargetInfoModal
+            <Modal
                 isOpen={isTargetInfoModalOpen}
                 onClose={() => setIsTargetInfoModalOpen(false)}
-            />
+            >
+                <TargetInfo />
+            </Modal>
             <Modal
                 isOpen={isCreateTargetFormOpen}
                 onClose={() => setIsCreateTargetFormOpen(false)}
             >
-                <CreateTargetForm onSubmit={() => {}} />
+                <CreateTargetFormContainer
+                    onSubmitSuccess={() => setIsCreateTargetFormOpen(false)}
+                    onCancel={() => setIsCreateTargetFormOpen(false)}
+                />
             </Modal>
             <Modal
                 isOpen={isTargetFiltersModalOpen}

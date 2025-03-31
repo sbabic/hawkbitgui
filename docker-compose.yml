@@ -7,7 +7,7 @@ services:
     env_file:
       - ./.env
     environment:
-      - NEXT_PUBLIC_HAWKBIT_API_URL=http://hawkbit:8080
+      - NEXT_PUBLIC_HAWKBIT_API_URL=http://localhost:8080
     ports:
       - '3000:3000'
     volumes:
@@ -18,6 +18,14 @@ services:
     image: hawkbit/hawkbit-update-server:latest
     ports:
       - '8080:8080'
+    environment:
+      - 'SPRING_APPLICATION_JSON={
+      "hawkbit.server.security.cors.enabled": "true", 
+      "hawkbit.server.security.cors.allowedOrigins": "http://localhost:3000", 
+      "hawkbit.server.security.cors.allowedHeaders": "*", 
+      "hawkbit.server.security.cors.allowedMethods": "GET,POST,PUT,DELETE,OPTIONS,HEAD",
+      "hawkbit.server.security.cors.allowCredentials": "true"
+      }'
     volumes:
       - artifactrepo:/artifactrepo
 
