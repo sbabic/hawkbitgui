@@ -83,6 +83,7 @@ export class TargetsService {
 
     static async createTarget(target: CreateTargetInput): Promise<Target> {
         console.log('target', target);
+        console.log('environment.hawkbitApiUr', environment.hawkbitApiUrl);
 
         try {
             const response = await axios.post(
