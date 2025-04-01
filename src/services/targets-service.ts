@@ -1,5 +1,6 @@
 import { Target } from '@/entities';
 import axios from 'axios';
+import { environment } from '@/config/env';
 
 interface Link {
     href: string;
@@ -65,7 +66,7 @@ export class TargetsService {
     static async fetchTargets(): Promise<Target[]> {
         try {
             const response = await axios.get<GetTargetsResponse>(
-                `${process.env.NEXT_PUBLIC_HAWKBIT_API_URL}/rest/v1/targets`,
+                `${environment.hawkbitApiUrl}/rest/v1/targets`,
                 {
                     headers: {
                         Authorization: `Basic ${Buffer.from(`admin:admin`).toString('base64')}`,
@@ -85,7 +86,7 @@ export class TargetsService {
 
         try {
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_HAWKBIT_API_URL}/rest/v1/targets`,
+                `${environment.hawkbitApiUrl}/rest/v1/targets`,
                 [target],
                 {
                     headers: {
