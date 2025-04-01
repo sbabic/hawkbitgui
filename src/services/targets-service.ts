@@ -70,7 +70,6 @@ export class TargetsService {
                     headers: {
                         Authorization: `Basic ${Buffer.from(`admin:admin`).toString('base64')}`,
                         Accept: 'application/json, application/hal+json',
-                        'X-Requested-With': 'XMLHttpRequest',
                     },
                 }
             );
@@ -92,7 +91,6 @@ export class TargetsService {
                     headers: {
                         Authorization: `Basic ${Buffer.from(`admin:admin`).toString('base64')}`,
                         Accept: 'application/json, application/hal+json',
-                        'X-Requested-With': 'XMLHttpRequest',
                     },
                 }
             );
