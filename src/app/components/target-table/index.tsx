@@ -15,12 +15,18 @@ export type TargetTableProps = {
     expanded?: boolean;
     onTargetNameClick?: (target: Target) => void;
     targets?: Target[];
+    onEditClick?: (target: Target) => void;
+    onDeleteClick?: (target: Target) => void;
+    onPinClick?: (target: Target) => void;
 };
 
 export default function TargetTable({
     expanded,
     onTargetNameClick,
     targets = [],
+    onEditClick,
+    onDeleteClick,
+    onPinClick,
 }: TargetTableProps) {
     const columnHelper = createColumnHelper<Target>();
 
@@ -80,22 +86,41 @@ export default function TargetTable({
             columnHelper.display({
                 id: 'actions',
                 header: 'Actions',
-                cell: () => (
+                cell: (info) => (
                     <div className={styles.actionButtons}>
-                        <IconButton height={'30px'} width={'30px'}>
+                        <IconButton
+                            height={'30px'}
+                            width={'30px'}
+                            onClick={() => onPinClick?.(info.row.original)}
+                        >
                             <PinIcon />
                         </IconButton>
-                        <IconButton height={'30px'} width={'30px'}>
+                        <IconButton
+                            height={'30px'}
+                            width={'30px'}
+                            onClick={() => onEditClick?.(info.row.original)}
+                        >
                             <EditIcon />
                         </IconButton>
-                        <IconButton height={'30px'} width={'30px'}>
+                        <IconButton
+                            height={'30px'}
+                            width={'30px'}
+                            onClick={() => onDeleteClick?.(info.row.original)}
+                        >
                             <TrashIcon />
                         </IconButton>
                     </div>
                 ),
             }),
         ];
-    }, [columnHelper, onTargetNameClick, statusAccessor]);
+    }, [
+        columnHelper,
+        onDeleteClick,
+        onEditClick,
+        onPinClick,
+        onTargetNameClick,
+        statusAccessor,
+    ]);
 
     const fullColumns = useMemo(() => {
         return [
@@ -136,22 +161,41 @@ export default function TargetTable({
             columnHelper.display({
                 id: 'actions',
                 header: 'Actions',
-                cell: () => (
+                cell: (info) => (
                     <div className={styles.actionButtons}>
-                        <IconButton height={'30px'} width={'30px'}>
+                        <IconButton
+                            height={'30px'}
+                            width={'30px'}
+                            onClick={() => onPinClick?.(info.row.original)}
+                        >
                             <PinIcon />
                         </IconButton>
-                        <IconButton height={'30px'} width={'30px'}>
+                        <IconButton
+                            height={'30px'}
+                            width={'30px'}
+                            onClick={() => onEditClick?.(info.row.original)}
+                        >
                             <EditIcon />
                         </IconButton>
-                        <IconButton height={'30px'} width={'30px'}>
+                        <IconButton
+                            height={'30px'}
+                            width={'30px'}
+                            onClick={() => onDeleteClick?.(info.row.original)}
+                        >
                             <TrashIcon />
                         </IconButton>
                     </div>
                 ),
             }),
         ];
-    }, [columnHelper, onTargetNameClick, statusAccessor]);
+    }, [
+        columnHelper,
+        onDeleteClick,
+        onEditClick,
+        onPinClick,
+        onTargetNameClick,
+        statusAccessor,
+    ]);
 
     return (
         <Table columns={expanded ? fullColumns : shortColumns} data={targets} />

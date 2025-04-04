@@ -102,4 +102,22 @@ export class TargetsService {
             throw error;
         }
     }
+
+    static async deleteTarget(controllerId: string): Promise<Target> {
+        try {
+            const response = await axios.delete(
+                `${environment.hawkbitApiUrl}/rest/v1/targets/${controllerId}`,
+                {
+                    headers: {
+                        Authorization: `Basic ${Buffer.from(`admin:admin`).toString('base64')}`,
+                        Accept: 'application/json, application/hal+json',
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Failed to delete target', error);
+            throw error;
+        }
+    }
 }

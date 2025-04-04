@@ -7,52 +7,72 @@ import FolderIcon from '@/app/components/icons/folder-icon';
 import IconButton from '@/app/components/icon-button';
 import SearchIcon from '@/app/components/icons/search-icon';
 import ExpandIcon from '@/app/components/icons/expand-icon';
-import { useState } from 'react';
 import MinimizeIcon from '@/app/components/icons/minimize-icon';
-import TargetInfo from '@/app/components/target-info-modal';
 import Modal from '@/app/components/modal';
 import FilterIcon from '@/app/components/icons/filter-icon';
+
+import TargetInfo from '@/app/components/target-info-modal';
 import TargetFilters from '@/app/components/target-filters';
 import TargetTableContainer from '@/app/containers/target-table-container';
 import CreateTargetFormContainer from '@/app/containers/create-target-form-container';
+import { Target } from '@/entities';
 
-export default function TargetsCard() {
-    const [isExpanded, setIsExpanded] = useState(false);
+type TargetsCardProps = {
+    isExpanded: boolean;
+    onToggleExpand: () => void;
+    isTargetInfoModalOpen: boolean;
+    onCloseTargetInfoModal: () => void;
+    isCreateTargetFormOpen: boolean;
+    onOpenCreateTargetForm: () => void;
+    onCloseCreateTargetForm: () => void;
+    isTargetFiltersModalOpen: boolean;
+    onOpenTargetFiltersModal: () => void;
+    onCloseTargetFiltersModal: () => void;
+    onTargetNameClick?: (target: Target) => void;
+    onDeleteClick?: (target: Target) => void;
+    onEditClick?: (target: Target) => void;
+};
 
-    const [isTargetInfoModalOpen, setIsTargetInfoModalOpen] = useState(false);
-    const [isCreateTargetFormOpen, setIsCreateTargetFormOpen] = useState(false);
-    const [isTargetFiltersModalOpen, setIsTargetFiltersModalOpen] =
-        useState(false);
-
-    const handleExpand = () => {
-        setIsExpanded((prev) => !prev);
-    };
-
+export default function TargetsCard({
+    isExpanded,
+    onToggleExpand,
+    isTargetInfoModalOpen,
+    onCloseTargetInfoModal,
+    isCreateTargetFormOpen,
+    onOpenCreateTargetForm,
+    onCloseCreateTargetForm,
+    isTargetFiltersModalOpen,
+    onOpenTargetFiltersModal,
+    onCloseTargetFiltersModal,
+    onTargetNameClick,
+    onDeleteClick,
+    onEditClick,
+}: TargetsCardProps) {
     return (
         <>
             <Card expanded={isExpanded}>
                 <div className={styles.cardBody}>
-                    <div className={`${styles.header}`}>
+                    <div className={styles.header}>
                         <h2>Targets</h2>
-                        <div className={`${styles.headerButtons}`}>
-                            <IconButton width={'30px'} height={'30px'}>
+                        <div className={styles.headerButtons}>
+                            <IconButton width='30px' height='30px'>
                                 <SearchIcon />
                             </IconButton>
                             <IconButton
-                                width={'30px'}
-                                height={'30px'}
-                                onClick={handleExpand}
+                                width='30px'
+                                height='30px'
+                                onClick={onToggleExpand}
                             >
                                 {isExpanded ? <MinimizeIcon /> : <ExpandIcon />}
                             </IconButton>
                         </div>
                     </div>
                     <div className={styles.actionButtons}>
-                        <Button onClick={() => setIsCreateTargetFormOpen(true)}>
+                        <Button onClick={onOpenCreateTargetForm}>
                             + New target
                         </Button>
                         <Button
-                            color={'outline'}
+                            color='outline'
                             className={styles.bulkUploadButton}
                         >
                             <FolderIcon />
@@ -60,34 +80,38 @@ export default function TargetsCard() {
                         </Button>
                         <IconButton
                             className={styles.filterButton}
-                            onClick={() => setIsTargetFiltersModalOpen(true)}
+                            onClick={onOpenTargetFiltersModal}
                         >
                             <FilterIcon />
                         </IconButton>
                     </div>
                     <div className={styles.table}>
-                        <TargetTableContainer />
+                        <TargetTableContainer
+                            onTargetNameClick={onTargetNameClick}
+                            onDeleteClick={onDeleteClick}
+                            onEditClick={onEditClick}
+                        />
                     </div>
                 </div>
             </Card>
             <Modal
                 isOpen={isTargetInfoModalOpen}
-                onClose={() => setIsTargetInfoModalOpen(false)}
+                onClose={onCloseTargetInfoModal}
             >
                 <TargetInfo />
             </Modal>
             <Modal
                 isOpen={isCreateTargetFormOpen}
-                onClose={() => setIsCreateTargetFormOpen(false)}
+                onClose={onCloseCreateTargetForm}
             >
                 <CreateTargetFormContainer
-                    onSubmitSuccess={() => setIsCreateTargetFormOpen(false)}
-                    onCancel={() => setIsCreateTargetFormOpen(false)}
+                    onSubmitSuccess={onCloseCreateTargetForm}
+                    onCancel={onCloseCreateTargetForm}
                 />
             </Modal>
             <Modal
                 isOpen={isTargetFiltersModalOpen}
-                onClose={() => setIsTargetFiltersModalOpen(false)}
+                onClose={onCloseTargetFiltersModal}
             >
                 <TargetFilters />
             </Modal>
