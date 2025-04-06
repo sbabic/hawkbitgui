@@ -112,3 +112,40 @@ export async function POST(
         return handleApiError(error);
     }
 }
+
+export async function DELETE(
+    request: NextRequest,
+    context: { params: Promise<{ path: string[] }> }
+) {
+    const { params } = context;
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.auth) {
+        return NextResponse.json(
+            {
+                exceptionClass: 'UnauthorizedError',
+                errorCode: 'UNAUTHORIZED',
+                message: 'Unauthorized',
+                info: {},
+            },
+            { status: 401 }
+        );
+    }
+
+    try {
+        const path = (await params).path.join('/');
+        const response = await axios.delete(
+            `${environment.hawkbitApiUrl}/rest/v1/${path}`,
+            {
+                headers: {
+                    Authorization: `Basic ${session.user.auth}`,
+                    Accept: 'application/json, application/hal+json',
+                },
+            }
+        );
+
+        return NextResponse.json(response.data);
+    } catch (error) {
+        return handleApiError(error);
+    }
+}
