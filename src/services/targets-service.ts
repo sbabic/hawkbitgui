@@ -1,6 +1,7 @@
 import { Target } from '@/entities';
 import axios from 'axios';
 import { environment } from '@/config/env';
+import axiosInstance from '@/lib/axios';
 
 interface Link {
     href: string;
@@ -65,15 +66,8 @@ export interface CreateTargetInput {
 export class TargetsService {
     static async fetchTargets(): Promise<Target[]> {
         try {
-            const response = await axios.get<GetTargetsResponse>(
-                `${environment.hawkbitApiUrl}/rest/v1/targets`,
-                {
-                    headers: {
-                        Authorization: `Basic ${Buffer.from(`admin:admin`).toString('base64')}`,
-                        Accept: 'application/json, application/hal+json',
-                    },
-                }
-            );
+            const response =
+                await axiosInstance.get<GetTargetsResponse>(`/targets`);
             return response.data.content;
         } catch (error) {
             console.error('Failed to fetch targets', error);
@@ -82,20 +76,8 @@ export class TargetsService {
     }
 
     static async createTarget(target: CreateTargetInput): Promise<Target> {
-        console.log('target', target);
-        console.log('environment.hawkbitApiUr', environment.hawkbitApiUrl);
-
         try {
-            const response = await axios.post(
-                `${environment.hawkbitApiUrl}/rest/v1/targets`,
-                [target],
-                {
-                    headers: {
-                        Authorization: `Basic ${Buffer.from(`admin:admin`).toString('base64')}`,
-                        Accept: 'application/json, application/hal+json',
-                    },
-                }
-            );
+            const response = await axiosInstance.post(`/targets`, [target]);
             return response.data[0];
         } catch (error) {
             console.error('Failed to create target', error);
