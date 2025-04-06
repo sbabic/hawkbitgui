@@ -1,6 +1,4 @@
 import { Target } from '@/entities';
-import axios from 'axios';
-import { environment } from '@/config/env';
 import axiosInstance from '@/lib/axios';
 
 interface Link {
@@ -87,14 +85,8 @@ export class TargetsService {
 
     static async deleteTarget(controllerId: string): Promise<Target> {
         try {
-            const response = await axios.delete(
-                `${environment.hawkbitApiUrl}/rest/v1/targets/${controllerId}`,
-                {
-                    headers: {
-                        Authorization: `Basic ${Buffer.from(`admin:admin`).toString('base64')}`,
-                        Accept: 'application/json, application/hal+json',
-                    },
-                }
+            const response = await axiosInstance.delete(
+                `/targets/${controllerId}`
             );
             return response.data;
         } catch (error) {
