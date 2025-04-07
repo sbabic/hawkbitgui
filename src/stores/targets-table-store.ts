@@ -5,6 +5,9 @@ import { TargetsService } from '@/services/targets-service';
 interface TargetsTableState {
     targets: Target[];
     isExpanded: boolean;
+    selectedTarget?: Target;
+    setSelectedTarget: (target: Target) => void;
+    resetSelectedTarget: () => void;
     setTargets: (targets: Target[]) => void;
     resetTargets: () => void;
     setIsExpanded: (isExpanded: boolean) => void;
@@ -14,6 +17,9 @@ interface TargetsTableState {
 export const useTargetsTableStore = create<TargetsTableState>((set) => ({
     targets: [],
     isExpanded: false,
+    selectedTarget: undefined,
+    setSelectedTarget: (target) => set({ selectedTarget: target }),
+    resetSelectedTarget: () => set({ selectedTarget: undefined }),
     setTargets: (targets) => set({ targets }),
     resetTargets: () => set({ targets: [] }),
     setIsExpanded: (isExpanded) => set({ isExpanded }),

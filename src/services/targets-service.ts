@@ -1,65 +1,11 @@
 import { Target } from '@/entities';
 import axiosInstance from '@/lib/axios';
-
-interface Link {
-    href: string;
-    hreflang?: string;
-    title?: string;
-    type?: string;
-    deprecation?: string;
-    profile?: string;
-    name?: string;
-    templated?: boolean;
-}
-
-export interface GetTargetsResponse {
-    content: Target[];
-    total: number;
-    size: number;
-    _links: {
-        [key: string]: Link;
-    };
-}
-
-export interface CreateTargetInput {
-    /**
-     * The name of the entity
-     */
-    name: string;
-
-    /**
-     * The description of the entity (optional)
-     */
-    description?: string;
-
-    /**
-     * Controller ID
-     */
-    controllerId: string;
-
-    /**
-     * The last known address URI of the target.
-     * Includes information if the target is connected either directly (DDI) through HTTP
-     * or indirectly (DMF) through amqp (optional)
-     */
-    address?: string;
-
-    /**
-     * Pre-Shared key that allows targets to authenticate at
-     * Direct Device Integration API if enabled in the tenant settings (optional)
-     */
-    securityToken?: string;
-
-    /**
-     * Request re-transmission of target attributes (optional)
-     */
-    requestAttributes?: boolean;
-
-    /**
-     * ID of the target type (optional)
-     */
-    targetType?: number;
-}
+import {
+    CreateTargetInput,
+    GetAttributesOutput,
+    GetAttributesResponse,
+    GetTargetsResponse,
+} from '@/services/targets-service.types';
 
 export class TargetsService {
     static async fetchTargets(): Promise<Target[]> {
@@ -91,6 +37,20 @@ export class TargetsService {
             return response.data;
         } catch (error) {
             console.error('Failed to delete target', error);
+            throw error;
+        }
+    }
+
+    static async getAttributes(
+        controllerId: string
+    ): Promise<GetAttributesOutput> {
+        try {
+            const response = await axiosInstance.get<GetAttributesResponse>(
+                `/targets/${controllerId}/attributes`
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Failed to getAttributes', error);
             throw error;
         }
     }

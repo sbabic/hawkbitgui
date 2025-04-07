@@ -10,8 +10,6 @@ import PinIcon from '@/app/components/icons/pin-icon';
 import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import dayjs from 'dayjs';
-import TargetInfo from '@/app/components/target-info-modal';
-import Modal from '@/app/components/modal';
 
 export type TargetTableProps = {
     expanded?: boolean;
@@ -20,8 +18,6 @@ export type TargetTableProps = {
     onEditClick?: (target: Target) => void;
     onDeleteClick?: (target: Target) => void;
     onPinClick?: (target: Target) => void;
-    isTargetInfoModalOpen: boolean;
-    onCloseTargetInfoModal: () => void;
 };
 
 export default function TargetTable({
@@ -31,8 +27,6 @@ export default function TargetTable({
     onEditClick,
     onDeleteClick,
     onPinClick,
-    isTargetInfoModalOpen,
-    onCloseTargetInfoModal,
 }: TargetTableProps) {
     const columnHelper = createColumnHelper<Target>();
 
@@ -209,12 +203,6 @@ export default function TargetTable({
                 columns={expanded ? fullColumns : shortColumns}
                 data={targets}
             />
-            <Modal
-                isOpen={isTargetInfoModalOpen}
-                onClose={onCloseTargetInfoModal}
-            >
-                <TargetInfo />
-            </Modal>
         </>
     );
 }

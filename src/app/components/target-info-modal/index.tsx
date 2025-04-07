@@ -1,17 +1,20 @@
 'use client';
 import CardWithSidebar from '@/app/components/card-with-sidebar';
-import TargetDetails from '@/app/components/target-info-modal/components/target-details';
-import TargetAttributes from '@/app/components/target-info-modal/components/target-attributes';
 import TargetAssigned from '@/app/components/target-info-modal/components/target-assigned';
 import TargetInstalled from '@/app/components/target-info-modal/components/target-installed';
 import TargetLogs from '@/app/components/target-info-modal/components/target-logs';
+import TargetDetailsContainer from '@/app/components/target-info-modal/containers/target-details-container';
+import TargetAttributesContainer from '@/app/components/target-info-modal/containers/target-attributes-container';
 
 export default function TargetInfo() {
     return (
         <CardWithSidebar
             content={[
-                { title: 'Details', component: <TargetDetails /> },
-                { title: 'Attributes', component: <TargetAttributes /> },
+                { title: 'Details', component: <TargetDetailsContainer /> },
+                {
+                    title: 'Attributes',
+                    component: <TargetAttributesContainer />,
+                },
                 { title: 'Assigned', component: <TargetAssigned /> },
                 { title: 'Installed', component: <TargetInstalled /> },
                 { title: 'Tags', component: <div>Tags</div> },
