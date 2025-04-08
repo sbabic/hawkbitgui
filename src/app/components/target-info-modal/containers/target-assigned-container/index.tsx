@@ -24,7 +24,7 @@ export default function TargetAssignedContainer() {
             setAssignedDistribution(attributes);
         };
 
-        fetchAssignedDistribution();
+        fetchAssignedDistribution().catch(console.error);
     }, [selectedTarget]);
 
     return (

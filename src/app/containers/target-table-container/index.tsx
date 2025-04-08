@@ -27,7 +27,7 @@ export default function TargetTableContainer(props: TargetTableProps) {
     };
 
     useEffect(() => {
-        fetchTargets();
+        fetchTargets().catch(console.error);
     }, [fetchTargets]);
 
     return (

@@ -23,7 +23,7 @@ export default function TargetAttributesContainer() {
             setTargetAttributes(attributes);
         };
 
-        fetchAttributes();
+        fetchAttributes().catch(console.error);
     }, [selectedTarget]);
 
     return <TargetAttributes attributes={targetAttributes} />;
