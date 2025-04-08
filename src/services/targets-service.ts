@@ -2,6 +2,8 @@ import { Target } from '@/entities';
 import axiosInstance from '@/lib/axios';
 import {
     CreateTargetInput,
+    GetAssignedDistributionOutput,
+    GetAssignedDistributionResponse,
     GetAttributesOutput,
     GetAttributesResponse,
     GetInstalledDistributionOutput,
@@ -68,6 +70,21 @@ export class TargetsService {
             return response.data;
         } catch (error) {
             console.error('Failed to get Installed Distribution', error);
+            throw error;
+        }
+    }
+
+    static async getAssignedDistribution(
+        controllerId: string
+    ): Promise<GetAssignedDistributionOutput> {
+        try {
+            const response =
+                await axiosInstance.get<GetAssignedDistributionResponse>(
+                    `/targets/${controllerId}/assignedDs`
+                );
+            return response.data;
+        } catch (error) {
+            console.error('Failed to get Assigned Distribution', error);
             throw error;
         }
     }

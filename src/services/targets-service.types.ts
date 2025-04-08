@@ -37,3 +37,7 @@ export type GetAttributesOutput = Record<string, string>;
 export type GetInstalledDistributionResponse = Distribution;
 
 export type GetInstalledDistributionOutput = Distribution;
+
+export type GetAssignedDistributionResponse = Distribution;
+
+export type GetAssignedDistributionOutput = Distribution;
