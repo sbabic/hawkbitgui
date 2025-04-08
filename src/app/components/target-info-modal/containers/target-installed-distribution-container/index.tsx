@@ -1,12 +1,12 @@
 'use client';
 
-import TargetInstalled from '@/app/components/target-info-modal/components/target-installed';
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { useEffect, useState } from 'react';
 import { TargetsService } from '@/services/targets-service';
 import { Distribution } from '@/entities';
+import TargetInstalledDistribution from '@/app/components/target-info-modal/components/target-installed-distribution';
 
-export default function TargetInstalledContainer() {
+export default function TargetInstalledDistributionContainer() {
     const selectedTarget = useTargetsTableStore(
         (state) => state.selectedTarget
     );
@@ -29,7 +29,7 @@ export default function TargetInstalledContainer() {
     }, [selectedTarget]);
 
     return (
-        <TargetInstalled
+        <TargetInstalledDistribution
             name={installedDistribution?.name}
             version={installedDistribution?.version}
             type={installedDistribution?.typeName}

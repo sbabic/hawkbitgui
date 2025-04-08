@@ -3,10 +3,10 @@
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { useEffect, useState } from 'react';
 import { TargetsService } from '@/services/targets-service';
-import TargetAssigned from '@/app/components/target-info-modal/components/target-assigned';
 import { Distribution } from '@/entities';
+import TargetAssignedDistribution from '@/app/components/target-info-modal/components/target-assigned-distribution';
 
-export default function TargetAssignedContainer() {
+export default function TargetAssignedDistributionContainer() {
     const selectedTarget = useTargetsTableStore(
         (state) => state.selectedTarget
     );
@@ -28,7 +28,7 @@ export default function TargetAssignedContainer() {
     }, [selectedTarget]);
 
     return (
-        <TargetAssigned
+        <TargetAssignedDistribution
             type={assignedDistribution?.typeName}
             version={assignedDistribution?.version}
             name={assignedDistribution?.name}

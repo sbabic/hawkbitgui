@@ -2,7 +2,7 @@
 
 import ListWithTitle from '@/app/components/list-with-title';
 
-export default function TargetInstalled({
+export default function TargetInstalledDistribution({
     name,
     version,
     type,

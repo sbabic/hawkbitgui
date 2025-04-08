@@ -2,7 +2,7 @@
 
 import ListWithTitle from '@/app/components/list-with-title';
 
-export default function TargetAssigned({
+export default function TargetAssignedDistribution({
     name,
     version,
     type,
