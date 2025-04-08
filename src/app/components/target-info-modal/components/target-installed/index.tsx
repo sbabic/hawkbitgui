@@ -5,16 +5,16 @@ import ListWithTitle from '@/app/components/list-with-title';
 export default function TargetInstalled({
     name,
     version,
-    os,
+    type,
 }: {
     name?: string;
     version?: string;
-    os?: string;
+    type?: string;
 }) {
     const items = [
         { title: 'Name', value: name },
         { title: 'Version', value: version },
-        { title: 'Os', value: os },
+        { title: 'Type', value: type },
     ];
     return <ListWithTitle title={'Installed'} items={items} />;
 }
