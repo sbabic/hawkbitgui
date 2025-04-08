@@ -1,8 +1,8 @@
 export interface Target {
-    createdBy: Date;
+    createdBy: string;
     createdAt: number;
     lastModifiedBy: string;
-    lastModifiedAt: Date;
+    lastModifiedAt: number;
     name: string;
     description: string;
     controllerId: string;

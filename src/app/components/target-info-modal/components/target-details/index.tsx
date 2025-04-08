@@ -8,12 +8,20 @@ export default function TargetDetails({
     address,
     securityToken,
     description,
+    createdAt,
+    createdBy,
+    lastModifiedAt,
+    lastModifiedBy,
 }: {
     controllerId?: string;
     lastPoll?: Date;
     address?: string;
     securityToken?: string;
     description?: string;
+    createdAt?: Date;
+    createdBy?: string;
+    lastModifiedAt?: Date;
+    lastModifiedBy?: string;
 }) {
     const items = [
         { title: 'Controller ID', value: controllerId },
@@ -21,6 +29,10 @@ export default function TargetDetails({
         { title: 'Address', value: address },
         { title: 'Security Token', value: securityToken },
         { title: 'Description', value: description },
+        { title: 'Created At', value: createdAt?.toLocaleString() },
+        { title: 'Created By', value: createdBy },
+        { title: 'Last Modified At', value: lastModifiedAt?.toLocaleString() },
+        { title: 'Last Modified By', value: lastModifiedBy },
     ];
 
     return <ListWithTitle title={'Details'} items={items} />;

@@ -13,6 +13,18 @@ export default function TargetDetailsContainer() {
             address={selectedTarget?.address}
             description={selectedTarget?.description}
             securityToken={selectedTarget?.securityToken}
+            createdAt={
+                selectedTarget?.createdAt
+                    ? new Date(selectedTarget.createdAt)
+                    : undefined
+            }
+            createdBy={selectedTarget?.createdBy}
+            lastModifiedAt={
+                selectedTarget?.lastModifiedAt
+                    ? new Date(selectedTarget.lastModifiedAt)
+                    : undefined
+            }
+            lastModifiedBy={selectedTarget?.lastModifiedBy}
         />
     );
 }
