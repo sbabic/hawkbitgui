@@ -4,6 +4,8 @@ import {
     CreateTargetInput,
     GetAttributesOutput,
     GetAttributesResponse,
+    GetInstalledDistributionOutput,
+    GetInstalledDistributionResponse,
     GetTargetsResponse,
 } from '@/services/targets-service.types';
 
@@ -50,7 +52,22 @@ export class TargetsService {
             );
             return response.data;
         } catch (error) {
-            console.error('Failed to getAttributes', error);
+            console.error('Failed to get Attributes', error);
+            throw error;
+        }
+    }
+
+    static async getInstalledDistribution(
+        controllerId: string
+    ): Promise<GetInstalledDistributionOutput> {
+        try {
+            const response =
+                await axiosInstance.get<GetInstalledDistributionResponse>(
+                    `/targets/${controllerId}/installedDs`
+                );
+            return response.data;
+        } catch (error) {
+            console.error('Failed to get Installed Distribution', error);
             throw error;
         }
     }
