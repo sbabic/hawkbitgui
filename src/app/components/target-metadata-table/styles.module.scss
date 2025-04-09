@@ -1,0 +1,8 @@
+@use 'src/app/styles/variables' as *;
+
+.actionButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
