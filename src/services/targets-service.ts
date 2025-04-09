@@ -92,4 +92,13 @@ export class TargetsService {
             throw error;
         }
     }
+
+    static async deleteMetadata(controllerId: string, key: string): Promise<void> {
+        try {
+            await axiosInstance.delete(`/targets/${controllerId}/metadata/${key}`);
+        } catch (error) {
+            console.error('Failed to delete Metadata', error);
+            throw error;
+        }
+    }
 }
