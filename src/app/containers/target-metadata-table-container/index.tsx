@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import TargetMetadataTable from '@/app/components/target-metadata-table';
 import { useTargetsMetadataTableStore } from '@/stores/targets-metadata-table-store';
 
-export default function TargetMetadataContainer() {
+export default function TargetMetadataTableContainer() {
     const selectedTarget = useTargetsTableStore(
         (state) => state.selectedTarget
     );

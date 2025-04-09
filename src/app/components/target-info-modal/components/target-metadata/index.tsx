@@ -1,20 +1,12 @@
 'use client';
 
-import ListWithTitle from '@/app/components/list-with-title';
+import styles from './styles.module.scss';
+import TargetMetadataTableContainer from '@/app/containers/target-metadata-table-container';
 
-export default function TargetMetadata({
-    name,
-    version,
-    type,
-}: {
-    name?: string;
-    version?: string;
-    type?: string;
-}) {
-    const items = [
-        { title: 'Name', value: name },
-        { title: 'Version', value: version },
-        { title: 'Type', value: type },
-    ];
-    return <ListWithTitle title={'Installed'} items={items} />;
+export default function TargetMetadata() {
+    return (
+        <div className={styles.container}>
+            <TargetMetadataTableContainer />
+        </div>
+    );
 }

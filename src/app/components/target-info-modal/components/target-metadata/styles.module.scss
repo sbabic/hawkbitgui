@@ -1,0 +1,7 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
