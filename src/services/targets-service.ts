@@ -8,6 +8,8 @@ import {
     GetAttributesResponse,
     GetInstalledDistributionOutput,
     GetInstalledDistributionResponse,
+    GetMetadataOutput,
+    GetMetadataResponse,
     GetTargetsResponse,
 } from '@/services/targets-service.types';
 
@@ -85,6 +87,18 @@ export class TargetsService {
             return response.data;
         } catch (error) {
             console.error('Failed to get Assigned Distribution', error);
+            throw error;
+        }
+    }
+
+    static async getMetadata(controllerId: string): Promise<GetMetadataOutput> {
+        try {
+            const response = await axiosInstance.get<GetMetadataResponse>(
+                `/targets/${controllerId}/metadata`
+            );
+            return response.data.content;
+        } catch (error) {
+            console.error('Failed to get Metadata', error);
             throw error;
         }
     }

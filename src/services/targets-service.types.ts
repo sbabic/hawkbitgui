@@ -1,4 +1,4 @@
-import { Distribution, Target } from '@/entities';
+import { Distribution, Metadata, Target } from '@/entities';
 
 interface Link {
     href: string;
@@ -11,6 +11,15 @@ interface Link {
     templated?: boolean;
 }
 
+export interface ApiResponse<T> {
+    content: T;
+    total: number;
+    size: number;
+    _links: {
+        [key: string]: Link;
+    };
+}
+
 export interface CreateTargetInput {
     name: string;
     description?: string;
@@ -21,14 +30,7 @@ export interface CreateTargetInput {
     targetType?: number;
 }
 
-export interface GetTargetsResponse {
-    content: Target[];
-    total: number;
-    size: number;
-    _links: {
-        [key: string]: Link;
-    };
-}
+export type GetTargetsResponse = ApiResponse<Target[]>;
 
 export type GetAttributesResponse = Record<string, string>;
 
@@ -41,3 +43,7 @@ export type GetInstalledDistributionOutput = Distribution;
 export type GetAssignedDistributionResponse = Distribution;
 
 export type GetAssignedDistributionOutput = Distribution;
+
+export type GetMetadataResponse = ApiResponse<Metadata[]>;
+
+export type GetMetadataOutput = Metadata[];

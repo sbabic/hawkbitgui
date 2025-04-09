@@ -7,11 +7,7 @@ import styles from '@/app/components/target-table/styles.module.scss';
 import IconButton from '@/app/components/icon-button';
 import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
-
-export interface Metadata {
-    key: string;
-    value: string;
-}
+import { Metadata } from '@/entities';
 
 export type TargetMetadataTableProps = {
     metadata?: Metadata[];
