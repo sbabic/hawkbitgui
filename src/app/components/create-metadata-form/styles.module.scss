@@ -1,0 +1,57 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 32px 42px;
+    width: 100vw;
+    max-width: 518px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .input {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .label {
+        font-size: 16px;
+        font-weight: 600;
+        color: $light-primary-text-color;
+    }
+
+    .textarea {
+        width: 100%;
+        max-width: 300px;
+        min-height: 80px;
+        resize: vertical;
+    }
+
+    .select {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+}

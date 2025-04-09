@@ -16,8 +16,7 @@ import {
 export class TargetsService {
     static async fetchTargets(): Promise<Target[]> {
         try {
-            const response =
-                await axiosInstance.get<GetTargetsResponse>(`/targets`);
+            const response = await axiosInstance.get<GetTargetsResponse>(`/targets`);
             return response.data.content;
         } catch (error) {
             console.error('Failed to fetch targets', error);
@@ -37,9 +36,7 @@ export class TargetsService {
 
     static async deleteTarget(controllerId: string): Promise<Target> {
         try {
-            const response = await axiosInstance.delete(
-                `/targets/${controllerId}`
-            );
+            const response = await axiosInstance.delete(`/targets/${controllerId}`);
             return response.data;
         } catch (error) {
             console.error('Failed to delete target', error);
@@ -47,13 +44,9 @@ export class TargetsService {
         }
     }
 
-    static async getAttributes(
-        controllerId: string
-    ): Promise<GetAttributesOutput> {
+    static async getAttributes(controllerId: string): Promise<GetAttributesOutput> {
         try {
-            const response = await axiosInstance.get<GetAttributesResponse>(
-                `/targets/${controllerId}/attributes`
-            );
+            const response = await axiosInstance.get<GetAttributesResponse>(`/targets/${controllerId}/attributes`);
             return response.data;
         } catch (error) {
             console.error('Failed to get Attributes', error);
@@ -61,14 +54,9 @@ export class TargetsService {
         }
     }
 
-    static async getInstalledDistribution(
-        controllerId: string
-    ): Promise<GetInstalledDistributionOutput> {
+    static async getInstalledDistribution(controllerId: string): Promise<GetInstalledDistributionOutput> {
         try {
-            const response =
-                await axiosInstance.get<GetInstalledDistributionResponse>(
-                    `/targets/${controllerId}/installedDs`
-                );
+            const response = await axiosInstance.get<GetInstalledDistributionResponse>(`/targets/${controllerId}/installedDs`);
             return response.data;
         } catch (error) {
             console.error('Failed to get Installed Distribution', error);
@@ -76,14 +64,9 @@ export class TargetsService {
         }
     }
 
-    static async getAssignedDistribution(
-        controllerId: string
-    ): Promise<GetAssignedDistributionOutput> {
+    static async getAssignedDistribution(controllerId: string): Promise<GetAssignedDistributionOutput> {
         try {
-            const response =
-                await axiosInstance.get<GetAssignedDistributionResponse>(
-                    `/targets/${controllerId}/assignedDs`
-                );
+            const response = await axiosInstance.get<GetAssignedDistributionResponse>(`/targets/${controllerId}/assignedDs`);
             return response.data;
         } catch (error) {
             console.error('Failed to get Assigned Distribution', error);
@@ -93,12 +76,19 @@ export class TargetsService {
 
     static async getMetadata(controllerId: string): Promise<GetMetadataOutput> {
         try {
-            const response = await axiosInstance.get<GetMetadataResponse>(
-                `/targets/${controllerId}/metadata`
-            );
+            const response = await axiosInstance.get<GetMetadataResponse>(`/targets/${controllerId}/metadata`);
             return response.data.content;
         } catch (error) {
             console.error('Failed to get Metadata', error);
+            throw error;
+        }
+    }
+
+    static async createMetadata(controllerId: string, metadata: { key: string; value: string }): Promise<void> {
+        try {
+            await axiosInstance.post(`/targets/${controllerId}/metadata`, [metadata]);
+        } catch (error) {
+            console.error('Failed to create Metadata', error);
             throw error;
         }
     }
