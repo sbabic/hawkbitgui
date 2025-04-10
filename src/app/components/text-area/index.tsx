@@ -6,11 +6,7 @@ interface InputProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     error?: string;
 }
 
-export default function TextArea({
-    error,
-    className,
-    ...inputProps
-}: InputProps) {
+export default function TextArea({ error, className, ...inputProps }: InputProps) {
     return (
         <div className={`${styles.container} ${className}`}>
             <textarea className={styles.textArea} {...inputProps} />

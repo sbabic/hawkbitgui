@@ -9,9 +9,7 @@ export type LoginFormContainerProps = {
     className?: string;
 };
 
-export default function LoginFormContainer({
-    className,
-}: LoginFormContainerProps) {
+export default function LoginFormContainer({ className }: LoginFormContainerProps) {
     const router = useRouter();
 
     const onSubmit = async (data: { username: string; password: string }) => {

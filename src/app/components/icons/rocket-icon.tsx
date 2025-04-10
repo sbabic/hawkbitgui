@@ -4,34 +4,11 @@ import React from 'react';
 
 type RocketIconProps = React.SVGProps<SVGSVGElement>;
 
-export default function RocketIcon({
-    width = 24,
-    height = 24,
-    ...props
-}: RocketIconProps) {
+export default function RocketIcon({ width = 24, height = 24, ...props }: RocketIconProps) {
     return (
-        <svg
-            width={width}
-            height={height}
-            viewBox='0 0 24 24'
-            fill='currentColor'
-            xmlns='http://www.w3.org/2000/svg'
-            {...props}
-        >
-            <mask
-                id='mask0_364_547'
-                maskUnits='userSpaceOnUse'
-                x='0'
-                y='0'
-                width='24'
-                height='24'
-            >
-                <rect
-                    y='6.10352e-05'
-                    width='24'
-                    height='24'
-                    fill='currentColor'
-                />
+        <svg width={width} height={height} viewBox='0 0 24 24' fill='currentColor' xmlns='http://www.w3.org/2000/svg' {...props}>
+            <mask id='mask0_364_547' maskUnits='userSpaceOnUse' x='0' y='0' width='24' height='24'>
+                <rect y='6.10352e-05' width='24' height='24' fill='currentColor' />
             </mask>
             <g mask='url(#mask0_364_547)'>
                 <path

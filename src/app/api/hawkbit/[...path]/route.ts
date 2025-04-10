@@ -35,10 +35,7 @@ const handleApiError = (error: unknown) => {
     );
 };
 
-export async function GET(
-    request: NextRequest,
-    context: { params: Promise<{ path: string[] }> }
-) {
+export async function GET(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
     const { params } = context;
     const session = await getServerSession(authOptions);
 
@@ -56,15 +53,12 @@ export async function GET(
 
     try {
         const path = (await params).path.join('/');
-        const response = await axios.get(
-            `${environment.hawkbitApiUrl}/rest/v1/${path}`,
-            {
-                headers: {
-                    Authorization: `Basic ${session.user.auth}`,
-                    Accept: 'application/json, application/hal+json',
-                },
-            }
-        );
+        const response = await axios.get(`${environment.hawkbitApiUrl}/rest/v1/${path}`, {
+            headers: {
+                Authorization: `Basic ${session.user.auth}`,
+                Accept: 'application/json, application/hal+json',
+            },
+        });
 
         return NextResponse.json(response.data);
     } catch (error) {
@@ -72,10 +66,7 @@ export async function GET(
     }
 }
 
-export async function POST(
-    request: NextRequest,
-    context: { params: Promise<{ path: string[] }> }
-) {
+export async function POST(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
     const { params } = context;
     const session = await getServerSession(authOptions);
 
@@ -95,17 +86,13 @@ export async function POST(
         const path = (await params).path.join('/');
         const body = await request.json();
 
-        const response = await axios.post(
-            `${environment.hawkbitApiUrl}/rest/v1/${path}`,
-            body,
-            {
-                headers: {
-                    Authorization: `Basic ${session.user.auth}`,
-                    Accept: 'application/json, application/hal+json',
-                    'Content-Type': 'application/json',
-                },
-            }
-        );
+        const response = await axios.post(`${environment.hawkbitApiUrl}/rest/v1/${path}`, body, {
+            headers: {
+                Authorization: `Basic ${session.user.auth}`,
+                Accept: 'application/json, application/hal+json',
+                'Content-Type': 'application/json',
+            },
+        });
 
         return NextResponse.json(response.data);
     } catch (error) {
@@ -113,10 +100,7 @@ export async function POST(
     }
 }
 
-export async function DELETE(
-    request: NextRequest,
-    context: { params: Promise<{ path: string[] }> }
-) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
     const { params } = context;
     const session = await getServerSession(authOptions);
 
@@ -134,15 +118,12 @@ export async function DELETE(
 
     try {
         const path = (await params).path.join('/');
-        const response = await axios.delete(
-            `${environment.hawkbitApiUrl}/rest/v1/${path}`,
-            {
-                headers: {
-                    Authorization: `Basic ${session.user.auth}`,
-                    Accept: 'application/json, application/hal+json',
-                },
-            }
-        );
+        const response = await axios.delete(`${environment.hawkbitApiUrl}/rest/v1/${path}`, {
+            headers: {
+                Authorization: `Basic ${session.user.auth}`,
+                Accept: 'application/json, application/hal+json',
+            },
+        });
 
         return NextResponse.json(response.data);
     } catch (error) {

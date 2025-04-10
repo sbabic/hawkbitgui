@@ -23,10 +23,7 @@ export default function Button({
         }
     };
     return (
-        <button
-            className={`${styles.button} ${getStyleByColor(color)} ${className}`}
-            onClick={onClick}
-        >
+        <button className={`${styles.button} ${getStyleByColor(color)} ${className}`} onClick={onClick}>
             {children}
         </button>
     );

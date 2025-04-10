@@ -4,28 +4,10 @@ import React from 'react';
 
 type LogoutIconProps = React.SVGProps<SVGSVGElement>;
 
-export default function LogoutIcon({
-    width = 24,
-    height = 24,
-    ...props
-}: LogoutIconProps) {
+export default function LogoutIcon({ width = 24, height = 24, ...props }: LogoutIconProps) {
     return (
-        <svg
-            width={width}
-            height={height}
-            viewBox='0 0 24 24'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-            {...props}
-        >
-            <mask
-                id='mask0_364_594'
-                maskUnits='userSpaceOnUse'
-                x='0'
-                y='0'
-                width='24'
-                height='24'
-            >
+        <svg width={width} height={height} viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
+            <mask id='mask0_364_594' maskUnits='userSpaceOnUse' x='0' y='0' width='24' height='24'>
                 <rect width='24' height='24' fill='currentColor' />
             </mask>
             <g mask='url(#mask0_364_594)'>

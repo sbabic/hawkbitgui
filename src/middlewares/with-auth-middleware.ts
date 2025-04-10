@@ -17,10 +17,7 @@ export function withAuthMiddleware(middleware: CustomMiddleware) {
         request.nextauth.token = token;
         const pathname = request.nextUrl.pathname;
 
-        if (
-            !token &&
-            protectedPaths.some((path) => pathname.startsWith(path))
-        ) {
+        if (!token && protectedPaths.some((path) => pathname.startsWith(path))) {
             const signInUrl = new URL(AppRoutes.login, request.url);
             signInUrl.searchParams.set('callbackUrl', pathname);
             return NextResponse.redirect(signInUrl);

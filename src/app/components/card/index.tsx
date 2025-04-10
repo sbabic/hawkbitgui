@@ -4,13 +4,7 @@ import { motion } from 'framer-motion';
 import styles from './styles.module.scss';
 import { useEffect, useRef, useState } from 'react';
 
-export default function Card({
-    children,
-    expanded = false,
-}: {
-    children?: React.ReactNode;
-    expanded?: boolean;
-}) {
+export default function Card({ children, expanded = false }: { children?: React.ReactNode; expanded?: boolean }) {
     const [parentWidth, setParentWidth] = useState(300); // Default width
     const [parentHeight, setParentHeight] = useState(200); // Default height
     const cardRef = useRef<HTMLDivElement | null>(null);
@@ -28,13 +22,11 @@ export default function Card({
             const paddingBottom = parseFloat(computedStyle.paddingBottom);
 
             // Calculate inner width excluding padding
-            const widthWithoutPadding =
-                parentElement.clientWidth - (paddingLeft + paddingRight);
+            const widthWithoutPadding = parentElement.clientWidth - (paddingLeft + paddingRight);
             setParentWidth(widthWithoutPadding);
 
             // Calculate inner height excluding padding
-            const heightWithoutPadding =
-                parentElement.clientHeight - (paddingTop + paddingBottom);
+            const heightWithoutPadding = parentElement.clientHeight - (paddingTop + paddingBottom);
             setParentHeight(heightWithoutPadding);
         };
 

@@ -14,13 +14,7 @@ interface FormData {
     description: string;
 }
 
-export default function CreateTargetForm({
-    onSubmit,
-    onCancel,
-}: {
-    onSubmit: (data: FormData) => void;
-    onCancel?: () => void;
-}) {
+export default function CreateTargetForm({ onSubmit, onCancel }: { onSubmit: (data: FormData) => void; onCancel?: () => void }) {
     const {
         register,
         handleSubmit,
@@ -55,11 +49,7 @@ export default function CreateTargetForm({
 
                 <div className={styles.inputContainer}>
                     <label className={styles.label}>Type</label>
-                    <Select
-                        {...register('type', { required: true })}
-                        className={styles.select}
-                        error={errors.type && 'This field is required'}
-                    >
+                    <Select {...register('type', { required: true })} className={styles.select} error={errors.type && 'This field is required'}>
                         <option value=''>Choose a type</option>
                         <option value='type1'>Type 1</option>
                         <option value='type2'>Type 2</option>
@@ -67,11 +57,7 @@ export default function CreateTargetForm({
                 </div>
                 <div className={styles.inputContainer}>
                     <label className={styles.label}>Description</label>
-                    <TextArea
-                        placeholder='Add additional details'
-                        {...register('description')}
-                        className={styles.textarea}
-                    />
+                    <TextArea placeholder='Add additional details' {...register('description')} className={styles.textarea} />
                 </div>
 
                 <div className={styles.buttonContainer}>

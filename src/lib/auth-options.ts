@@ -13,16 +13,13 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 try {
-                    const response = await axios.get(
-                        `${environment.hawkbitApiUrl}/rest/v1/userinfo`,
-                        {
-                            headers: {
-                                Authorization: `Basic ${Buffer.from(`${credentials?.username}:${credentials?.password}`).toString('base64')}`,
-                                Accept: 'application/json, application/hal+json',
-                                'X-Requested-With': 'XMLHttpRequest',
-                            },
-                        }
-                    );
+                    const response = await axios.get(`${environment.hawkbitApiUrl}/rest/v1/userinfo`, {
+                        headers: {
+                            Authorization: `Basic ${Buffer.from(`${credentials?.username}:${credentials?.password}`).toString('base64')}`,
+                            Accept: 'application/json, application/hal+json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                        },
+                    });
 
                     if (!response.data) {
                         return null;

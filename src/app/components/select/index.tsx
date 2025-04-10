@@ -6,11 +6,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     error?: string;
 }
 
-export default function Select({
-    error,
-    className,
-    ...selectProps
-}: SelectProps) {
+export default function Select({ error, className, ...selectProps }: SelectProps) {
     return (
         <div className={`${styles.container} ${className}`}>
             <select className={styles.select} {...selectProps}>

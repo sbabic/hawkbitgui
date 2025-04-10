@@ -10,10 +10,7 @@ interface UserCredentials {
     password: string;
 }
 
-const fetchUserInfo = async ({
-    username,
-    password,
-}: UserCredentials): Promise<UserInfoResponse> => {
+const fetchUserInfo = async ({ username, password }: UserCredentials): Promise<UserInfoResponse> => {
     try {
         const response = await axios.get<UserInfoResponse>('/api/auth', {
             headers: {
@@ -26,9 +23,7 @@ const fetchUserInfo = async ({
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<{ error: string }>;
             if (axiosError.response?.status === 401) {
-                throw new Error(
-                    axiosError.response.data.error || 'Invalid credentials'
-                );
+                throw new Error(axiosError.response.data.error || 'Invalid credentials');
             }
             if (axiosError.response?.status === 403) {
                 throw new Error(axiosError.response.data.error || 'Forbidden');
@@ -39,10 +34,7 @@ const fetchUserInfo = async ({
 };
 
 export const useValidateBasicAuth = () => {
-    const validateCredentials = async ({
-        username,
-        password,
-    }: UserCredentials) => {
+    const validateCredentials = async ({ username, password }: UserCredentials) => {
         try {
             const response = await fetchUserInfo({ username, password });
             return response;

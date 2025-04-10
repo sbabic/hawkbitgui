@@ -28,12 +28,7 @@ export default function CardWithSidebar({
                     ))}
                 </div>
             </div>
-            <div className={styles.content}>
-                {
-                    content.find((item) => item.title === selectedTitle)
-                        ?.component
-                }
-            </div>
+            <div className={styles.content}>{content.find((item) => item.title === selectedTitle)?.component}</div>
         </div>
     );
 }

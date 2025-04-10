@@ -13,7 +13,7 @@ export interface TargetTableProps {
 }
 
 export default function TargetTableContainer(props: TargetTableProps) {
-    const targets = useTargetsTableStore((state) => state.targets);
+    const filteredTargets = useTargetsTableStore((state) => state.filteredTargets);
     const isExpanded = useTargetsTableStore((state) => state.isExpanded);
     const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
     const targetsTableStore = useTargetsTableStore();
@@ -33,7 +33,7 @@ export default function TargetTableContainer(props: TargetTableProps) {
     return (
         <>
             <TargetTable
-                targets={targets.map((target) => ({
+                targets={filteredTargets.map((target) => ({
                     ...target,
                     status: 'Error',
                 }))}
@@ -45,10 +45,7 @@ export default function TargetTableContainer(props: TargetTableProps) {
                 onDeleteClick={handleDeleteClick}
                 onEditClick={props.onEditClick}
             />
-            <Modal
-                isOpen={isTargetInfoModalOpen}
-                onClose={() => setIsTargetInfoModalOpen(false)}
-            >
+            <Modal isOpen={isTargetInfoModalOpen} onClose={() => setIsTargetInfoModalOpen(false)}>
                 <TargetInfo />
             </Modal>
         </>

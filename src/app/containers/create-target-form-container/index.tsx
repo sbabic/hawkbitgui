@@ -9,17 +9,9 @@ export interface CreateTargetFormContainerProps {
     onCancel?: () => void;
 }
 
-export default function CreateTargetFormContainer({
-    onSubmitSuccess,
-    onCancel,
-}: CreateTargetFormContainerProps) {
+export default function CreateTargetFormContainer({ onSubmitSuccess, onCancel }: CreateTargetFormContainerProps) {
     const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
-    const handleSubmit = async (data: {
-        controllerId: string;
-        name: string;
-        type: string;
-        description: string;
-    }) => {
+    const handleSubmit = async (data: { controllerId: string; name: string; type: string; description: string }) => {
         console.log('Form submitted:', data);
         await TargetsService.createTarget({ ...data });
         await fetchTargets();

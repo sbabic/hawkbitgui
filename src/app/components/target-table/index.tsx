@@ -20,14 +20,7 @@ export type TargetTableProps = {
     onPinClick?: (target: Target) => void;
 };
 
-export default function TargetTable({
-    expanded,
-    onTargetNameClick,
-    targets = [],
-    onEditClick,
-    onDeleteClick,
-    onPinClick,
-}: TargetTableProps) {
+export default function TargetTable({ expanded, onTargetNameClick, targets = [], onEditClick, onDeleteClick, onPinClick }: TargetTableProps) {
     const columnHelper = createColumnHelper<Target>();
 
     const statusAccessor = useMemo(() => {
@@ -58,9 +51,7 @@ export default function TargetTable({
                 return (
                     <div className={styles.statusCell}>
                         <div className={styles.status}>
-                            <span
-                                className={`${styles.statusIndicator} ${statusClass}`}
-                            />
+                            <span className={`${styles.statusIndicator} ${statusClass}`} />
                             {status}
                         </div>
                     </div>
@@ -74,10 +65,7 @@ export default function TargetTable({
             columnHelper.accessor('name', {
                 header: 'Name',
                 cell: (info) => (
-                    <button
-                        className={styles.linkButton}
-                        onClick={() => onTargetNameClick?.(info.row.original)}
-                    >
+                    <button className={styles.linkButton} onClick={() => onTargetNameClick?.(info.row.original)}>
                         {info.getValue()}
                     </button>
                 ),
@@ -88,49 +76,27 @@ export default function TargetTable({
                 header: 'Actions',
                 cell: (info) => (
                     <div className={styles.actionButtons}>
-                        <IconButton
-                            height={'30px'}
-                            width={'30px'}
-                            onClick={() => onPinClick?.(info.row.original)}
-                        >
+                        <IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>
                             <PinIcon />
                         </IconButton>
-                        <IconButton
-                            height={'30px'}
-                            width={'30px'}
-                            onClick={() => onEditClick?.(info.row.original)}
-                        >
+                        <IconButton height={'30px'} width={'30px'} onClick={() => onEditClick?.(info.row.original)}>
                             <EditIcon />
                         </IconButton>
-                        <IconButton
-                            height={'30px'}
-                            width={'30px'}
-                            onClick={() => onDeleteClick?.(info.row.original)}
-                        >
+                        <IconButton height={'30px'} width={'30px'} onClick={() => onDeleteClick?.(info.row.original)}>
                             <TrashIcon />
                         </IconButton>
                     </div>
                 ),
             }),
         ];
-    }, [
-        columnHelper,
-        onDeleteClick,
-        onEditClick,
-        onPinClick,
-        onTargetNameClick,
-        statusAccessor,
-    ]);
+    }, [columnHelper, onDeleteClick, onEditClick, onPinClick, onTargetNameClick, statusAccessor]);
 
     const fullColumns = useMemo(() => {
         return [
             columnHelper.accessor('name', {
                 header: 'Name',
                 cell: (info) => (
-                    <button
-                        className={styles.linkButton}
-                        onClick={() => onTargetNameClick?.(info.row.original)}
-                    >
+                    <button className={styles.linkButton} onClick={() => onTargetNameClick?.(info.row.original)}>
                         {info.getValue()}
                     </button>
                 ),
@@ -141,8 +107,7 @@ export default function TargetTable({
             }),
             columnHelper.accessor('createdAt', {
                 header: 'Created Date',
-                cell: (info) =>
-                    dayjs(info.getValue()).format('YYYY-MM-DD HH:mm:ss'),
+                cell: (info) => dayjs(info.getValue()).format('YYYY-MM-DD HH:mm:ss'),
             }),
             columnHelper.accessor('createdBy', {
                 header: 'Created By',
@@ -150,8 +115,7 @@ export default function TargetTable({
             }),
             columnHelper.accessor('lastModifiedAt', {
                 header: 'Modified Date',
-                cell: (info) =>
-                    dayjs(info.getValue()).format('YYYY-MM-DD HH:mm:ss'),
+                cell: (info) => dayjs(info.getValue()).format('YYYY-MM-DD HH:mm:ss'),
             }),
             columnHelper.accessor('lastModifiedBy', {
                 header: 'Modified By',
@@ -163,46 +127,24 @@ export default function TargetTable({
                 header: 'Actions',
                 cell: (info) => (
                     <div className={styles.actionButtons}>
-                        <IconButton
-                            height={'30px'}
-                            width={'30px'}
-                            onClick={() => onPinClick?.(info.row.original)}
-                        >
+                        <IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>
                             <PinIcon />
                         </IconButton>
-                        <IconButton
-                            height={'30px'}
-                            width={'30px'}
-                            onClick={() => onEditClick?.(info.row.original)}
-                        >
+                        <IconButton height={'30px'} width={'30px'} onClick={() => onEditClick?.(info.row.original)}>
                             <EditIcon />
                         </IconButton>
-                        <IconButton
-                            height={'30px'}
-                            width={'30px'}
-                            onClick={() => onDeleteClick?.(info.row.original)}
-                        >
+                        <IconButton height={'30px'} width={'30px'} onClick={() => onDeleteClick?.(info.row.original)}>
                             <TrashIcon />
                         </IconButton>
                     </div>
                 ),
             }),
         ];
-    }, [
-        columnHelper,
-        onDeleteClick,
-        onEditClick,
-        onPinClick,
-        onTargetNameClick,
-        statusAccessor,
-    ]);
+    }, [columnHelper, onDeleteClick, onEditClick, onPinClick, onTargetNameClick, statusAccessor]);
 
     return (
         <>
-            <Table
-                columns={expanded ? fullColumns : shortColumns}
-                data={targets}
-            />
+            <Table columns={expanded ? fullColumns : shortColumns} data={targets} />
         </>
     );
 }

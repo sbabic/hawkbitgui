@@ -9,8 +9,7 @@ export default function TargetsCardContainer() {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const [isCreateTargetFormOpen, setIsCreateTargetFormOpen] = useState(false);
-    const [isTargetFiltersModalOpen, setIsTargetFiltersModalOpen] =
-        useState(false);
+    const [isTargetFiltersModalOpen, setIsTargetFiltersModalOpen] = useState(false);
 
     const handleExpand = () => {
         setIsExpanded((prev) => !prev);

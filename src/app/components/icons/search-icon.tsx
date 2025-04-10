@@ -4,26 +4,10 @@ import React from 'react';
 
 type ClickIconProps = React.SVGProps<SVGSVGElement>;
 
-export default function SearchIcon({
-    width = 24,
-    height = 24,
-    ...props
-}: ClickIconProps) {
+export default function SearchIcon({ width = 24, height = 24, ...props }: ClickIconProps) {
     return (
-        <svg
-            width={width}
-            height={height}
-            viewBox='0 0 20 21'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-            {...props}
-        >
-            <rect
-                width='20'
-                height='20'
-                transform='translate(0 0.723633)'
-                fill='transparent'
-            />
+        <svg width={width} height={height} viewBox='0 0 20 21' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
+            <rect width='20' height='20' transform='translate(0 0.723633)' fill='transparent' />
             <path
                 d='M18.1249 17.9648L13.4048 13.2448C14.539 11.8831 15.1046 10.1366 14.9839 8.36861C14.8632 6.60058 14.0655 4.94715 12.7568 3.75227C11.4481 2.55739 9.7291 1.91306 7.95741 1.95332C6.18572 1.99358 4.49776 2.71533 3.24467 3.96842C1.99157 5.22152 1.26982 6.90948 1.22956 8.68116C1.1893 10.4529 1.83363 12.1719 3.02851 13.4806C4.22339 14.7893 5.87682 15.587 7.64485 15.7077C9.41288 15.8284 11.1594 15.2628 12.521 14.1286L17.2411 18.8487L18.1249 17.9648ZM2.4999 8.84866C2.4999 7.73614 2.8298 6.6486 3.44789 5.72358C4.06597 4.79855 4.94448 4.07758 5.97231 3.65184C7.00014 3.22609 8.13114 3.1147 9.22229 3.33174C10.3134 3.54878 11.3157 4.08451 12.1024 4.87118C12.8891 5.65785 13.4248 6.66013 13.6418 7.75128C13.8589 8.84242 13.7475 9.97342 13.3217 11.0013C12.896 12.0291 12.175 12.9076 11.25 13.5257C10.325 14.1438 9.23742 14.4737 8.1249 14.4737C6.63357 14.472 5.20379 13.8788 4.14926 12.8243C3.09472 11.7698 2.50156 10.34 2.4999 8.84866Z'
                 fill='currentColor'

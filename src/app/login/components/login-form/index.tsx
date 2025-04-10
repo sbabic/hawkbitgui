@@ -24,9 +24,7 @@ export default function LoginForm({ className, onSubmit }: LoginFormProps) {
         <div className={`${styles.container} ${className}`}>
             <div className={styles.card}>
                 <h2 className={styles.title}>Login to Account</h2>
-                <p className={styles.subtitle}>
-                    Please enter your username and password to continue
-                </p>
+                <p className={styles.subtitle}>Please enter your username and password to continue</p>
                 <div style={{ height: 40 }}></div>
                 <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
                     <div className={styles['input-group']}>
@@ -37,11 +35,7 @@ export default function LoginForm({ className, onSubmit }: LoginFormProps) {
                                 required: 'Username is required',
                             })}
                         />
-                        {errors.username && (
-                            <p className={styles.error}>
-                                {errors.username.message}
-                            </p>
-                        )}
+                        {errors.username && <p className={styles.error}>{errors.username.message}</p>}
                     </div>
                     <div style={{ height: 40 }}></div>
 
@@ -53,18 +47,10 @@ export default function LoginForm({ className, onSubmit }: LoginFormProps) {
                                 required: 'Password is required',
                             })}
                         />
-                        {errors.password && (
-                            <p className={styles.error}>
-                                {errors.password.message}
-                            </p>
-                        )}
+                        {errors.password && <p className={styles.error}>{errors.password.message}</p>}
                     </div>
                     <div style={{ height: 40 }}></div>
-                    <button
-                        type='submit'
-                        className={styles.button}
-                        disabled={isSubmitting}
-                    >
+                    <button type='submit' className={styles.button} disabled={isSubmitting}>
                         Sign In
                     </button>
                 </form>

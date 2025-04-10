@@ -4,26 +4,10 @@ import React from 'react';
 
 type ClickIconProps = React.SVGProps<SVGSVGElement>;
 
-export default function FilterIcon({
-    width = 24,
-    height = 24,
-    ...props
-}: ClickIconProps) {
+export default function FilterIcon({ width = 24, height = 24, ...props }: ClickIconProps) {
     return (
-        <svg
-            width={width}
-            height={height}
-            viewBox='0 0 24 25'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-            {...props}
-        >
-            <rect
-                width='24'
-                height='24'
-                transform='translate(0 0.723694)'
-                fill='transparent'
-            />
+        <svg width={width} height={height} viewBox='0 0 24 25' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
+            <rect width='24' height='24' transform='translate(0 0.723694)' fill='transparent' />
             <path
                 d='M19.5 5.22369H3V7.60119L8.5575 13.1662L9 13.6012V20.2237H12V18.7237H13.5V20.2237C13.5 20.6215 13.342 21.003 13.0607 21.2844C12.7794 21.5657 12.3978 21.7237 12 21.7237H9C8.60218 21.7237 8.22064 21.5657 7.93934 21.2844C7.65804 21.003 7.5 20.6215 7.5 20.2237V14.2237L1.9425 8.66619C1.80212 8.52665 1.69075 8.3607 1.61481 8.17792C1.53886 7.99514 1.49984 7.79913 1.5 7.60119V5.22369C1.5 4.82587 1.65804 4.44434 1.93934 4.16303C2.22064 3.88173 2.60218 3.72369 3 3.72369H19.5V5.22369Z'
                 fill='currentColor'

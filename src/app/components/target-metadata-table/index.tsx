@@ -15,11 +15,7 @@ export type TargetMetadataTableProps = {
     onDeleteClick?: (metadata: Metadata) => void;
 };
 
-export default function TargetMetadataTable({
-    metadata = [],
-    onEditClick,
-    onDeleteClick,
-}: TargetMetadataTableProps) {
+export default function TargetMetadataTable({ metadata = [], onEditClick, onDeleteClick }: TargetMetadataTableProps) {
     const columnHelper = createColumnHelper<{
         key: string;
         value: string;
@@ -40,18 +36,10 @@ export default function TargetMetadataTable({
                 header: 'Actions',
                 cell: (info) => (
                     <div className={styles.actionButtons}>
-                        <IconButton
-                            height={'30px'}
-                            width={'30px'}
-                            onClick={() => onEditClick?.(info.row.original)}
-                        >
+                        <IconButton height={'30px'} width={'30px'} onClick={() => onEditClick?.(info.row.original)}>
                             <EditIcon />
                         </IconButton>
-                        <IconButton
-                            height={'30px'}
-                            width={'30px'}
-                            onClick={() => onDeleteClick?.(info.row.original)}
-                        >
+                        <IconButton height={'30px'} width={'30px'} onClick={() => onDeleteClick?.(info.row.original)}>
                             <TrashIcon />
                         </IconButton>
                     </div>

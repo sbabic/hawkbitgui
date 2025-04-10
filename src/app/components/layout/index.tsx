@@ -31,48 +31,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <div className={styles.layout}>
             {/* Sidebar */}
-            <aside
-                className={`${styles.sidebar} ${sidebarOpen ? '' : styles.collapsed}`}
-            >
+            <aside className={`${styles.sidebar} ${sidebarOpen ? '' : styles.collapsed}`}>
                 <div className={styles.sidebarHeader}>
                     <a className={styles.brand}>
-                        <Image
-                            width={93}
-                            height={42}
-                            src={'/images/hawkbit-logo.svg'}
-                            alt={'Hawkbit logo'}
-                        />
+                        <Image width={93} height={42} src={'/images/hawkbit-logo.svg'} alt={'Hawkbit logo'} />
                     </a>
                 </div>
 
                 <nav className={styles.nav}>
                     {navItems.map((item, i) => (
-                        <NavItem
-                            href={item.href}
-                            key={i}
-                            icon={item.icon}
-                            expanded={sidebarOpen}
-                            label={item.label}
-                            isActive={item.href === pathname}
-                        />
+                        <NavItem href={item.href} key={i} icon={item.icon} expanded={sidebarOpen} label={item.label} isActive={item.href === pathname} />
                     ))}
                 </nav>
 
                 <div className={styles.logout}>
-                    <NavItem
-                        href='/logout'
-                        label='Logout'
-                        icon={LogoutIcon}
-                        expanded={sidebarOpen}
-                        onClick={signOut}
-                    />
+                    <NavItem href='/logout' label='Logout' icon={LogoutIcon} expanded={sidebarOpen} onClick={signOut} />
                 </div>
             </aside>
 
             {/* Main Content */}
-            <div
-                className={`${styles.main} ${sidebarOpen ? '' : styles.expanded}`}
-            >
+            <div className={`${styles.main} ${sidebarOpen ? '' : styles.expanded}`}>
                 {/* Header */}
                 <header className={styles.header}>
                     <div className={styles.searchBar}>
@@ -108,10 +86,7 @@ function NavItem({
 }) {
     if (onClick) {
         return (
-            <button
-                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-                onClick={onClick}
-            >
+            <button className={`${styles.navItem} ${isActive ? styles.active : ''}`} onClick={onClick}>
                 <Icon />
                 {expanded && <span className={styles.label}>{label}</span>}
             </button>
@@ -119,10 +94,7 @@ function NavItem({
     }
 
     return (
-        <Link
-            href={href}
-            className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-        >
+        <Link href={href} className={`${styles.navItem} ${isActive ? styles.active : ''}`}>
             <Icon />
             {expanded && <span className={styles.label}>{label}</span>}
         </Link>

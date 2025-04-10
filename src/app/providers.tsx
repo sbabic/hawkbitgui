@@ -13,13 +13,7 @@ const queryClient = new QueryClient({
     },
 });
 
-export default function Providers({
-    children,
-    session,
-}: {
-    children: ReactNode;
-    session: Session | null;
-}) {
+export default function Providers({ children, session }: { children: ReactNode; session: Session | null }) {
     return (
         <QueryClientProvider client={queryClient}>
             <SessionProvider session={session}>{children}</SessionProvider>

@@ -2,15 +2,7 @@
 
 import ListWithTitle from '@/app/components/list-with-title';
 
-export default function TargetAssignedDistribution({
-    name,
-    version,
-    type,
-}: {
-    name?: string;
-    version?: string;
-    type?: string;
-}) {
+export default function TargetAssignedDistribution({ name, version, type }: { name?: string; version?: string; type?: string }) {
     const items = [
         { title: 'Name', value: name },
         { title: 'Version', value: version },

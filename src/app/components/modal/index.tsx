@@ -5,15 +5,7 @@ import { createPortal } from 'react-dom';
 import IconButton from '@/app/components/icon-button';
 import XIcon from '@/app/components/icons/x-icon';
 
-export default function Modal({
-    isOpen,
-    onClose,
-    children,
-}: {
-    children: React.ReactNode;
-    isOpen?: boolean;
-    onClose?: () => void;
-}) {
+export default function Modal({ isOpen, onClose, children }: { children: React.ReactNode; isOpen?: boolean; onClose?: () => void }) {
     useEffect(() => {
         function handler(e: KeyboardEvent) {
             if (e.key === 'Escape') onClose?.();
@@ -28,14 +20,8 @@ export default function Modal({
 
     return createPortal(
         <div className={'modalOverlay'} onClick={onClose}>
-            <div
-                className={'modalContent'}
-                onClick={(e) => e.stopPropagation()}
-            >
-                <IconButton
-                    className={'quitButton'}
-                    onClick={() => onClose?.()}
-                >
+            <div className={'modalContent'} onClick={(e) => e.stopPropagation()}>
+                <IconButton className={'quitButton'} onClick={() => onClose?.()}>
                     <XIcon />
                 </IconButton>
                 {children}
