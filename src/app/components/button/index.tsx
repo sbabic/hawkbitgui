@@ -9,7 +9,7 @@ export default function Button({
 }: {
     children?: React.ReactNode;
     className?: string;
-    color?: 'default' | 'outline';
+    color?: 'default' | 'outline' | 'text';
     onClick?: () => void;
 }) {
     const getStyleByColor = (color: string) => {
@@ -18,6 +18,8 @@ export default function Button({
                 return styles.default;
             case 'outline':
                 return styles.outline;
+            case 'text':
+                return styles.text;
             default:
                 return styles.default;
         }

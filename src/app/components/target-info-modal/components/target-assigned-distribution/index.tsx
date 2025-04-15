@@ -8,5 +8,5 @@ export default function TargetAssignedDistribution({ name, version, type }: { na
         { title: 'Version', value: version },
         { title: 'Type', value: type },
     ];
-    return <ListWithTitle title={'Installed'} items={items} />;
+    return <ListWithTitle title={'Assigned'} items={items} />;
 }
