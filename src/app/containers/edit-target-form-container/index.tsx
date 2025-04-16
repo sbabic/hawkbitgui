@@ -7,17 +7,18 @@ import { useEffect, useState } from 'react';
 import { TargetsTypesService } from '@/services/targets-types-service';
 import TargetForm from '@/app/components/target-form';
 
-export interface CreateTargetFormContainerProps {
+export interface EditTargetFormContainerProps {
     onSubmitSuccess?: () => void;
     onCancel?: () => void;
 }
 
-export default function CreateTargetFormContainer({ onSubmitSuccess, onCancel }: CreateTargetFormContainerProps) {
+export default function EditTargetFormContainer({ onSubmitSuccess, onCancel }: EditTargetFormContainerProps) {
     const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
+    const selectedTarget = useTargetsTableStore((state) => state.selectedTarget);
     const [targetTypes, setTargetTypes] = useState<TargetType[]>([]);
     const handleSubmit = async (data: { controllerId: string; name: string; targetTypeId: number; description: string }) => {
         console.log('Form submitted:', data);
-        await TargetsService.createTarget({ ...data, targetType: data.targetTypeId });
+        await TargetsService.updateTarget({ ...data, targetType: data.targetTypeId });
         await fetchTargets();
         onSubmitSuccess?.();
     };
@@ -30,5 +31,13 @@ export default function CreateTargetFormContainer({ onSubmitSuccess, onCancel }:
         fetchTargetsTypes();
     }, []);
 
-    return <TargetForm onSubmit={handleSubmit} onCancel={onCancel} targetTypes={targetTypes} />;
+    return (
+        <TargetForm
+            mode={'edit'}
+            onSubmit={handleSubmit}
+            onCancel={onCancel}
+            targetTypes={targetTypes}
+            defaultValues={{ ...selectedTarget, targetTypeId: selectedTarget?.targetType }}
+        />
+    );
 }

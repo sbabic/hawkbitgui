@@ -11,6 +11,16 @@ export interface CreateTargetInput {
     targetType?: number;
 }
 
+export interface UpdateTargetInput {
+    name: string;
+    description?: string;
+    controllerId: string;
+    address?: string;
+    securityToken?: string;
+    requestAttributes?: boolean;
+    targetType?: number;
+}
+
 export type GetTargetsResponse = ApiResponse<Target[]>;
 
 export type GetAttributesResponse = Record<string, string>;

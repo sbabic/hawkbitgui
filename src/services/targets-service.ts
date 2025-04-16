@@ -11,6 +11,7 @@ import {
     GetMetadataOutput,
     GetMetadataResponse,
     GetTargetsResponse,
+    UpdateTargetInput,
 } from '@/services/targets-service.types';
 
 export class TargetsService {
@@ -30,6 +31,16 @@ export class TargetsService {
             return response.data[0];
         } catch (error) {
             console.error('Failed to create target', error);
+            throw error;
+        }
+    }
+
+    static async updateTarget(target: UpdateTargetInput): Promise<Target> {
+        try {
+            const response = await axiosInstance.put(`/targets/${target.controllerId}`, target);
+            return response.data;
+        } catch (error) {
+            console.error('Failed to update target', error);
             throw error;
         }
     }

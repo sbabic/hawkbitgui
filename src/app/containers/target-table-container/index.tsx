@@ -9,18 +9,17 @@ import TargetInfo from '@/app/components/target-info-modal';
 import Modal from '@/app/components/modal';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useConfirmDialog } from '@/app/hooks';
+import EditTargetFormContainer from '@/app/containers/edit-target-form-container';
 
-export interface TargetTableProps {
-    onEditClick?: (target: Target) => void;
-}
-
-export default function TargetTableContainer(props: TargetTableProps) {
+export default function TargetTableContainer() {
     const filteredTargets = useTargetsTableStore((state) => state.filteredTargets);
     const isExpanded = useTargetsTableStore((state) => state.isExpanded);
     const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
     const targetsTableStore = useTargetsTableStore();
 
     const [isTargetInfoModalOpen, setIsTargetInfoModalOpen] = useState(false);
+    const [isEditTargetModalOpen, setIsEditTargetModalOpen] = useState(false);
+
     const confirmDialog = useConfirmDialog<Target>();
 
     const handleDeleteClick = (target: Target) => {
@@ -29,6 +28,11 @@ export default function TargetTableContainer(props: TargetTableProps) {
             await fetchTargets();
             targetsTableStore.resetSelectedTarget();
         });
+    };
+
+    const handleEditClick = (target: Target) => {
+        targetsTableStore.setSelectedTarget(target);
+        setIsEditTargetModalOpen(true);
     };
 
     useEffect(() => {
@@ -48,10 +52,13 @@ export default function TargetTableContainer(props: TargetTableProps) {
                     setIsTargetInfoModalOpen(true);
                 }}
                 onDeleteClick={handleDeleteClick}
-                onEditClick={props.onEditClick}
+                onEditClick={handleEditClick}
             />
             <Modal isOpen={isTargetInfoModalOpen} onClose={() => setIsTargetInfoModalOpen(false)}>
                 <TargetInfo />
+            </Modal>
+            <Modal isOpen={isEditTargetModalOpen} onClose={() => setIsEditTargetModalOpen(false)}>
+                <EditTargetFormContainer onCancel={() => setIsEditTargetModalOpen(false)} onSubmitSuccess={() => setIsEditTargetModalOpen(false)} />
             </Modal>
             <ConfirmDeleteModal
                 message={`Are you sure you want to delete target "${confirmDialog.data?.name}"?`}

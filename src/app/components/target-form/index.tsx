@@ -7,30 +7,46 @@ import Input from '../input';
 import Select from '@/app/components/select';
 import TextArea from '@/app/components/text-area';
 import { TargetType } from '@/entities';
+import { useEffect } from 'react';
 
-interface FormData {
+export interface FormData {
     controllerId: string;
     name: string;
     targetTypeId: number;
     description: string;
 }
 
-export interface CreateTargetFormProps {
+export interface TargetFormProps {
     onSubmit: (data: FormData) => void;
     onCancel?: () => void;
     targetTypes?: TargetType[];
+    defaultValues?: Partial<FormData>;
+    mode?: 'create' | 'edit';
 }
 
-export default function CreateTargetForm({ onSubmit, onCancel, targetTypes }: CreateTargetFormProps) {
+export default function TargetForm({ onSubmit, onCancel, targetTypes, defaultValues, mode = 'create' }: TargetFormProps) {
+    console.log(defaultValues);
+
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FormData>();
+        reset,
+    } = useForm<FormData>({
+        defaultValues,
+    });
+
+    const isEditing = mode === 'edit';
+
+    useEffect(() => {
+        if (defaultValues) {
+            reset(defaultValues);
+        }
+    }, [defaultValues, reset]);
 
     return (
         <div className={styles.container}>
-            <h3>Create New Target</h3>
+            <h3>{isEditing ? 'Edit Target' : 'Create New Target'}</h3>
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
                 <div className={styles.inputContainer}>
                     <label className={styles.label}>Controller ID</label>
@@ -62,9 +78,9 @@ export default function CreateTargetForm({ onSubmit, onCancel, targetTypes }: Cr
                         })}
                         className={styles.select}
                     >
-                        <option value=''>Choose a type</option>
+                        <option value={undefined}>Choose a type</option>
                         {targetTypes?.map((type) => (
-                            <option key={type.id} value={type.id}>
+                            <option key={type.id} value={String(type.id)}>
                                 {type.name}
                             </option>
                         ))}
@@ -80,7 +96,7 @@ export default function CreateTargetForm({ onSubmit, onCancel, targetTypes }: Cr
                     <Button color='outline' onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button>Save</Button>
+                    <Button>{isEditing ? 'Update' : 'Save'}</Button>
                 </div>
             </form>
         </div>
