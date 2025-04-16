@@ -38,10 +38,10 @@ export default function CreateMetadataForm({ onSubmit, onCancel }: { onSubmit: (
                 </div>
 
                 <div className={styles.buttonContainer}>
+                    <Button>Save</Button>
                     <Button color='outline' onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button>Save</Button>
                 </div>
             </form>
         </div>

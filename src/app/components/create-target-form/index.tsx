@@ -6,15 +6,22 @@ import Button from '@/app/components/button';
 import Input from '../input';
 import Select from '@/app/components/select';
 import TextArea from '@/app/components/text-area';
+import { TargetType } from '@/entities';
 
 interface FormData {
     controllerId: string;
     name: string;
-    type: string;
+    targetTypeId: number;
     description: string;
 }
 
-export default function CreateTargetForm({ onSubmit, onCancel }: { onSubmit: (data: FormData) => void; onCancel?: () => void }) {
+export interface CreateTargetFormProps {
+    onSubmit: (data: FormData) => void;
+    onCancel?: () => void;
+    targetTypes?: TargetType[];
+}
+
+export default function CreateTargetForm({ onSubmit, onCancel, targetTypes }: CreateTargetFormProps) {
     const {
         register,
         handleSubmit,
@@ -49,12 +56,21 @@ export default function CreateTargetForm({ onSubmit, onCancel }: { onSubmit: (da
 
                 <div className={styles.inputContainer}>
                     <label className={styles.label}>Type</label>
-                    <Select {...register('type', { required: true })} className={styles.select} error={errors.type && 'This field is required'}>
+                    <Select
+                        {...register('targetTypeId', {
+                            setValueAs: (value) => Number(value),
+                        })}
+                        className={styles.select}
+                    >
                         <option value=''>Choose a type</option>
-                        <option value='type1'>Type 1</option>
-                        <option value='type2'>Type 2</option>
+                        {targetTypes?.map((type) => (
+                            <option key={type.id} value={type.id}>
+                                {type.name}
+                            </option>
+                        ))}
                     </Select>
                 </div>
+
                 <div className={styles.inputContainer}>
                     <label className={styles.label}>Description</label>
                     <TextArea placeholder='Add additional details' {...register('description')} className={styles.textarea} />
