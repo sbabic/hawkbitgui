@@ -36,8 +36,8 @@ h3 {
     color: $accent-color;
 }
 
-.delivered {
-    background-color: $status-delivered;
+.in-sync {
+    background-color: $status-in-sync;
 }
 
 .error {
@@ -48,8 +48,8 @@ h3 {
     background-color: $status-pending;
 }
 
-.overdue {
-    background-color: $status-overdue;
+.registered {
+    background-color: $status-registered;
 }
 
 .unknown {

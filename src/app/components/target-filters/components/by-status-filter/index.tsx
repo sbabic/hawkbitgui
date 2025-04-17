@@ -2,17 +2,17 @@
 
 import styles from './styles.module.scss';
 import React from 'react';
+import { TargetStatus } from '@/entities';
 
-const statuses = ['Delivered', 'Error', 'Pending', 'Overdue', 'Unknown'] as const;
-type Status = (typeof statuses)[number];
+const statuses = Object.keys(TargetStatus) as TargetStatus[];
 
 export interface ByStatusFilterProps {
-    onStatusClick?: (statuses: Status[]) => void;
+    onStatusClick?: (statuses: TargetStatus[]) => void;
 }
 
 export default function ByStatusFilter({ onStatusClick }: ByStatusFilterProps) {
-    const [selectedStatuses, setSelectedStatuses] = React.useState<Status[]>([]);
-    const handleStatusClick = (status: Status) => {
+    const [selectedStatuses, setSelectedStatuses] = React.useState<TargetStatus[]>([]);
+    const handleStatusClick = (status: TargetStatus) => {
         setSelectedStatuses((prev) => {
             const newStatuses = prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status];
             onStatusClick?.(newStatuses);

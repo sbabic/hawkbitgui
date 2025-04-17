@@ -1,3 +1,13 @@
+export const TargetStatus = {
+    IN_SYNC: 'in_sync',
+    PENDING: 'pending',
+    ERROR: 'error',
+    REGISTERED: 'registered',
+    UNKNOWN: 'unknown',
+};
+
+export type TargetStatus = keyof typeof TargetStatus;
+
 export interface Target {
     createdBy: string;
     createdAt: number;
@@ -6,7 +16,7 @@ export interface Target {
     name: string;
     description: string;
     controllerId: string;
-    updateStatus: 'in_sync' | 'pending' | 'error' | string;
+    updateStatus: TargetStatus;
     lastControllerRequestAt: number;
     installedAt: number;
     ipAddress: string;
