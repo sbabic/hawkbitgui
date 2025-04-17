@@ -16,7 +16,6 @@ export default function ByStatusFilter({ onStatusClick }: ByStatusFilterProps) {
         setSelectedStatuses((prev) => {
             const newStatuses = prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status];
             onStatusClick?.(newStatuses);
-            console.log(newStatuses);
             return newStatuses;
         });
     };
@@ -29,7 +28,7 @@ export default function ByStatusFilter({ onStatusClick }: ByStatusFilterProps) {
                     onClick={() => handleStatusClick(status)}
                 >
                     <span className={`${styles.indicator} ${status.toLowerCase()}`} />
-                    {status}
+                    {TargetStatus[status]}
                 </button>
             ))}
         </div>
