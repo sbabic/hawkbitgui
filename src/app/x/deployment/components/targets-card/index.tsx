@@ -12,7 +12,6 @@ import FilterIcon from '@/app/components/icons/filter-icon';
 import TargetFilters from '@/app/components/target-filters';
 import TargetTableContainer from '@/app/containers/target-table-container';
 import CreateTargetFormContainer from '@/app/containers/create-target-form-container';
-import { Target } from '@/entities';
 import ExpandableSearchBarContainer from '@/app/containers/expandable-search-bar-container';
 
 type TargetsCardProps = {
@@ -24,7 +23,6 @@ type TargetsCardProps = {
     isTargetFiltersModalOpen: boolean;
     onOpenTargetFiltersModal: () => void;
     onCloseTargetFiltersModal: () => void;
-    onEditClick?: (target: Target) => void;
 };
 
 export default function TargetsCard({
@@ -36,7 +34,6 @@ export default function TargetsCard({
     isTargetFiltersModalOpen,
     onOpenTargetFiltersModal,
     onCloseTargetFiltersModal,
-    onEditClick,
 }: TargetsCardProps) {
     return (
         <>
@@ -62,7 +59,7 @@ export default function TargetsCard({
                         </IconButton>
                     </div>
                     <div className={styles.table}>
-                        <TargetTableContainer onEditClick={onEditClick} />
+                        <TargetTableContainer />
                     </div>
                 </div>
             </Card>
