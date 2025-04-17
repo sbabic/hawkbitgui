@@ -23,7 +23,9 @@ export default function CreateMetadataForm({ onSubmit, onCancel }: { onSubmit: (
             <h3>Create Metadata</h3>
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
                 <div className={styles.inputContainer}>
-                    <label className={styles.label}>Key</label>
+                    <label className={styles.label}>
+                        Key <b className={styles.error}>*</b>
+                    </label>
                     <Input
                         className={styles.input}
                         type='text'
