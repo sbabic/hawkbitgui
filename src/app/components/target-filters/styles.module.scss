@@ -18,7 +18,7 @@
             color: $primary-text-color;
             cursor: pointer;
             &:hover,
-            .active {
+            &.active {
                 color: white;
                 background-color: $accent-color;
             }

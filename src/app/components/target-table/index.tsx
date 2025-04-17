@@ -28,30 +28,11 @@ export default function TargetTable({ expanded, onTargetNameClick, targets = [],
             header: 'Status',
             cell: (info: CellContext<Target, string>) => {
                 const status = info.getValue();
-                let statusClass = '';
-
-                // Map each status to a specific SCSS class
-                switch (status) {
-                    case 'Delivered':
-                        statusClass = styles.statusDelivered;
-                        break;
-                    case 'Error':
-                        statusClass = styles.statusError;
-                        break;
-                    case 'Pending':
-                        statusClass = styles.statusPending;
-                        break;
-                    case 'Overdue':
-                        statusClass = styles.statusOverdue;
-                        break;
-                    default:
-                        statusClass = styles.statusUnknown;
-                }
 
                 return (
                     <div className={styles.statusCell}>
                         <div className={styles.status}>
-                            <span className={`${styles.statusIndicator} ${statusClass}`} />
+                            <span className={`${styles.statusIndicator} ${status.toLowerCase()}`} />
                             {status}
                         </div>
                     </div>

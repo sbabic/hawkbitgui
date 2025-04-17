@@ -35,3 +35,23 @@ h3 {
     margin: 0;
     color: $accent-color;
 }
+
+.delivered {
+    background-color: $status-delivered;
+}
+
+.error {
+    background-color: $status-error;
+}
+
+.pending {
+    background-color: $status-pending;
+}
+
+.overdue {
+    background-color: $status-overdue;
+}
+
+.unknown {
+    background-color: $status-unknown;
+}
