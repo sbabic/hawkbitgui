@@ -25,8 +25,6 @@ export interface TargetFormProps {
 }
 
 export default function TargetForm({ onSubmit, onCancel, targetTypes, defaultValues, mode = 'create' }: TargetFormProps) {
-    console.log(defaultValues);
-
     const {
         register,
         handleSubmit,
@@ -49,7 +47,9 @@ export default function TargetForm({ onSubmit, onCancel, targetTypes, defaultVal
             <h3>{isEditing ? 'Edit Target' : 'Create New Target'}</h3>
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
                 <div className={styles.inputContainer}>
-                    <label className={styles.label}>Controller ID</label>
+                    <label className={styles.label}>
+                        Controller ID <b className={styles.error}>*</b>
+                    </label>
                     <Input
                         className={styles.input}
                         type='text'
@@ -60,7 +60,9 @@ export default function TargetForm({ onSubmit, onCancel, targetTypes, defaultVal
                 </div>
 
                 <div className={styles.inputContainer}>
-                    <label className={styles.label}>Name</label>
+                    <label className={styles.label}>
+                        Name <b className={styles.error}>*</b>
+                    </label>
                     <Input
                         className={styles.input}
                         type='text'
@@ -93,10 +95,10 @@ export default function TargetForm({ onSubmit, onCancel, targetTypes, defaultVal
                 </div>
 
                 <div className={styles.buttonContainer}>
+                    <Button>{isEditing ? 'Update' : 'Save'}</Button>
                     <Button color='outline' onClick={onCancel}>
                         Cancel
                     </Button>
-                    <Button>{isEditing ? 'Update' : 'Save'}</Button>
                 </div>
             </form>
         </div>

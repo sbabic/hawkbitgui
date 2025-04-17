@@ -15,36 +15,36 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
 }
 
 .inputContainer {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+
+    .error {
+        color: $error-color;
+    }
 
     .input {
         width: 100%;
-        max-width: 300px;
     }
 
     .label {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 700;
         color: $light-primary-text-color;
     }
 
     .textarea {
         width: 100%;
-        max-width: 300px;
         min-height: 80px;
         resize: vertical;
     }
 
     .select {
         width: 100%;
-        max-width: 300px;
     }
 }
 
