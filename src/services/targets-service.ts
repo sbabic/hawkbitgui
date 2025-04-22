@@ -1,7 +1,8 @@
-import { Target } from '@/entities';
+import { FilterFiql, Target } from '@/entities';
 import axiosInstance from '@/lib/axios';
 import {
     CreateTargetInput,
+    FetchTargetsInput,
     GetAssignedDistributionOutput,
     GetAssignedDistributionResponse,
     GetAttributesOutput,
@@ -15,9 +16,12 @@ import {
 } from '@/services/targets-service.types';
 
 export class TargetsService {
-    static async fetchTargets(): Promise<Target[]> {
+    static async fetchTargets(input?: FetchTargetsInput): Promise<Target[]> {
         try {
-            const response = await axiosInstance.get<GetTargetsResponse>(`/targets`);
+            const fiqlQueryParam = FilterFiql.parseFiltersToFiqlQueryParam(input?.filters || []);
+            console.log(`Fetch target ${fiqlQueryParam}`);
+            const response = await axiosInstance.get<GetTargetsResponse>(`/targets?${fiqlQueryParam}`);
+            console.log(`Fetch target response ${JSON.stringify(response.data)}`);
             return response.data.content;
         } catch (error) {
             console.error('Failed to fetch targets', error);

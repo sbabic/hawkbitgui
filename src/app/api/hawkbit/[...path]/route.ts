@@ -53,11 +53,20 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
 
     try {
         const path = (await params).path.join('/');
+
+        // Extract query params from the request URL
+        const url = new URL(request.url);
+        const queryParams: Record<string, string> = {};
+        url.searchParams.forEach((value, key) => {
+            queryParams[key] = value;
+        });
+
         const response = await axios.get(`${environment.hawkbitApiUrl}/rest/v1/${path}`, {
             headers: {
                 Authorization: `Basic ${session.user.auth}`,
                 Accept: 'application/json, application/hal+json',
             },
+            params: queryParams, // axios handles query params like ?foo=bar
         });
 
         return NextResponse.json(response.data);

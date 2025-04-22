@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Target } from '@/entities';
 import { TargetsService } from '@/services/targets-service';
+import { useTargetsFiltersStore } from '@/stores/targets-filters-store';
 
 interface TargetsTableState {
     targets: Target[];
@@ -29,7 +30,8 @@ export const useTargetsTableStore = create<TargetsTableState>((set) => ({
     setIsExpanded: (isExpanded) => set({ isExpanded }),
     fetchTargets: async () => {
         try {
-            const response = await TargetsService.fetchTargets();
+            const filters = useTargetsFiltersStore.getState().filters;
+            const response = await TargetsService.fetchTargets({ filters: Object.values(filters) });
             set({ targets: response, filteredTargets: response });
         } catch (error) {
             console.error('Failed to fetch targets', error);

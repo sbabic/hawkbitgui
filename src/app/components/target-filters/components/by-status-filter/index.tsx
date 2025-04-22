@@ -7,25 +7,18 @@ import { TargetStatus } from '@/entities';
 const statuses = Object.keys(TargetStatus) as TargetStatus[];
 
 export interface ByStatusFilterProps {
-    onStatusClick?: (statuses: TargetStatus[]) => void;
+    onStatusClick?: (status: TargetStatus) => void;
+    selectedStatuses?: TargetStatus[];
 }
 
-export default function ByStatusFilter({ onStatusClick }: ByStatusFilterProps) {
-    const [selectedStatuses, setSelectedStatuses] = React.useState<TargetStatus[]>([]);
-    const handleStatusClick = (status: TargetStatus) => {
-        setSelectedStatuses((prev) => {
-            const newStatuses = prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status];
-            onStatusClick?.(newStatuses);
-            return newStatuses;
-        });
-    };
+export default function ByStatusFilter({ onStatusClick, selectedStatuses }: ByStatusFilterProps) {
     return (
         <div className={styles.container}>
             {statuses.map((status) => (
                 <button
                     key={status}
-                    className={`${styles.status} ${selectedStatuses.includes(status) ? styles.active : ''}`}
-                    onClick={() => handleStatusClick(status)}
+                    className={`${styles.status} ${selectedStatuses?.includes(status) ? styles.active : ''}`}
+                    onClick={() => onStatusClick?.(status)}
                 >
                     <span className={`${styles.indicator} ${status.toLowerCase()}`} />
                     {TargetStatus[status]}

@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import styles from './styles.module.scss';
-import ByStatusFilter from '@/app/components/target-filters/components/by-status-filter';
+import ByStatusFilterContainer from '@/app/components/target-filters/containers/by-status-filter-container';
 
 export default function TargetFilters() {
     const content: {
@@ -9,7 +9,7 @@ export default function TargetFilters() {
     }[] = [
         {
             title: 'By Status',
-            component: <ByStatusFilter />,
+            component: <ByStatusFilterContainer />,
         },
         {
             title: 'Simple Filter',
