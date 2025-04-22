@@ -19,9 +19,7 @@ export class TargetsService {
     static async fetchTargets(input?: FetchTargetsInput): Promise<Target[]> {
         try {
             const fiqlQueryParam = FilterFiql.parseFiltersToFiqlQueryParam(input?.filters || []);
-            console.log(`Fetch target ${fiqlQueryParam}`);
             const response = await axiosInstance.get<GetTargetsResponse>(`/targets?${fiqlQueryParam}`);
-            console.log(`Fetch target response ${JSON.stringify(response.data)}`);
             return response.data.content;
         } catch (error) {
             console.error('Failed to fetch targets', error);
