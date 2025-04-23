@@ -5,6 +5,7 @@ import TargetAttributesContainer from '@/app/components/target-info-modal/contai
 import TargetAssignedDistributionContainer from '@/app/components/target-info-modal/containers/target-assigned-distribution-container';
 import TargetInstalledDistributionContainer from '@/app/components/target-info-modal/containers/target-installed-distribution-container';
 import TargetMetadataContainer from '@/app/components/target-info-modal/containers/target-metadata-container';
+import TargetTags from '@/app/components/target-info-modal/components/target-tags';
 
 export default function TargetInfo() {
     return (
@@ -23,7 +24,7 @@ export default function TargetInfo() {
                     title: 'Installed',
                     component: <TargetInstalledDistributionContainer />,
                 },
-                { title: 'Tags', component: <div>Tags</div> },
+                { title: 'Tags', component: <TargetTags /> },
                 { title: 'Metadata', component: <TargetMetadataContainer /> },
             ]}
         />
