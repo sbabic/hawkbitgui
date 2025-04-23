@@ -1,4 +1,4 @@
-import { Distribution, FilterFiql, Metadata, Tag, Target } from '@/entities';
+import { Distribution, FilterFiql, Metadata, Target } from '@/entities';
 import { ApiResponse } from '@/services/types';
 
 export interface FetchTargetsInput {
