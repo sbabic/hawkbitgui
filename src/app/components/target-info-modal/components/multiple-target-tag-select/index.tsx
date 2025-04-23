@@ -71,9 +71,10 @@ export interface MultipleTargetTagSelectProps {
     tags: Tag[];
     selectedTags?: Tag[];
     onChange?: (selectedTags: Tag[]) => void;
+    isLoading?: boolean;
 }
 
-export default function MultipleTargetTagSelect({ tags, selectedTags, onChange }: MultipleTargetTagSelectProps) {
+export default function MultipleTargetTagSelect({ isLoading, tags, selectedTags, onChange }: MultipleTargetTagSelectProps) {
     const options = useMemo(
         () =>
             tags.map((tag) => ({
@@ -114,7 +115,7 @@ export default function MultipleTargetTagSelect({ tags, selectedTags, onChange }
             components={{ MultiValueLabel }}
             styles={customStyles}
             onChange={handleChange}
-            isLoading={selectedOptions.length === 0}
+            isLoading={isLoading}
         />
     );
 }

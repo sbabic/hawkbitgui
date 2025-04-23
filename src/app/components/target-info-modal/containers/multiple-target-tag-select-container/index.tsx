@@ -8,6 +8,7 @@ import { TargetTagsService } from '@/services/target-tags-service';
 
 export default function MultipleTargetTagSelectContainer() {
     const selectedTarget = useTargetsTableStore((state) => state.selectedTarget);
+    const [isLoading, setIsLoading] = useState(false);
     const [allTags, setAllTags] = useState<Tag[]>([]);
     const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
@@ -37,16 +38,21 @@ export default function MultipleTargetTagSelectContainer() {
     useEffect(() => {
         const fetchTags = async () => {
             if (!selectedTarget) return;
-            const [allTags, selectedTags] = await Promise.all([
-                TargetTagsService.getTags(),
-                TargetTagsService.getTagsByControllerId(selectedTarget.controllerId),
-            ]);
-            setAllTags(allTags);
-            setSelectedTags(selectedTags);
+            setIsLoading(true);
+            try {
+                const [allTags, selectedTags] = await Promise.all([
+                    TargetTagsService.getTags(),
+                    TargetTagsService.getTagsByControllerId(selectedTarget.controllerId),
+                ]);
+                setAllTags(allTags);
+                setSelectedTags(selectedTags);
+            } finally {
+                setIsLoading(false);
+            }
         };
 
         fetchTags();
     }, [selectedTarget]);
 
-    return <MultipleTargetTagSelect tags={allTags} selectedTags={selectedTags} onChange={handleOnChange} />;
+    return <MultipleTargetTagSelect tags={allTags} selectedTags={selectedTags} onChange={handleOnChange} isLoading={isLoading} />;
 }
