@@ -1,10 +1,11 @@
 'use client';
 
-import MultipleTargetTagSelect, { Tag as ComponentTag } from '@/app/components/target-info-modal/components/multiple-target-tag-select';
 import { useEffect, useState, useCallback } from 'react';
 import { Tag } from '@/entities';
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { TargetTagsService } from '@/services/target-tags-service';
+import MultipleSelect from '@/app/components/multiple-select';
+import { BaseOption } from '@/app/components/multiple-select/react-select-config';
 
 export default function MultipleTargetTagSelectContainer() {
     const selectedTarget = useTargetsTableStore((state) => state.selectedTarget);
@@ -13,7 +14,7 @@ export default function MultipleTargetTagSelectContainer() {
     const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
     const handleOnChange = useCallback(
-        async (changedTags: ComponentTag[]) => {
+        async (changedTags: BaseOption[]) => {
             if (!selectedTarget) return;
 
             const changedTagIds = new Set(changedTags.map((tag) => tag.id));
@@ -54,5 +55,5 @@ export default function MultipleTargetTagSelectContainer() {
         fetchTags();
     }, [selectedTarget]);
 
-    return <MultipleTargetTagSelect tags={allTags} selectedTags={selectedTags} onChange={handleOnChange} isLoading={isLoading} />;
+    return <MultipleSelect options={allTags} selectedOptions={selectedTags} onChange={handleOnChange} isLoading={isLoading} />;
 }
