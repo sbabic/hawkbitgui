@@ -48,7 +48,7 @@ export default function Card({ children, expanded = false }: { children?: React.
                 expanded
                     ? {
                           width: parentWidth,
-                          height: parentHeight,
+                          height: parentHeight > 0 ? parentHeight : 'fit-content',
                       }
                     : {
                           width: 'fit-content',

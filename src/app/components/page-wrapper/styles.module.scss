@@ -1,0 +1,16 @@
+@use 'src/app/styles/variables' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px 30px;
+
+  .title {
+    font-family: Nunito Sans;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 36px;
+    color: $accent-color;
+  }
+}

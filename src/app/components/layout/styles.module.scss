@@ -125,6 +125,10 @@ $sidebar-collapsed: 60px;
     transition: all 0.2s;
     color: $primary-text-color;
     text-decoration: none;
+    margin-top: 2px;
+    &:first-child {
+        margin-top: 0;
+    }
 
     &:hover,
     &.active {

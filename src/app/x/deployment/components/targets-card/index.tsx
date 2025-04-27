@@ -50,7 +50,7 @@ export default function TargetsCard({
                     </div>
                     <div className={styles.actionButtons}>
                         <Button onClick={onOpenCreateTargetForm}>+ New target</Button>
-                        <Button color='outline' className={styles.bulkUploadButton}>
+                        <Button variant='outline' className={styles.bulkUploadButton}>
                             <FolderIcon />
                             Bulk Upload Targets
                         </Button>

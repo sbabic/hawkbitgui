@@ -10,6 +10,9 @@
     transition:
         background-color 0.2s ease-in-out,
         color 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
     &.default {
         background: $accent-color;
@@ -33,6 +36,16 @@
         }
     }
 
+    &.ghost {
+        background: transparent;
+        color: $accent-color;
+        &:hover,
+        &:active,
+        &:focus {
+            background: rgba($accent-color, 0.1);
+        }
+    }
+
     &.text {
         background: transparent;
         color: $accent-color;
@@ -45,4 +58,16 @@
             font-weight: 700;
         }
     }
+}
+
+.iconLeft {
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.iconRight {
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
 }

@@ -96,7 +96,7 @@ export default function TargetForm({ onSubmit, onCancel, targetTypes, defaultVal
 
                 <div className={styles.buttonContainer}>
                     <Button>{isEditing ? 'Update' : 'Save'}</Button>
-                    <Button color='outline' onClick={onCancel}>
+                    <Button variant='outline' onClick={onCancel}>
                         Cancel
                     </Button>
                 </div>

@@ -13,7 +13,7 @@ export default function TargetMetadata({ onAddClick }: TargetMetadataProps) {
     return (
         <div className={styles.container}>
             <h2>Metadata</h2>
-            <Button color={'text'} onClick={onAddClick} className={styles.addButton}>
+            <Button variant='text' onClick={onAddClick} className={styles.addButton}>
                 <PlusIcon width={'24px'} height={'24px'} /> Add Metadata
             </Button>
             <TargetMetadataTableContainer />
