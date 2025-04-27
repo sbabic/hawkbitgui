@@ -30,8 +30,6 @@ export function useFilterMultipleSelect<T>({
 
     const optionMap = useMemo(() => new Map(allOptions.map((opt) => [getOptionId(opt), opt])), [allOptions, getOptionId]);
 
-    const cachedFilters = useMemo(() => filters, [filters]);
-
     const handleOnChange = useCallback(
         (changedOptions: { id: string | number }[]) => {
             const mapped = changedOptions.map((opt) => optionMap.get(opt.id)).filter((opt): opt is T => !!opt);
@@ -58,8 +56,11 @@ export function useFilterMultipleSelect<T>({
     }, [fetchOptions, filterField]);
 
     useEffect(() => {
+        console.log('Selected options changed:', selectedOptions);
+
         filter.current.setValues(selectedOptions.map((opt) => ['==', getOptionLabel(opt)]));
-        const newFilters = { ...cachedFilters, [filter.current.property]: filter.current };
+
+        const newFilters = { ...filters, [filter.current.property]: filter.current };
         setFilters(newFilters);
 
         fetchTargets().catch((error) => console.error('Failed to fetch targets:', error));
