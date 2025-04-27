@@ -16,6 +16,7 @@
         "@tanstack/react-table": "^8.21.3",
         "@types/lodash-es": "^4.17.12",
         "axios": "^1.8.4",
+        "caniuse-lite": "^1.0.30001715",
         "dayjs": "^1.11.13",
         "framer-motion": "^12.7.4",
         "lodash-es": "^4.17.21",
