@@ -21,15 +21,15 @@ export default function MultipleTargetTagSelectContainer() {
             const selectedTagIds = new Set(selectedTags.map((tag) => tag.id));
 
             const tagsToDelete = selectedTags.filter((tag) => !changedTagIds.has(tag.id));
-            const tagsToAdd = changedTags.filter((tag) => !selectedTagIds.has(tag.id));
+            const tagsToAdd = changedTags.filter((tag) => !selectedTagIds.has(tag.id as number));
 
             await Promise.all([
                 ...tagsToDelete.map((tag) => TargetTagsService.unassignTagFromTarget(selectedTarget.controllerId, tag.id)),
-                ...tagsToAdd.map((tag) => TargetTagsService.assignTagToTarget(selectedTarget.controllerId, tag.id)),
+                ...tagsToAdd.map((tag) => TargetTagsService.assignTagToTarget(selectedTarget.controllerId, tag.id as number)),
             ]);
 
             const tagMap = new Map(allTags.map((t) => [t.id, t]));
-            const mappedTags: Tag[] = changedTags.map((tag) => tagMap.get(tag.id)).filter((tag): tag is Tag => !!tag);
+            const mappedTags: Tag[] = changedTags.map((tag) => tagMap.get(tag.id as number)).filter((tag): tag is Tag => !!tag);
 
             setSelectedTags(mappedTags);
         },

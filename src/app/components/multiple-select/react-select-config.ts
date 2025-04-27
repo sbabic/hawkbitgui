@@ -1,13 +1,13 @@
 import { StylesConfig } from 'react-select';
 
 export interface BaseOption {
-    id: number;
+    id: number | string;
     name: string;
     colour: string;
 }
 
 export interface OptionType {
-    value: number;
+    value: number | string;
     label: string;
     color: string;
 }
