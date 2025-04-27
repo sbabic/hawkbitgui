@@ -1,0 +1,37 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .status {
+        all: unset;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        background-color: $secondary-color;
+        color: $light-primary-text-color;
+        border: 1px solid #e4e7f2;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 400;
+        cursor: pointer;
+
+        .indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        &:hover,
+        &.active {
+            color: white;
+            background-color: $accent-color;
+        }
+    }
+}

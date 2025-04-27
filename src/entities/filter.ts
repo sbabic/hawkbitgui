@@ -20,6 +20,10 @@ export class FilterFiql {
         this.values.push([operator, value]);
     }
 
+    isEmpty(): boolean {
+        return this.values.length === 0;
+    }
+
     parseToFiql(): string {
         const values = this.values.map(([operator, value]) => `${this.property}${operator}${value}`);
         return values.join(this.joinerOperator);
@@ -30,12 +34,18 @@ export class FilterFiql {
             return '';
         }
 
-        return filters.map((filter) => `${filter.parseToFiql()}`).join(joinerOperator);
+        const notEmptyFilters = filters.filter((filter) => !filter.isEmpty());
+
+        return notEmptyFilters.map((filter) => `${filter.parseToFiql()}`).join(joinerOperator);
     }
 
     static parseFiltersToFiqlQueryParam(filters: FilterFiql[]): string {
-        const fiql = filters && filters.length > 0 ? this.parseFiltersToFeedItemQueryLanguage(filters, ';') : '';
+        if (filters.length === 0) {
+            return '';
+        }
+        const fiql = this.parseFiltersToFeedItemQueryLanguage(filters, ';');
         const fiqlQueryParam = fiql && fiql !== '' ? `q=${fiql}` : '';
+        console.log(fiqlQueryParam);
         return fiqlQueryParam;
     }
 }
