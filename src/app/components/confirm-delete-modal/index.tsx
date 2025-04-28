@@ -21,10 +21,10 @@ export default function ConfirmDeleteModal({
                 <h2 className={styles.title}>Confirm Deletion</h2>
                 <p className={styles.message}>{message}</p>
                 <div className={styles.actionButtons}>
-                    <Button color={'default'} onClick={onConfirm}>
+                    <Button variant={'default'} onClick={onConfirm}>
                         Yes, delete
                     </Button>
-                    <Button color={'outline'} onClick={onClose}>
+                    <Button variant={'outline'} onClick={onClose}>
                         Cancel
                     </Button>
                 </div>

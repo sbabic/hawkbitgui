@@ -2,7 +2,6 @@
 
 import { Rollout } from '@/entities/rollout';
 import RolloutsTable from '../../components/rollouts-table';
-import { TargetStatus } from '@/entities';
 
 export default function RolloutsTableContainer() {
     const handleRolloutNameClick = (rollout: Rollout) => {
