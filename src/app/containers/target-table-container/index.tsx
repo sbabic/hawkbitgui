@@ -54,7 +54,7 @@ export default function TargetTableContainer() {
                 onDeleteClick={handleDeleteClick}
                 onEditClick={handleEditClick}
             />
-            <Modal isOpen={isTargetInfoModalOpen} onClose={() => setIsTargetInfoModalOpen(false)}>
+            <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' onClose={() => setIsTargetInfoModalOpen(false)}>
                 <TargetInfo />
             </Modal>
             <Modal isOpen={isEditTargetModalOpen} onClose={() => setIsEditTargetModalOpen(false)}>

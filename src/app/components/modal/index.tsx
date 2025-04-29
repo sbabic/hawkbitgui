@@ -1,11 +1,21 @@
 'use client';
-import './styles.scss';
+import styles from './styles.module.scss';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import IconButton from '@/app/components/icon-button';
 import XIcon from '@/app/components/icons/x-icon';
 
-export default function Modal({ isOpen, onClose, children }: { children: React.ReactNode; isOpen?: boolean; onClose?: () => void }) {
+export default function Modal({
+    isOpen,
+    variant = 'default',
+    onClose,
+    children,
+}: {
+    isOpen?: boolean;
+    variant?: 'default' | 'unstyled';
+    onClose?: () => void;
+    children: React.ReactNode;
+}) {
     useEffect(() => {
         function handler(e: KeyboardEvent) {
             if (e.key === 'Escape') onClose?.();
@@ -18,10 +28,21 @@ export default function Modal({ isOpen, onClose, children }: { children: React.R
 
     if (!isOpen) return null;
 
+    const getStyleByVariant = (variant: string) => {
+        switch (variant) {
+            case 'default':
+                return styles.default;
+            case 'unstyled':
+                return styles.unstyled;
+            default:
+                return styles.default;
+        }
+    };
+
     return createPortal(
-        <div className={'modalOverlay'} onClick={onClose}>
-            <div className={'modalContent'} onClick={(e) => e.stopPropagation()}>
-                <IconButton className={'quitButton'} onClick={() => onClose?.()}>
+        <div className={styles.modalOverlay} onClick={onClose}>
+            <div className={`${styles.modalContent} ${getStyleByVariant(variant)}`} onClick={(e) => e.stopPropagation()}>
+                <IconButton className={styles.quitButton} onClick={() => onClose?.()}>
                     <XIcon />
                 </IconButton>
                 {children}

@@ -1,0 +1,24 @@
+@use 'src/app/styles/variables' as *;
+
+.formGroup {
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+    color: $light-primary-text-color;
+  }
+
+  .required {
+    color: $error-dark-color;
+    margin-left: 2px;
+  }
+
+  .errorMessage {
+    color: $error-dark-color;
+    font-size: 12px;
+    margin-top: 4px;
+    margin-bottom: 0px;
+  }
+}

@@ -1,21 +1,17 @@
 'use client';
+
 import styles from './styles.module.scss';
 
-export default function Button({
-    children,
-    className,
-    variant = 'default',
-    onClick,
-    leftIcon,
-    rightIcon,
-}: {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children?: React.ReactNode;
     className?: string;
     variant?: 'default' | 'outline' | 'ghost' | 'text';
     onClick?: () => void;
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
-}) {
+}
+
+export default function Button({ children, type = 'button', className, variant = 'default', onClick, leftIcon, rightIcon }: ButtonProps) {
     const getStyleByVariant = (variant: string) => {
         switch (variant) {
             case 'default':
@@ -31,7 +27,7 @@ export default function Button({
         }
     };
     return (
-        <button className={`${styles.button} ${getStyleByVariant(variant)} ${className}`} onClick={onClick}>
+        <button type={type} className={`${styles.button} ${getStyleByVariant(variant)} ${className}`} onClick={onClick}>
             {leftIcon && <span className={styles.iconLeft}>{leftIcon}</span>}
             {children}
             {rightIcon && <span className={styles.iconRight}>{rightIcon}</span>}

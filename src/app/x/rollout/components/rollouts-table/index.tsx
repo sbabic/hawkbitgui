@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { createColumnHelper, CellContext } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table';
 import styles from './styles.module.scss';
 import Table from '@/app/components/table';
 import IconButton from '@/app/components/icon-button';
@@ -9,11 +9,10 @@ import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import PlayIcon from '@/app/components/icons/play-icon';
 import CopyIcon from '@/app/components/icons/copy-icon';
-import { Rollout } from '@/entities/rollout';
+import { Rollout, TotalTargetCountStatus } from '@/entities/rollout';
 import ThumbsUpIcon from '@/app/components/icons/thumbs-up-icon';
 import ForwardIcon from '@/app/components/icons/forward-icon';
 import PauseIcon from '@/app/components/icons/pause-icon';
-import { TargetStatus } from '@/entities';
 
 export type RolloutsTableProps = {
     rollouts: Rollout[];
@@ -42,55 +41,58 @@ export default function RolloutsTable({
         return [
             columnHelper.accessor('name', {
                 header: 'Name',
-                cell: (info) => (
-                    <button className={styles.linkButton} onClick={() => onRolloutNameClick(info.row.original)}>
-                        {info.getValue()}
-                    </button>
-                ),
+                cell: (cell) => cell.getValue(),
             }),
-            columnHelper.accessor('distributionSet', {
+            columnHelper.accessor('distributionSetId', {
                 header: 'Distribution set',
-                cell: (info) => info.getValue(),
+                cell: (cell) => cell.getValue(),
             }),
             columnHelper.accessor('status', {
                 header: 'Status',
-                cell: (info: CellContext<Rollout, TargetStatus>) => {
-                    const status = info.getValue();
-
-                    const statusMapper: Record<TargetStatus, React.ReactElement | null> = {
-                        IN_SYNC: <div className={styles.runningDot}></div>,
-                        PENDING: <div className={styles.notStartedIcon}></div>,
-                        ERROR: <div className={styles.errorDot}></div>,
-                        REGISTERED: <div className={styles.registeredDot}></div>,
-                        UNKNOWN: null,
-                    };
-                    const statusIcon = statusMapper[status] ?? null;
-
-                    return <div className={styles.statusCell}>{statusIcon}</div>;
-                },
+                cell: (cell) => cell.getValue(),
             }),
-            columnHelper.accessor('detailStatus', {
+            columnHelper.accessor('totalTargetsPerStatus', {
                 header: 'Detail status',
-                cell: (info) => {
-                    const detailStatus = info.getValue();
-                    if (detailStatus && detailStatus.includes('Error')) {
-                        return (
-                            <div className={styles.errorStatus}>
-                                <div className={styles.errorDot}></div>
-                                <span>{detailStatus}</span>
-                            </div>
-                        );
+                cell: (cell) => {
+                    const totalTargetsPerStatus = cell.getValue();
+                    if (!totalTargetsPerStatus) {
+                        return null;
                     }
-                    return null;
+
+                    for (const status in totalTargetsPerStatus) {
+                        const statusKey = status as TotalTargetCountStatus;
+                        if (totalTargetsPerStatus[statusKey] === 0) {
+                            delete totalTargetsPerStatus[statusKey];
+                        }
+                    }
+
+                    const statusMapper: Record<TotalTargetCountStatus, React.ReactElement | null> = {
+                        running: <div className={styles.runningDot}></div>,
+                        notstarted: <div className={styles.notStartedIcon}></div>,
+                        scheduled: <div className={styles.scheduledDot}></div>,
+                        cancelled: <div className={styles.cancelledDot}></div>,
+                        finished: <div className={styles.finishedDot}></div>,
+                        error: <div className={styles.errorDot}></div>,
+                    };
+
+                    return (
+                        <div>
+                            {Object.entries(totalTargetsPerStatus).map(([status, count]) => (
+                                <div key={status} className={styles.statusCell}>
+                                    {statusMapper[status as TotalTargetCountStatus]} {count} {status}
+                                </div>
+                            ))}
+                        </div>
+                    );
                 },
             }),
-            columnHelper.accessor('groupsCount', {
+            columnHelper.accessor('totalGroups', {
                 header: 'Groups',
-                cell: (info) => info.getValue(),
+                cell: (cell) => cell.getValue(),
             }),
-            columnHelper.accessor('targetsCount', {
+            columnHelper.accessor('totalTargets', {
                 header: 'Targets',
-                cell: (info) => info.getValue(),
+                cell: (cell) => cell.getValue(),
             }),
             columnHelper.display({
                 id: 'actions',

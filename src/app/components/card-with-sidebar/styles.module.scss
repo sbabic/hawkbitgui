@@ -29,6 +29,11 @@
                 padding: 20px 16px;
                 cursor: pointer;
                 text-align: left;
+                margin-top: 2px;
+
+                &:first-child {
+                    margin-top: 0;
+                }
 
                 &.active,
                 &:hover {
@@ -47,5 +52,6 @@
         width: 600px;
         flex-grow: 1;
         overflow: scroll;
+        border-radius: 0 16px 16px 0;
     }
 }

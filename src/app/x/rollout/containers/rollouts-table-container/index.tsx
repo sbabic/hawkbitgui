@@ -2,8 +2,11 @@
 
 import { Rollout } from '@/entities/rollout';
 import RolloutsTable from '../../components/rollouts-table';
+import { useGetRollouts } from '../../hooks/use-get-rollouts';
 
 export default function RolloutsTableContainer() {
+    const { data: rollouts } = useGetRollouts();
+
     const handleRolloutNameClick = (rollout: Rollout) => {
         console.log('Rollout name clicked:', rollout.name);
     };
@@ -42,16 +45,5 @@ export default function RolloutsTableContainer() {
         onDeleteClick: handleDeleteClick,
     };
 
-    const rollouts: Rollout[] = [
-        {
-            name: 'Rollout 1',
-            distributionSet: 'Distribution Set 1',
-            status: 'IN_SYNC',
-            detailStatus: 'Running',
-            groupsCount: 10,
-            targetsCount: 100,
-        },
-    ];
-
-    return <RolloutsTable rollouts={rollouts} {...actions} />;
+    return <RolloutsTable rollouts={rollouts ?? []} {...actions} />;
 }
