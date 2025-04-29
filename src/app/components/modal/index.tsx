@@ -25,7 +25,7 @@ export function Modal({
 }: {
     isOpen?: boolean;
     variant?: 'default' | 'unstyled';
-    size?: 'md' | 'lg' | 'xl';
+    size?: 'md' | 'lg' | 'xl' | 'fitContent';
     onClose?: () => void;
     children: React.ReactNode;
 }) {

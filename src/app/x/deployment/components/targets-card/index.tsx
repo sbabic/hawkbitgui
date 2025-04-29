@@ -64,10 +64,10 @@ export default function TargetsCard({
                 </div>
             </Card>
 
-            <Modal isOpen={isCreateTargetFormOpen} onClose={onCloseCreateTargetForm}>
+            <Modal isOpen={isCreateTargetFormOpen} onClose={onCloseCreateTargetForm} size={'md'}>
                 <CreateTargetFormContainer onSubmitSuccess={onCloseCreateTargetForm} onCancel={onCloseCreateTargetForm} />
             </Modal>
-            <Modal isOpen={isTargetFiltersModalOpen} onClose={onCloseTargetFiltersModal}>
+            <Modal isOpen={isTargetFiltersModalOpen} onClose={onCloseTargetFiltersModal} size={'fitContent'}>
                 <TargetFilters />
             </Modal>
         </>

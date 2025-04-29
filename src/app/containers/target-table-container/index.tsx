@@ -54,10 +54,10 @@ export default function TargetTableContainer() {
                 onDeleteClick={handleDeleteClick}
                 onEditClick={handleEditClick}
             />
-            <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' onClose={() => setIsTargetInfoModalOpen(false)}>
+            <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' onClose={() => setIsTargetInfoModalOpen(false)} size={'fitContent'}>
                 <TargetInfo />
             </Modal>
-            <Modal isOpen={isEditTargetModalOpen} onClose={() => setIsEditTargetModalOpen(false)}>
+            <Modal isOpen={isEditTargetModalOpen} onClose={() => setIsEditTargetModalOpen(false)} size={'fitContent'}>
                 <EditTargetFormContainer onCancel={() => setIsEditTargetModalOpen(false)} onSubmitSuccess={() => setIsEditTargetModalOpen(false)} />
             </Modal>
             <ConfirmDeleteModal

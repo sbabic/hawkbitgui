@@ -27,7 +27,7 @@ export default function TargetMetadataContainer() {
     return (
         <>
             <TargetMetadata onAddClick={handleOnAddClick} />
-            <Modal isOpen={isCreateMetadataModalOpen} onClose={() => setIsCreateMetadataModalOpen(false)}>
+            <Modal isOpen={isCreateMetadataModalOpen} onClose={() => setIsCreateMetadataModalOpen(false)} size={'fitContent'}>
                 <CreateMetadataForm onSubmit={handleOnSubmit} />
             </Modal>
         </>
