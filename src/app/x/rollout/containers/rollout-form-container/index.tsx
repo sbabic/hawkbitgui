@@ -1,4 +1,4 @@
-import { useGetDistributionSets } from '@/app/x/distribution-set/hooks/use-get-distribution-sets';
+import { useGetDistributionSets } from '@/app/x/distributions/hooks/use-get-distribution-sets';
 import CreateRolloutForm from '../../components/create-rollout-form';
 import { useCreateRollout } from '../../hooks/use-create-rollout';
 import { useGetRollouts } from '../../hooks/use-get-rollouts';

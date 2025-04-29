@@ -5,14 +5,27 @@ import { createPortal } from 'react-dom';
 import IconButton from '@/app/components/icon-button';
 import XIcon from '@/app/components/icons/x-icon';
 
-export default function Modal({
+function ModalHeader({ children }: { children: React.ReactNode }) {
+    return (
+        <div className={styles.modalHeader}>
+            <h2>{children}</h2>
+        </div>
+    );
+}
+
+function ModalContent({ children }: { children: React.ReactNode }) {
+    return <div className={styles.modalContent}>{children}</div>;
+}
+export function Modal({
     isOpen,
     variant = 'default',
+    size = 'md',
     onClose,
     children,
 }: {
     isOpen?: boolean;
     variant?: 'default' | 'unstyled';
+    size?: 'md' | 'lg' | 'xl';
     onClose?: () => void;
     children: React.ReactNode;
 }) {
@@ -28,20 +41,9 @@ export default function Modal({
 
     if (!isOpen) return null;
 
-    const getStyleByVariant = (variant: string) => {
-        switch (variant) {
-            case 'default':
-                return styles.default;
-            case 'unstyled':
-                return styles.unstyled;
-            default:
-                return styles.default;
-        }
-    };
-
     return createPortal(
         <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={`${styles.modalContent} ${getStyleByVariant(variant)}`} onClick={(e) => e.stopPropagation()}>
+            <div className={`${styles.modalContainer} ${styles[variant]} ${styles[size]}`} onClick={(e) => e.stopPropagation()}>
                 <IconButton className={styles.quitButton} onClick={() => onClose?.()}>
                     <XIcon />
                 </IconButton>
@@ -51,3 +53,6 @@ export default function Modal({
         document.body
     );
 }
+
+Modal.Header = ModalHeader;
+Modal.Content = ModalContent;

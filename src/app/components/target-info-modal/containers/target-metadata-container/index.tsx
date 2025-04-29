@@ -1,7 +1,7 @@
 'use client';
 
 import TargetMetadata from '@/app/components/target-info-modal/components/target-metadata';
-import Modal from '@/app/components/modal';
+import { Modal } from '@/app/components/modal';
 import CreateMetadataForm from '@/app/components/create-metadata-form';
 import { useState } from 'react';
 import { TargetsService } from '@/services/targets-service';

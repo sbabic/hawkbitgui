@@ -1,0 +1,24 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+    display: flex !important;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    margin: 0px !important;
+    .checkbox {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        
+        &.error {
+            border-color: $error-dark-color;
+        }
+    }
+    
+    .description {
+        font-size: 14px;
+        margin: 0px;
+        user-select: none;
+    }
+}

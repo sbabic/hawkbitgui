@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './styles.module.scss';
-import Modal from '@/app/components/modal';
+import { Modal } from '@/app/components/modal';
 import Button from '@/app/components/button';
 
 export default function ConfirmDeleteModal({

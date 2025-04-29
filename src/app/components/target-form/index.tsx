@@ -2,12 +2,12 @@
 
 import styles from './styles.module.scss';
 import { useForm } from 'react-hook-form';
-import Button from '@/app/components/button';
 import Input from '../input';
 import Select from '@/app/components/select';
 import TextArea from '@/app/components/text-area';
 import { TargetType } from '@/entities';
 import { useEffect } from 'react';
+import { ActionButtons } from '../action-buttons';
 
 export interface FormData {
     controllerId: string;
@@ -94,12 +94,10 @@ export default function TargetForm({ onSubmit, onCancel, targetTypes, defaultVal
                     <TextArea placeholder='Add additional details' {...register('description')} className={styles.textarea} />
                 </div>
 
-                <div className={styles.buttonContainer}>
-                    <Button>{isEditing ? 'Update' : 'Save'}</Button>
-                    <Button variant='outline' onClick={onCancel}>
-                        Cancel
-                    </Button>
-                </div>
+                <ActionButtons>
+                    <ActionButtons.Primary type='submit'>{isEditing ? 'Update' : 'Save'}</ActionButtons.Primary>
+                    {onCancel && <ActionButtons.Secondary onClick={onCancel}>Cancel</ActionButtons.Secondary>}
+                </ActionButtons>
             </form>
         </div>
     );

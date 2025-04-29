@@ -7,7 +7,7 @@ import FolderIcon from '@/app/components/icons/folder-icon';
 import IconButton from '@/app/components/icon-button';
 import ExpandIcon from '@/app/components/icons/expand-icon';
 import MinimizeIcon from '@/app/components/icons/minimize-icon';
-import Modal from '@/app/components/modal';
+import { Modal } from '@/app/components/modal';
 import FilterIcon from '@/app/components/icons/filter-icon';
 import TargetFilters from '@/app/components/target-filters';
 import TargetTableContainer from '@/app/containers/target-table-container';

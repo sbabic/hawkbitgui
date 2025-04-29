@@ -6,21 +6,21 @@ import Button from '@/app/components/button';
 import IconButton from '@/app/components/icon-button';
 import SearchIcon from '@/app/components/icons/search-icon';
 import ChevronDownIcon from '@/app/components/icons/chevron-down-icon';
-import RolloutsTableContainer from '../../containers/rollouts-table-container';
 import PlusIcon from '@/app/components/icons/plus-icon';
 import { Modal } from '@/app/components/modal';
 import { useState } from 'react';
-import RolloutFormContainer from '../../containers/rollout-form-container';
+import DistributionSetFormContainer from '../../containers/distribution-set-form-container';
+import DistributionSetsTableContainer from '../../containers/distribution-sets-table-container';
 
-export default function RolloutsCard() {
-    const [isCreateRolloutFormOpen, setIsCreateRolloutFormOpen] = useState(false);
+export default function DistributionSetsCard() {
+    const [isCreateDistributionSetFormOpen, setIsCreateDistributionSetFormOpen] = useState(false);
 
     const openForm = () => {
-        setIsCreateRolloutFormOpen(true);
+        setIsCreateDistributionSetFormOpen(true);
     };
 
     const closeForm = () => {
-        setIsCreateRolloutFormOpen(false);
+        setIsCreateDistributionSetFormOpen(false);
     };
 
     return (
@@ -28,13 +28,13 @@ export default function RolloutsCard() {
             <Card expanded={true}>
                 <div className={styles.cardBody}>
                     <div className={styles.header}>
-                        <h2>Rollouts</h2>
+                        <h2>Distribution Sets</h2>
                         <div className={styles.headerButtons}>
                             <IconButton width='30px' height='30px'>
                                 <SearchIcon />
                             </IconButton>
                             <Button leftIcon={<PlusIcon width={18} height={18} />} onClick={openForm}>
-                                Create new rollout
+                                Create new distribution
                             </Button>
                             <Button variant='ghost' rightIcon={<ChevronDownIcon width={18} height={18} />}>
                                 Manage columns
@@ -42,14 +42,14 @@ export default function RolloutsCard() {
                         </div>
                     </div>
                     <div className={styles.table}>
-                        <RolloutsTableContainer />
+                        <DistributionSetsTableContainer />
                     </div>
                 </div>
             </Card>
-            <Modal size='xl' isOpen={isCreateRolloutFormOpen} onClose={closeForm}>
-                <Modal.Header>Create new rollout</Modal.Header>
+            <Modal isOpen={isCreateDistributionSetFormOpen} onClose={closeForm}>
+                <Modal.Header>Create new distribution set</Modal.Header>
                 <Modal.Content>
-                    <RolloutFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
+                    <DistributionSetFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
                 </Modal.Content>
             </Modal>
         </div>
