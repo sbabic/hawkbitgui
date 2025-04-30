@@ -107,7 +107,7 @@ export default function DistributionsTable({
                             <PinIcon />
                         </IconButton>
                         <IconButton height={'30px'} width={'30px'} onClick={() => onInvalidateClick?.(info.row.original)}>
-                            <BlockIcon />
+                            <BlockIcon width={20} height={20} />
                         </IconButton>
                         <IconButton height={'30px'} width={'30px'} onClick={() => onDeleteClick?.(info.row.original)}>
                             <TrashIcon />

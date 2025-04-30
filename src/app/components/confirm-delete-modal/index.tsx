@@ -16,7 +16,7 @@ export default function ConfirmDeleteModal({
     isOpen: boolean;
 }) {
     return (
-        <Modal isOpen={isOpen} onClose={onClose} size={'fitContent'}>
+        <Modal isOpen={isOpen} onClose={onClose} size={'fitContent'} variant={'unstyled'}>
             <div className={styles.container}>
                 <h2 className={styles.title}>Confirm Deletion</h2>
                 <p className={styles.message}>{message}</p>
