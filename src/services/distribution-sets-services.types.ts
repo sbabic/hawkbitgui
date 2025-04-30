@@ -11,7 +11,7 @@ export type CreateDistributionSetInput = {
     type: string;
 };
 
-export type CreateDistributionSetResponse = ApiResponse<Distribution>;
+export type CreateDistributionSetResponse = Distribution;
 
 export type GetDistributionSetsResponse = ApiResponse<Distribution[]>;
 

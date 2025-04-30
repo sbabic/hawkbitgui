@@ -1,9 +1,14 @@
 import { Distribution } from '@/entities/distribution';
 import axiosInstance from '@/lib/axios';
-import { CreateDistributionSetInput, GetDistributionSetsResponse } from './distribution-sets-services.types';
+import {
+    CreateDistributionSetInput,
+    CreateDistributionSetResponse,
+    GetDistributionSetsOutput,
+    GetDistributionSetsResponse,
+} from './distribution-sets-services.types';
 
 export class DistributionSetsService {
-    static async fetchDistributionSets(): Promise<Distribution[]> {
+    static async fetchDistributionSets(): Promise<GetDistributionSetsOutput> {
         try {
             const response = await axiosInstance.get<GetDistributionSetsResponse>(`/distributionsets`);
             return response.data.content;
@@ -15,10 +20,20 @@ export class DistributionSetsService {
 
     static async createDistributionSet(data: CreateDistributionSetInput[]): Promise<Distribution> {
         try {
-            const response = await axiosInstance.post(`/distributionsets`, data);
+            const response = await axiosInstance.post<CreateDistributionSetResponse>(`/distributionsets`, data);
             return response.data;
         } catch (error) {
             console.error('Failed to create distribution set', error);
+            throw error;
+        }
+    }
+
+    static async deleteDistributionSet(id: number | string): Promise<void> {
+        try {
+            const response = await axiosInstance.delete(`/distributionsets/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error('Failed to delete distribution set', error);
             throw error;
         }
     }

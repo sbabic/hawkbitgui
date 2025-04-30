@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useTargetsTableStore } from '@/stores/targets-table-store';
 import DistributionsCard from '@/app/x/deployment/components/distributions-card';
+import { useDistributionsTableStore } from '@/stores/distributions-table-store';
 
 export default function DistributionsCardContainer() {
-    const targetsTableStore = useTargetsTableStore();
+    const distributionsTableStore = useDistributionsTableStore();
     const [isExpanded, setIsExpanded] = useState(false);
 
     const [isCreateTargetFormOpen, setIsCreateTargetFormOpen] = useState(false);
@@ -13,7 +13,7 @@ export default function DistributionsCardContainer() {
 
     const handleExpand = () => {
         setIsExpanded((prev) => !prev);
-        targetsTableStore.setIsExpanded(!isExpanded);
+        distributionsTableStore.setIsExpanded(!isExpanded);
     };
 
     return (
