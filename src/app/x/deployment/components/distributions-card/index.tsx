@@ -30,7 +30,7 @@ export default function DistributionsCard({
 }: DistributionsCardProps) {
     return (
         <>
-            <PanelCard>
+            <PanelCard expanded={isExpanded}>
                 <PanelCard.Header title='Distributions' onToggleExpand={onToggleExpand} isExpanded={isExpanded} />
                 <PanelCard.Actions>
                     <div className={styles.actionButtons}>
