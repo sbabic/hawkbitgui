@@ -37,18 +37,6 @@
         flex-direction: row;
         align-items: center;
         gap: 16px;
-
-        .bulkUploadButton {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-
-        .filterButton {
-            margin-left: auto;
-        }
     }
 
     .table {

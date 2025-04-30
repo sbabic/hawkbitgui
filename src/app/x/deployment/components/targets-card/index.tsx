@@ -1,18 +1,16 @@
 'use client';
 
 import styles from './styles.module.scss';
-import Card from '@/app/components/card';
 import Button from '@/app/components/button';
 import FolderIcon from '@/app/components/icons/folder-icon';
 import IconButton from '@/app/components/icon-button';
-import ExpandIcon from '@/app/components/icons/expand-icon';
-import MinimizeIcon from '@/app/components/icons/minimize-icon';
 import { Modal } from '@/app/components/modal';
 import FilterIcon from '@/app/components/icons/filter-icon';
 import TargetFilters from '@/app/components/target-filters';
 import TargetTableContainer from '@/app/containers/target-table-container';
 import CreateTargetFormContainer from '@/app/containers/create-target-form-container';
 import ExpandableSearchBarContainer from '@/app/containers/expandable-search-bar-container';
+import PanelCard from '@/app/components/panel-card';
 
 type TargetsCardProps = {
     isExpanded: boolean;
@@ -37,32 +35,26 @@ export default function TargetsCard({
 }: TargetsCardProps) {
     return (
         <>
-            <Card expanded={isExpanded}>
-                <div className={styles.cardBody}>
-                    <div className={styles.header}>
-                        <h2>Targets</h2>
-                        <div className={styles.headerButtons}>
-                            <ExpandableSearchBarContainer />
-                            <IconButton width='30px' height='30px' onClick={onToggleExpand}>
-                                {isExpanded ? <MinimizeIcon /> : <ExpandIcon />}
-                            </IconButton>
-                        </div>
-                    </div>
-                    <div className={styles.actionButtons}>
-                        <Button onClick={onOpenCreateTargetForm}>+ New target</Button>
-                        <Button variant='outline' className={styles.bulkUploadButton}>
-                            <FolderIcon />
-                            Bulk Upload Targets
-                        </Button>
-                        <IconButton className={styles.filterButton} onClick={onOpenTargetFiltersModal}>
-                            <FilterIcon />
-                        </IconButton>
-                    </div>
-                    <div className={styles.table}>
-                        <TargetTableContainer />
-                    </div>
-                </div>
-            </Card>
+            <PanelCard expanded={isExpanded}>
+                <PanelCard.Header title='Targets' isExpanded={isExpanded} onToggleExpand={onToggleExpand}>
+                    <ExpandableSearchBarContainer />
+                </PanelCard.Header>
+
+                <PanelCard.Actions>
+                    <Button onClick={onOpenCreateTargetForm}>+ New target</Button>
+                    <Button variant='outline' className={styles.bulkUploadButton}>
+                        <FolderIcon />
+                        Bulk Upload Targets
+                    </Button>
+                    <IconButton className={styles.filterButton} onClick={onOpenTargetFiltersModal}>
+                        <FilterIcon />
+                    </IconButton>
+                </PanelCard.Actions>
+
+                <PanelCard.Content>
+                    <TargetTableContainer />
+                </PanelCard.Content>
+            </PanelCard>
 
             <Modal isOpen={isCreateTargetFormOpen} onClose={onCloseCreateTargetForm} size={'md'}>
                 <CreateTargetFormContainer onSubmitSuccess={onCloseCreateTargetForm} onCancel={onCloseCreateTargetForm} />
