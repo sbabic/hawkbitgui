@@ -7,12 +7,22 @@
   font-size: 14px;
   background-color: $background-disabled-color;
   
-  label {
+  .radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 14px;
     color: $text-disabled-color;
     margin: 0px;
     padding: 8px 16px;
     cursor: pointer;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
   }
   
   &:hover {
@@ -22,9 +32,8 @@
   &.checked {
     background-color: $accent-color;
 
-    label {
+    .radioLabel {
       color: $secondary-color;
-      
     }
   }
 }

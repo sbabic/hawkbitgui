@@ -55,3 +55,17 @@ h3 {
 .unknown {
     background-color: $status-unknown;
 }
+
+input {
+    border: 1px solid $border-disabled-color;
+    transition: border-color 0.2s ease;
+
+    &::placeholder {
+        color: $secondary-text-color;
+    }
+
+    &:focus {
+        outline: $primary-text-color;
+        border: 1px solid $primary-text-color;
+    }
+}

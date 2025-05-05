@@ -10,13 +10,22 @@
 
     .textArea {
         font-family: 'Nunito Sans', sans-serif;
-        color: $secondary-text-color;
+        color: $primary-text-color;
         font-weight: 400;
         font-size: 16px;
         border-radius: 8px;
         padding: 16px;
         background-color: $background-disabled-color;
         border: 1px solid $border-disabled-color;
+
+        &::placeholder {
+            color: $secondary-text-color;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: $primary-text-color;
+        }
     }
 
     .error {

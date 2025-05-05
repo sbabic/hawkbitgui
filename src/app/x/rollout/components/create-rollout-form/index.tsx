@@ -12,6 +12,11 @@ import { RolloutTypes } from '@/entities/rollout';
 import { Distribution } from '@/entities';
 import { CreateRolloutInput } from '@/services/rollouts-service.types';
 import { ActionButtons } from '@/app/components/action-buttons';
+import ThunderCloudIcon from '@/app/components/icons/thunder-cloud-icon';
+import CloudIcon from '@/app/components/icons/cloud-icon';
+import DownloadIcon from '@/app/components/icons/download-icon';
+import ClockCloudIcon from '@/app/components/icons/clock-cloud-icon';
+import DateTimePicker from '@/app/components/datetime-picker';
 
 type CreateRolloutFormProps = {
     distributionSets: Distribution[];
@@ -27,27 +32,31 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
         handleSubmit,
         control,
         formState: { errors },
+        watch,
     } = useForm<CreateRolloutInput>({
         defaultValues: {
             type: RolloutTypes.SOFT,
         },
     });
 
+    const actionType = watch('type');
+
     const actionTypeOptions = [
-        { id: RolloutTypes.FORCED, label: 'Forced' },
-        { id: RolloutTypes.SOFT, label: 'Soft' },
-        { id: RolloutTypes.DOWNLOAD_ONLY, label: 'Download only' },
-        { id: RolloutTypes.TIME_FORCED, label: 'Time forced' },
+        { id: RolloutTypes.FORCED, label: 'Forced', icon: <ThunderCloudIcon /> },
+        { id: RolloutTypes.SOFT, label: 'Soft', icon: <CloudIcon /> },
+        { id: RolloutTypes.DOWNLOAD_ONLY, label: 'Download only', icon: <DownloadIcon /> },
+        { id: RolloutTypes.TIME_FORCED, label: 'Time forced', icon: <ClockCloudIcon /> },
     ];
 
-    // const startTypeOptions = [
-    //     { id: 'manual', label: 'Manual' },
-    //     { id: 'auto', label: 'Auto' },
-    //     { id: 'scheduled', label: 'Scheduled' },
-    // ];
+    const submit = (data: CreateRolloutInput) => {
+        if (data.type !== RolloutTypes.TIME_FORCED && data.forcetime) {
+            data.forcetime = undefined;
+        }
+        onSubmit(data);
+    };
 
     return (
-        <form className={styles.formContent} onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles.formContent} onSubmit={handleSubmit(submit)}>
             <div className={styles.threeColumns}>
                 <FormControl id='name' label='Name' errorMessage={errors.name?.message} required>
                     <Input id='name' placeholder='Enter rollout name' {...register('name', { required: 'Name is required' })} />
@@ -76,21 +85,18 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
                 <TextArea id='description' placeholder='Add additional details' {...register('description')} />
             </FormControl>
 
-            <FormControl id='type' label='Action type' errorMessage={errors.type?.message}>
-                <Controller
-                    name='type'
-                    control={control}
-                    render={({ field }) => <RadioGroup value={field.value ?? ''} options={actionTypeOptions} onChange={field.onChange} />}
-                />
-            </FormControl>
-
-            {/* <FormControl id='startType' label='Start type' errorMessage={errors.startType?.message}>
-                        <Controller
-                            name='startType'
-                            control={control}
-                            render={({ field }) => <RadioGroup value={field.value ?? ''} options={startTypeOptions} onChange={field.onChange} />}
-                        />
-                    </FormControl> */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <FormControl id='type' label='Action type' errorMessage={errors.type?.message} required>
+                    <Controller
+                        name='type'
+                        control={control}
+                        render={({ field }) => <RadioGroup value={field.value ?? ''} options={actionTypeOptions} onChange={field.onChange} />}
+                    />
+                </FormControl>
+                {actionType === RolloutTypes.TIME_FORCED && (
+                    <Controller control={control} name='forcetime' render={({ field }) => <DateTimePicker {...field} />} />
+                )}
+            </div>
 
             <div className={styles.tabGroup}>
                 <div className={styles.tabs}>

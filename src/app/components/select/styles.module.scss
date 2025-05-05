@@ -20,6 +20,15 @@
         option {
             color: $light-primary-text-color;
         }
+
+        &::placeholder {
+            color: $secondary-text-color;
+        }
+
+        &:focus {
+            outline: $primary-text-color;
+            border-color: $primary-text-color;
+        }
     }
 
     .error {
