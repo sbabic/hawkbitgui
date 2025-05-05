@@ -1,12 +1,14 @@
 'use client';
 
 import { Distribution } from '@/entities';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useConfirmDialog } from '@/app/hooks';
 import DistributionsTable from '@/app/x/deployment/components/distributions-table';
 import { useDistributionsTableStore } from '@/stores/distributions-table-store';
 import { DistributionSetsService } from '@/services/distribution-sets-service';
+import { Modal } from '@/app/components/modal';
+import DistributionInfo from '@/app/x/deployment/components/distribution-info';
 
 export default function DistributionsTableContainer() {
     const filteredDistributions = useDistributionsTableStore((state) => state.filteredDistributions);
@@ -14,7 +16,7 @@ export default function DistributionsTableContainer() {
     const fetchDistributions = useDistributionsTableStore((state) => state.fetchDistributions);
     const distributionsTableStore = useDistributionsTableStore();
 
-    // const [isDistributionInfoModalOpen, setIsDistributionInfoModalOpen] = useState(false);
+    const [isDistributionInfoModalOpen, setIsDistributionInfoModalOpen] = useState(false);
     // const [isEditDistributionModalOpen, setIsEditDistributionModalOpen] = useState(false);
 
     const confirmDialog = useConfirmDialog<Distribution>();
@@ -46,12 +48,13 @@ export default function DistributionsTableContainer() {
                 expanded={isExpanded}
                 onNameClick={(distribution) => {
                     distributionsTableStore.setSelectedDistribution(distribution);
+                    setIsDistributionInfoModalOpen(true);
                 }}
                 onDeleteClick={handleDeleteClick}
             />
-            {/*<Modal isOpen={isDistributionInfoModalOpen} variant='unstyled' onClose={() => setIsDistributionInfoModalOpen(false)} size='fitContent'>*/}
-            {/*    <DistributionInfo />*/}
-            {/*</Modal>*/}
+            <Modal isOpen={isDistributionInfoModalOpen} variant='unstyled' onClose={() => setIsDistributionInfoModalOpen(false)} size='fitContent'>
+                <DistributionInfo />
+            </Modal>
             {/*<Modal isOpen={isEditDistributionModalOpen} onClose={() => setIsEditDistributionModalOpen(false)} size='fitContent'>*/}
             {/*    <EditDistributionFormContainer*/}
             {/*        onCancel={() => setIsEditDistributionModalOpen(false)}*/}

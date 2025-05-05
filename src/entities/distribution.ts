@@ -17,5 +17,4 @@ export interface Distribution {
     createdAt: number;
     lastModifiedBy: string;
     lastModifiedAt: number;
-    _links: Record<string, string>;
 }

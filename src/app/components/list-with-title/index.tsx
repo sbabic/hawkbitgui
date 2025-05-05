@@ -9,7 +9,7 @@ export default function ListWithTitle({
     title: string;
     items: {
         title: string;
-        value?: string;
+        value?: string | number | boolean | null;
     }[];
 }) {
     return (
