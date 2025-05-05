@@ -8,7 +8,7 @@ interface UseFilterMultipleSelectProps<T> {
     setSelectedOptions: (options: T[]) => void;
     getOptionId: (option: T) => string | number;
     getOptionLabel: (option: T) => string;
-    fetchTargets: () => Promise<void>;
+    fetchEntities: () => Promise<void>;
     setFilters: (filters: Record<string, FilterFiql>) => void;
     filters: Record<string, FilterFiql>;
 }
@@ -20,7 +20,7 @@ export function useFilterMultipleSelect<T>({
     setSelectedOptions,
     getOptionId,
     getOptionLabel,
-    fetchTargets,
+    fetchEntities,
     setFilters,
     filters,
 }: UseFilterMultipleSelectProps<T>) {
@@ -63,7 +63,7 @@ export function useFilterMultipleSelect<T>({
         const newFilters = { ...filters, [filter.current.property]: filter.current };
         setFilters(newFilters);
 
-        fetchTargets().catch((error) => console.error('Failed to fetch targets:', error));
+        fetchEntities().catch((error) => console.error('Failed to fetch entities:', error));
     }, [selectedOptions]);
 
     return {

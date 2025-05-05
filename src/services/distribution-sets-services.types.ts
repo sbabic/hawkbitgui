@@ -1,5 +1,5 @@
 import { ApiResponse } from './types';
-import { Distribution } from '@/entities';
+import { Distribution, FilterFiql } from '@/entities';
 
 export type CreateDistributionSetInput = {
     name: string;
@@ -12,6 +12,10 @@ export type CreateDistributionSetInput = {
 };
 
 export type CreateDistributionSetResponse = Distribution;
+
+export interface GetDistributionSetsInput {
+    filters: FilterFiql[];
+}
 
 export type GetDistributionSetsResponse = ApiResponse<Distribution[]>;
 

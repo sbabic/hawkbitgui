@@ -3,14 +3,17 @@ import axiosInstance from '@/lib/axios';
 import {
     CreateDistributionSetInput,
     CreateDistributionSetResponse,
+    GetDistributionSetsInput,
     GetDistributionSetsOutput,
     GetDistributionSetsResponse,
 } from './distribution-sets-services.types';
+import { FilterFiql } from '@/entities';
 
 export class DistributionSetsService {
-    static async fetchDistributionSets(): Promise<GetDistributionSetsOutput> {
+    static async fetchDistributionSets(input?: GetDistributionSetsInput): Promise<GetDistributionSetsOutput> {
         try {
-            const response = await axiosInstance.get<GetDistributionSetsResponse>(`/distributionsets`);
+            const fiqlQueryParam = FilterFiql.parseFiltersToFiqlQueryParam(input?.filters || []);
+            const response = await axiosInstance.get<GetDistributionSetsResponse>(`/distributionsets?${fiqlQueryParam}`);
             return response.data.content;
         } catch (error) {
             console.error('Failed to fetch distribution sets', error);

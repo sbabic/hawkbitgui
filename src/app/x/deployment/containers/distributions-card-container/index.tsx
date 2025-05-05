@@ -8,8 +8,8 @@ export default function DistributionsCardContainer() {
     const distributionsTableStore = useDistributionsTableStore();
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const [isCreateTargetFormOpen, setIsCreateTargetFormOpen] = useState(false);
-    const [isTargetFiltersModalOpen, setIsTargetFiltersModalOpen] = useState(false);
+    const [isCreateDistributionFormOpen, setIsCreateDistributionFormOpen] = useState(false);
+    const [isDistributionsFiltersModalOpen, setIsDistributionsFiltersModalOpen] = useState(false);
 
     const handleExpand = () => {
         setIsExpanded((prev) => !prev);
@@ -20,11 +20,11 @@ export default function DistributionsCardContainer() {
         <DistributionsCard
             isExpanded={isExpanded}
             onToggleExpand={handleExpand}
-            isCreateTargetFormOpen={isCreateTargetFormOpen}
-            onCloseCreateTargetForm={() => setIsCreateTargetFormOpen(false)}
-            isTargetFiltersModalOpen={isTargetFiltersModalOpen}
-            onOpenTargetFiltersModal={() => setIsTargetFiltersModalOpen(true)}
-            onCloseTargetFiltersModal={() => setIsTargetFiltersModalOpen(false)}
+            isCreateDistributionFormOpen={isCreateDistributionFormOpen}
+            onCloseCreateDistributionForm={() => setIsCreateDistributionFormOpen(false)}
+            isDistributionsFiltersModalOpen={isDistributionsFiltersModalOpen}
+            onOpenDistributionsFiltersModal={() => setIsDistributionsFiltersModalOpen(true)}
+            onCloseDistributionsFiltersModal={() => setIsDistributionsFiltersModalOpen(false)}
         />
     );
 }

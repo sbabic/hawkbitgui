@@ -26,7 +26,7 @@ export default function ByStatusFilterContainer() {
         setSelectedOptions: setSelectedStatuses,
         getOptionId: (status) => status,
         getOptionLabel: (status) => status,
-        fetchTargets,
+        fetchEntities: fetchTargets,
         setFilters,
         filters,
     });

@@ -24,7 +24,7 @@ export default function ByTypeFilterContainer() {
         setSelectedOptions: setSelectedTypes,
         getOptionId: (type: TargetType) => type.id,
         getOptionLabel: (type: TargetType) => type.name,
-        fetchTargets,
+        fetchEntities: fetchTargets,
         setFilters,
         filters,
     });

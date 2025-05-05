@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Distribution } from '@/entities';
 import { DistributionSetsService } from '@/services/distribution-sets-service';
+import { useDistributionsFiltersStore } from '@/stores/distributions-filters-store';
 
 interface DistributionsTableState {
     distributions: Distribution[];
@@ -29,7 +30,8 @@ export const useDistributionsTableStore = create<DistributionsTableState>((set) 
     setIsExpanded: (isExpanded) => set({ isExpanded }),
     fetchDistributions: async () => {
         try {
-            const response = await DistributionSetsService.fetchDistributionSets();
+            const filters = useDistributionsFiltersStore.getState().filters;
+            const response = await DistributionSetsService.fetchDistributionSets({ filters: Object.values(filters) });
             set({ distributions: response, filteredDistributions: response });
         } catch (error) {
             console.error('Failed to fetch distributions', error);
