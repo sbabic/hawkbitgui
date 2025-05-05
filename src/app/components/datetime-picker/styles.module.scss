@@ -1,0 +1,182 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+  position: relative;
+  width: fit-content;
+  max-width: 210px;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.calendarIcon {
+  color: $accent-color;
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.dateDisplay {
+  color: $accent-color;
+  font-size: 14px;
+}
+
+.calendarContainer {
+  padding: 12px;
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  width: 320px;
+  background-color: white;
+  border: 1px solid $border-disabled-color;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px 0 rgba(12, 12, 13, 0.1);
+  z-index: 10;
+}
+
+.calendarHeader {
+  padding: 12px 0;
+}
+
+.monthNavigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.monthName {
+  font-weight: 500;
+  font-size: 16px;
+  color: $text-disabled-color;
+}
+
+.navigationButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 12px;
+  color: $secondary-text-color;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 8px;
+  column-gap: 12px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  width: 32px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  color: $text-disabled-color;
+
+  &:hover {
+    background-color: $background-disabled-color;
+  }
+}
+
+.otherMonth {
+  color: $secondary-text-color;
+}
+
+.selectedDay {
+  background-color: $accent-color;
+  color: $text-color-inverse;
+
+  &:hover {
+    background-color: $accent-color;
+    color: $text-color-inverse;
+  }
+}
+
+.timeContainer {
+  padding: 8px 0px;
+  border-top: 1px solid #F0F3F7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeLabel {
+  font-size: 14px;
+  color: $light-primary-text-color;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.timeInputs {
+  display: flex;
+  align-items: center;
+}
+
+.timeInput {
+  width: 40px;
+  padding: 8px 0px;
+  text-align: center;
+  border-radius: 8px;
+  border: none;
+  background-color: $background-disabled-color;
+  font-size: 14px;
+}
+
+.timeSeparator {
+  margin: 0 2px;
+  font-size: 16px;
+  color: $light-primary-text-color;
+}
+
+.periodSelector {
+  display: flex;
+  margin-left: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: $background-disabled-color;
+  padding: 2px;
+  gap: 1px;
+}
+
+.periodButton {
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: $secondary-text-color;
+  border: none;
+  background-color: transparent;
+  border-radius: 8px;
+}
+
+
+.activePeriod {
+  background-color: #FFFFFF;
+  border-color: $border-disabled-color;
+  color: $light-primary-text-color;
+  
+}
