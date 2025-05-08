@@ -4,7 +4,9 @@
     display: flex;
     width: 100%;
     overflow-x: auto;
+}
 
+.defaultTable {
     table {
         width: 100%;
         min-width: 100%;
@@ -53,6 +55,33 @@
             td {
                 padding: 8px;
                 border-bottom: 2px solid #e6eafb;
+            }
+        }
+    }
+}
+
+.unstyledTable {
+    table {
+        thead {
+            tr {
+                width: 100%;
+            }
+
+            th {
+                padding: 8px;
+                text-align: left;
+                font-size: 14px;
+                font-weight: 700;
+                color: $primary-text-color;
+            }
+        }
+
+        tbody {
+            overflow: scroll;
+            width: 100%;
+
+            td {
+                padding: 4px 4px;
             }
         }
     }

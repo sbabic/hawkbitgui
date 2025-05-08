@@ -5,12 +5,20 @@
     flex-direction: column;
     gap: 6px;
 
-    .input {
+    .sm {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .lg {
         font-size: 16px;
+        padding: 16px;
+    }
+
+    .input {
         font-weight: 400;
         color: $primary-text-color;
         border-radius: 8px;
-        padding: 16px;
         background-color: $background-disabled-color;
         border: 1px solid $border-disabled-color;
         transition: border-color 0.2s ease;
