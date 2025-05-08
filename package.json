@@ -19,6 +19,7 @@
         "caniuse-lite": "^1.0.30001715",
         "dayjs": "^1.11.13",
         "framer-motion": "^12.7.4",
+        "js-md5": "^0.8.3",
         "lodash-es": "^4.17.21",
         "next": "15.3.1",
         "next-auth": "^4.24.11",

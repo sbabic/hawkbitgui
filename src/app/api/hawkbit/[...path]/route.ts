@@ -93,14 +93,24 @@ export async function POST(request: NextRequest, context: { params: Promise<{ pa
 
     try {
         const path = (await params).path.join('/');
-        const body = await request.json();
+        const contentType = request.headers.get('content-type') || '';
+
+        let body: FormData | unknown;
+        const headers: Record<string, string> = {
+            Authorization: `Basic ${session.user.auth}`,
+            Accept: 'application/json, application/hal+json',
+        };
+
+        if (contentType.includes('multipart/form-data')) {
+            const formData = await request.formData();
+            body = formData;
+        } else {
+            body = await request.json();
+            headers['Content-Type'] = 'application/json';
+        }
 
         const response = await axios.post(`${environment.hawkbitApiUrl}/rest/v1/${path}`, body, {
-            headers: {
-                Authorization: `Basic ${session.user.auth}`,
-                Accept: 'application/json, application/hal+json',
-                'Content-Type': 'application/json',
-            },
+            headers,
         });
 
         return NextResponse.json(response.data);

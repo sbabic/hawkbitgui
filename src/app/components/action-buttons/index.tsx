@@ -8,15 +8,16 @@ type ActionButtonsProps = {
 type PrimaryButtonProps = ActionButtonsProps & {
     type?: HTMLButtonElement['type'];
     onClick?: () => void;
+    disabled?: boolean;
 };
 
 type SecondaryButtonProps = ActionButtonsProps & {
     onClick: () => void;
 };
 
-function PrimaryButton({ type = 'button', children, onClick }: PrimaryButtonProps) {
+function PrimaryButton({ type = 'button', children, onClick, disabled }: PrimaryButtonProps) {
     return (
-        <Button type={type} onClick={onClick}>
+        <Button type={type} onClick={onClick} disabled={disabled}>
             {children}
         </Button>
     );
