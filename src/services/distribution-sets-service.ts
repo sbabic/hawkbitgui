@@ -1,13 +1,15 @@
 import { Distribution } from '@/entities/distribution';
 import axiosInstance from '@/lib/axios';
 import {
+    AssignModulesToDistributionSetInput,
     CreateDistributionSetInput,
     CreateDistributionSetResponse,
+    GetAssignedSoftwareModulesResponse,
     GetDistributionSetsInput,
     GetDistributionSetsOutput,
     GetDistributionSetsResponse,
 } from './distribution-sets-services.types';
-import { FilterFiql } from '@/entities';
+import { FilterFiql, SoftwareModule } from '@/entities';
 
 export class DistributionSetsService {
     static async fetchDistributionSets(input?: GetDistributionSetsInput): Promise<GetDistributionSetsOutput> {
@@ -39,5 +41,19 @@ export class DistributionSetsService {
             console.error('Failed to delete distribution set', error);
             throw error;
         }
+    }
+
+    static async getAssignedSoftwareModules(id: number | string): Promise<SoftwareModule[]> {
+        const response = await axiosInstance.get<GetAssignedSoftwareModulesResponse>(`/distributionsets/${id}/assignedSM`);
+        return response.data.content;
+    }
+
+    static async assignModulesToDistributionSet(data: AssignModulesToDistributionSetInput): Promise<void> {
+        const { distributionSetId, softwareModuleIds } = data;
+        const response = await axiosInstance.post(
+            `/distributionsets/${distributionSetId}/assignedSM`,
+            softwareModuleIds.map((id) => ({ id }))
+        );
+        return response.data;
     }
 }

@@ -1,5 +1,5 @@
 import { ApiResponse } from './types';
-import { Distribution, FilterFiql } from '@/entities';
+import { Distribution, FilterFiql, SoftwareModule } from '@/entities';
 
 export type CreateDistributionSetInput = {
     name: string;
@@ -20,3 +20,10 @@ export interface GetDistributionSetsInput {
 export type GetDistributionSetsResponse = ApiResponse<Distribution[]>;
 
 export type GetDistributionSetsOutput = Distribution[];
+
+export type GetAssignedSoftwareModulesResponse = ApiResponse<SoftwareModule[]>;
+
+export type AssignModulesToDistributionSetInput = {
+    distributionSetId: number;
+    softwareModuleIds: number[];
+};
