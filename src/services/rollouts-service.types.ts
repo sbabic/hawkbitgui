@@ -1,6 +1,17 @@
 import { Rollout, RolloutType } from '@/entities/rollout';
 import { ApiResponse } from './types';
 
+export const Action = {
+    NEXTGROUP: 'NEXTGROUP',
+    PAUSE: 'PAUSE',
+} as const;
+export type Action = (typeof Action)[keyof typeof Action];
+
+export const Condition = {
+    THRESHOLD: 'THRESHOLD',
+} as const;
+export type Condition = (typeof Condition)[keyof typeof Condition];
+
 type SuccessCondition = {
     condition: 'THRESHOLD';
     expression: string;
