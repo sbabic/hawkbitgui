@@ -52,7 +52,7 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
         if (data.type !== RolloutTypes.TIME_FORCED && data.forcetime) {
             data.forcetime = undefined;
         }
-        onSubmit(data);
+        onSubmit({ ...data, forcetime: data.forcetime ? new Date(data.forcetime).getTime() : undefined });
     };
 
     return (
@@ -63,7 +63,7 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
                 </FormControl>
 
                 <FormControl id='distributionSetId' label='Distribution set' errorMessage={errors.distributionSetId?.message} required>
-                    <Select {...register('distributionSetId')} className={styles.select}>
+                    <Select {...register('distributionSetId', { valueAsNumber: true })} className={styles.select}>
                         <option value=''>Choose a distribution set</option>
                         {distributionSets.map((distributionSet) => (
                             <option key={distributionSet.id} value={distributionSet.id}>
@@ -123,15 +123,46 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
 
                             <div className={styles.threeColumns}>
                                 <FormControl id='amountGroups' label='Number of groups' errorMessage={errors.amountGroups?.message}>
-                                    <Input id='amountGroups' placeholder='Enter group count' type='number' {...register('amountGroups')} />
+                                    <Input
+                                        id='amountGroups'
+                                        placeholder='Enter group count'
+                                        type='number'
+                                        {...register('amountGroups', { valueAsNumber: true })}
+                                    />
                                 </FormControl>
 
                                 <FormControl id='successCondition' label='Trigger threshold' errorMessage={errors.successCondition?.message}>
-                                    <Input id='successCondition' placeholder='Enter trigger value (%)' type='number' {...register('successCondition')} />
+                                    <Controller
+                                        control={control}
+                                        name='successCondition'
+                                        render={({ field }) => (
+                                            <Input
+                                                id='successCondition'
+                                                placeholder='Enter trigger value (%)'
+                                                type='number'
+                                                onChange={(e) => {
+                                                    field.onChange({ condition: 'THRESHOLD', expression: e.target.value });
+                                                }}
+                                            />
+                                        )}
+                                    />
                                 </FormControl>
 
                                 <FormControl id='errorCondition' label='Error threshold' errorMessage={errors.errorCondition?.message}>
-                                    <Input id='errorCondition' placeholder='Enter max errors' type='number' {...register('errorCondition')} />
+                                    <Controller
+                                        control={control}
+                                        name='errorCondition'
+                                        render={({ field }) => (
+                                            <Input
+                                                id='errorCondition'
+                                                placeholder='Enter max errors'
+                                                type='number'
+                                                onChange={(e) => {
+                                                    field.onChange({ condition: 'THRESHOLD', expression: e.target.value });
+                                                }}
+                                            />
+                                        )}
+                                    />
                                 </FormControl>
                             </div>
                         </>
