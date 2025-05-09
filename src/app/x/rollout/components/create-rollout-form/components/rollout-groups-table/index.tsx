@@ -8,22 +8,9 @@ import TrashIcon from '@/app/components/icons/trash-icon';
 import Input from '@/app/components/input';
 import FormControl from '@/app/components/form-control';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { CreateRolloutFormData } from '../../index';
-import Button from '@/app/components/button';
 
-type RolloutGroup = {
-  name: string;
-  targetFilterQuery: string;
-  targetPercentage: number;
-  successCondition: {
-    condition: 'THRESHOLD';
-    expression: number;
-  };
-  errorCondition: {
-    condition: 'THRESHOLD';
-    expression: number;
-  };
-};
+import Button from '@/app/components/button';
+import { CreateRolloutFormData, RolloutGroup } from '../../types';
 
 export default function RolloutGroupsTable() {
   const {

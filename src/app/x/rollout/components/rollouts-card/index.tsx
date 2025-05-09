@@ -13,45 +13,47 @@ import { useState } from 'react';
 import RolloutFormContainer from '../../containers/rollout-form-container';
 
 export default function RolloutsCard() {
-    const [isCreateRolloutFormOpen, setIsCreateRolloutFormOpen] = useState(false);
+  const [isCreateRolloutFormOpen, setIsCreateRolloutFormOpen] = useState(false);
 
-    const openForm = () => {
-        setIsCreateRolloutFormOpen(true);
-    };
+  const openForm = () => {
+    setIsCreateRolloutFormOpen(true);
+  };
 
-    const closeForm = () => {
-        setIsCreateRolloutFormOpen(false);
-    };
+  const closeForm = () => {
+    setIsCreateRolloutFormOpen(false);
+  };
 
-    return (
-        <div>
-            <Card expanded={true}>
-                <div className={styles.cardBody}>
-                    <div className={styles.header}>
-                        <h2>Rollouts</h2>
-                        <div className={styles.headerButtons}>
-                            <IconButton width='30px' height='30px'>
-                                <SearchIcon />
-                            </IconButton>
-                            <Button leftIcon={<PlusIcon width={18} height={18} />} onClick={openForm}>
-                                Create new rollout
-                            </Button>
-                            <Button variant='ghost' rightIcon={<ChevronDownIcon width={18} height={18} />}>
-                                Manage columns
-                            </Button>
-                        </div>
-                    </div>
-                    <div className={styles.table}>
-                        <RolloutsTableContainer />
-                    </div>
-                </div>
-            </Card>
-            <Modal size='xl' isOpen={isCreateRolloutFormOpen} onClose={closeForm}>
-                <Modal.Header>Create new rollout</Modal.Header>
-                <Modal.Content>
-                    <RolloutFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
-                </Modal.Content>
-            </Modal>
+  return (
+    <div>
+      <Card expanded={true}>
+        <div className={styles.cardBody}>
+          <div className={styles.header}>
+            <h2>Rollouts</h2>
+            <div className={styles.headerButtons}>
+              <IconButton width='30px' height='30px'>
+                <SearchIcon />
+              </IconButton>
+              <Button leftIcon={<PlusIcon width={18} height={18} />} onClick={openForm}>
+                Create new rollout
+              </Button>
+              <Button variant='ghost' rightIcon={<ChevronDownIcon width={18} height={18} />}>
+                Manage columns
+              </Button>
+            </div>
+          </div>
+          <div className={styles.table}>
+            <RolloutsTableContainer />
+          </div>
         </div>
-    );
+      </Card>
+      <Modal size='xl' isOpen={isCreateRolloutFormOpen} onClose={closeForm}>
+        <Modal.Header>Create new rollout</Modal.Header>
+        <Modal.Content>
+          <div style={{ maxHeight: '82vh', overflow: 'auto' }}>
+            <RolloutFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
+          </div>
+        </Modal.Content>
+      </Modal>
+    </div>
+  );
 }

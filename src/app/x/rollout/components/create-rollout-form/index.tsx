@@ -8,84 +8,26 @@ import Select from '@/app/components/select';
 import FormControl from '@/app/components/form-control';
 import RadioGroup from '@/app/components/radio-group';
 import TextArea from '@/app/components/text-area';
-import { RolloutTypes } from '@/entities/rollout';
+import { RolloutTypes, StartType } from '@/entities/rollout';
 import { Distribution } from '@/entities';
-import { Condition, CreateRolloutInput } from '@/services/rollouts-service.types';
 import { ActionButtons } from '@/app/components/action-buttons';
 import ThunderCloudIcon from '@/app/components/icons/thunder-cloud-icon';
 import CloudIcon from '@/app/components/icons/cloud-icon';
 import DownloadIcon from '@/app/components/icons/download-icon';
 import ClockCloudIcon from '@/app/components/icons/clock-cloud-icon';
 import DateTimePicker from '@/app/components/datetime-picker';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import TouchIcon from '@/app/components/icons/touch-icon';
 import ClockIcon from '@/app/components/icons/clock-icon';
 import PlayCircleIcon from '@/app/components/icons/play-circle-icon';
 import RolloutGroupsTable from './components/rollout-groups-table';
+import { CreateRolloutFormData, CreateRolloutFormSchema } from './types';
 
 type CreateRolloutFormProps = {
   distributionSets: Distribution[];
-  onSubmit: (data: CreateRolloutInput) => void;
+  onSubmit: (data: CreateRolloutFormData) => void;
   onCancel: () => void;
 };
-
-const StartType = {
-  MANUAL: 'MANUAL',
-  AUTO: 'AUTO',
-  SCHEDULED: 'SCHEDULED',
-} as const;
-
-const CreateRolloutFormSchema = z
-  .object({
-    name: z.string().min(1, { message: 'Name is required' }),
-    distributionSetId: z.number({ message: 'Distribution set is required' }).min(1, { message: 'Distribution set is required' }),
-    targetFilterQuery: z.string().min(1, { message: 'Custom target filter is required' }),
-    description: z.string().optional(),
-    type: z.nativeEnum(RolloutTypes, { message: 'Action type is required' }),
-    forcetime: z.date().optional(),
-    startType: z.nativeEnum(StartType, { message: 'Start type is required' }),
-    startAt: z.date().optional(),
-    amountGroups: z.number({ message: 'Number of groups is required' }).min(1, { message: 'Number of groups is required' }).optional(),
-    successCondition: z
-      .object({
-        condition: z.literal(Condition.THRESHOLD),
-        expression: z.number().int({ message: 'Trigger threshold must be a whole number' }).min(1, { message: 'Trigger threshold must be greater than 0' }),
-      })
-      .optional(),
-    errorCondition: z
-      .object({
-        condition: z.literal(Condition.THRESHOLD),
-        expression: z.number().min(1, { message: 'Error threshold must be greater than 0' }),
-      })
-      .optional(),
-    groups: z
-      .array(
-        z.object({
-          name: z.string().min(1, { message: 'Group name is required' }),
-          targetFilterQuery: z.string().min(1, { message: 'Target filter query is required' }),
-          targetPercentage: z.number().min(1, { message: 'Target percentage must be greater than 0' }),
-          successCondition: z.object({
-            condition: z.literal(Condition.THRESHOLD),
-            expression: z.number().int({ message: 'Trigger threshold must be a whole number' }).min(1, { message: 'Trigger threshold must be greater than 0' }),
-          }),
-          errorCondition: z.object({
-            condition: z.literal(Condition.THRESHOLD),
-            expression: z.number().min(1, { message: 'Error threshold must be greater than 0' }),
-          }),
-        })
-      )
-      .optional(),
-  })
-  .refine((data) => !(data.type === RolloutTypes.TIME_FORCED && !data.forcetime), {
-    message: 'Forced action requires a forced time',
-    path: ['forcetime'],
-  })
-  .refine((data) => !(data.groups === undefined && data.amountGroups === undefined), {
-    message: 'Number of groups is required x2',
-    path: ['amountGroups'],
-  });
-export type CreateRolloutFormData = z.infer<typeof CreateRolloutFormSchema>;
 
 export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel }: CreateRolloutFormProps) {
   const [activeTab, setActiveTab] = useState<'numberOfGroups' | 'advancedDefinition'>('numberOfGroups');
@@ -121,50 +63,8 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
     { id: StartType.SCHEDULED, label: 'Scheduled', icon: <ClockIcon width={20} height={20} /> },
   ];
 
-  const submit = (data: CreateRolloutFormData) => {
-    if (data.type !== RolloutTypes.TIME_FORCED && data.forcetime) {
-      data.forcetime = undefined;
-    }
-    if (data.startType !== StartType.SCHEDULED && data.startAt) {
-      data.startAt = undefined;
-    }
-    const createRolloutInput = mapFormDataToCreateRolloutInput(data);
-    onSubmit(createRolloutInput);
-  };
-
-  const mapFormDataToCreateRolloutInput = (data: CreateRolloutFormData): CreateRolloutInput => {
-    return {
-      ...data,
-      forcetime: data.forcetime ? data.forcetime.getTime() : undefined,
-      startAt: data.startAt ? data.startAt.getTime() : undefined,
-      successCondition: data.successCondition
-        ? {
-            ...data.successCondition,
-            expression: data.successCondition.expression.toString(),
-          }
-        : undefined,
-      errorCondition: data.errorCondition
-        ? {
-            ...data.errorCondition,
-            expression: data.errorCondition.expression.toString(),
-          }
-        : undefined,
-      groups: data.groups?.map((group) => ({
-        ...group,
-        successCondition: {
-          ...group.successCondition,
-          expression: group.successCondition.expression.toString(),
-        },
-        errorCondition: {
-          ...group.errorCondition,
-          expression: group.errorCondition.expression.toString(),
-        },
-      })),
-    };
-  };
-
   return (
-    <form className={styles.formContent} onSubmit={handleSubmit(submit)}>
+    <form className={styles.formContent} onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.threeColumns}>
         <FormControl id='name' label='Name' errorMessage={errors.name?.message} required>
           <Input id='name' placeholder='Enter rollout name' {...register('name', { required: 'Name is required' })} />

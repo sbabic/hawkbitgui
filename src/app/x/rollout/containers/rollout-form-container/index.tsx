@@ -2,22 +2,62 @@ import { useGetDistributionSets } from '@/app/x/distributions/hooks/use-get-dist
 import CreateRolloutForm from '../../components/create-rollout-form';
 import { useCreateRollout } from '../../hooks/use-create-rollout';
 import { useGetRollouts } from '../../hooks/use-get-rollouts';
+import { CreateRolloutFormData } from '../../components/create-rollout-form/types';
 import { CreateRolloutInput } from '@/services/rollouts-service.types';
+import { RolloutTypes, StartType } from '@/entities/rollout';
 
 export interface RolloutFormContainerProps {
-    onSubmitSuccess: () => void;
-    onCancel: () => void;
+  onSubmitSuccess: () => void;
+  onCancel: () => void;
+}
+
+function mapFormDataToCreateRolloutInput(data: CreateRolloutFormData): CreateRolloutInput {
+  if (data.type !== RolloutTypes.TIME_FORCED && data.forcetime) {
+    data.forcetime = undefined;
+  }
+  if (data.startType !== StartType.SCHEDULED && data.startAt) {
+    data.startAt = undefined;
+  }
+  return {
+    ...data,
+    forcetime: data.forcetime ? data.forcetime.getTime() : undefined,
+    startAt: data.startAt ? data.startAt.getTime() : undefined,
+    successCondition: data.successCondition
+      ? {
+          ...data.successCondition,
+          expression: data.successCondition.expression.toString(),
+        }
+      : undefined,
+    errorCondition: data.errorCondition
+      ? {
+          ...data.errorCondition,
+          expression: data.errorCondition.expression.toString(),
+        }
+      : undefined,
+    groups: data.groups?.map((group) => ({
+      ...group,
+      successCondition: {
+        ...group.successCondition,
+        expression: group.successCondition.expression.toString(),
+      },
+      errorCondition: {
+        ...group.errorCondition,
+        expression: group.errorCondition.expression.toString(),
+      },
+    })),
+  };
 }
 
 export default function RolloutFormContainer({ onSubmitSuccess, onCancel }: RolloutFormContainerProps) {
-    const { refetch } = useGetRollouts({ queryOptions: { enabled: false } });
-    const { data: distributionSets } = useGetDistributionSets();
-    const { createRollout } = useCreateRollout();
+  const { refetch } = useGetRollouts({ queryOptions: { enabled: false } });
+  const { data: distributionSets } = useGetDistributionSets();
+  const { createRollout } = useCreateRollout();
 
-    const handleSubmit = async (data: CreateRolloutInput) => {
-        await createRollout(data);
-        onSubmitSuccess();
-        refetch();
-    };
-    return <CreateRolloutForm distributionSets={distributionSets ?? []} onSubmit={handleSubmit} onCancel={onCancel} />;
+  const handleSubmit = async (data: CreateRolloutFormData) => {
+    const input = mapFormDataToCreateRolloutInput(data);
+    await createRollout(input);
+    onSubmitSuccess();
+    refetch();
+  };
+  return <CreateRolloutForm distributionSets={distributionSets ?? []} onSubmit={handleSubmit} onCancel={onCancel} />;
 }
