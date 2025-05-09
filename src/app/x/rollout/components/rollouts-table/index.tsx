@@ -15,120 +15,120 @@ import ForwardIcon from '@/app/components/icons/forward-icon';
 import PauseIcon from '@/app/components/icons/pause-icon';
 
 export type RolloutsTableProps = {
-    rollouts: Rollout[];
-    onRolloutNameClick: (rollout: Rollout) => void;
-    onPlayClick: (rollout: Rollout) => void;
-    onPinClick: (rollout: Rollout) => void;
-    onDetailsClick: (rollout: Rollout) => void;
-    onEditClick: (rollout: Rollout) => void;
-    onCopyClick: (rollout: Rollout) => void;
-    onDeleteClick: (rollout: Rollout) => void;
+  rollouts: Rollout[];
+  onRolloutNameClick: (rollout: Rollout) => void;
+  onPlayClick: (rollout: Rollout) => void;
+  onPinClick: (rollout: Rollout) => void;
+  onDetailsClick: (rollout: Rollout) => void;
+  onEditClick: (rollout: Rollout) => void;
+  onCopyClick: (rollout: Rollout) => void;
+  onDeleteClick: (rollout: Rollout) => void;
 };
 
 export default function RolloutsTable({
-    rollouts = [],
-    onRolloutNameClick,
-    onPlayClick,
-    onPinClick,
-    onDetailsClick,
-    onEditClick,
-    onCopyClick,
-    onDeleteClick,
+  rollouts = [],
+  onRolloutNameClick,
+  onPlayClick,
+  onPinClick,
+  onDetailsClick,
+  onEditClick,
+  onCopyClick,
+  onDeleteClick,
 }: RolloutsTableProps) {
-    const columnHelper = createColumnHelper<Rollout>();
+  const columnHelper = createColumnHelper<Rollout>();
 
-    const columns = useMemo(() => {
-        return [
-            columnHelper.accessor('name', {
-                header: 'Name',
-                cell: (cell) => cell.getValue(),
-            }),
-            columnHelper.accessor('distributionSetId', {
-                header: 'Distribution set',
-                cell: (cell) => cell.getValue(),
-            }),
-            columnHelper.accessor('status', {
-                header: 'Status',
-                cell: (cell) => cell.getValue(),
-            }),
-            columnHelper.accessor('totalTargetsPerStatus', {
-                header: 'Detail status',
-                cell: (cell) => {
-                    const totalTargetsPerStatus = cell.getValue();
-                    if (!totalTargetsPerStatus) {
-                        return null;
-                    }
+  const columns = useMemo(() => {
+    return [
+      columnHelper.accessor('name', {
+        header: 'Name',
+        cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.accessor('distributionSetId', {
+        header: 'Distribution set',
+        cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.accessor('status', {
+        header: 'Status',
+        cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.accessor('totalTargetsPerStatus', {
+        header: 'Detail status',
+        cell: (cell) => {
+          const totalTargetsPerStatus = cell.getValue();
+          if (!totalTargetsPerStatus) {
+            return null;
+          }
 
-                    for (const status in totalTargetsPerStatus) {
-                        const statusKey = status as TotalTargetCountStatus;
-                        if (totalTargetsPerStatus[statusKey] === 0) {
-                            delete totalTargetsPerStatus[statusKey];
-                        }
-                    }
+          for (const status in totalTargetsPerStatus) {
+            const statusKey = status as TotalTargetCountStatus;
+            if (totalTargetsPerStatus[statusKey] === 0) {
+              delete totalTargetsPerStatus[statusKey];
+            }
+          }
 
-                    const statusMapper: Record<TotalTargetCountStatus, React.ReactElement | null> = {
-                        running: <div className={styles.runningDot}></div>,
-                        notstarted: <div className={styles.notStartedIcon}></div>,
-                        scheduled: <div className={styles.scheduledDot}></div>,
-                        cancelled: <div className={styles.cancelledDot}></div>,
-                        finished: <div className={styles.finishedDot}></div>,
-                        error: <div className={styles.errorDot}></div>,
-                    };
+          const statusMapper: Record<TotalTargetCountStatus, React.ReactElement | null> = {
+            running: <div className={styles.runningDot}></div>,
+            notstarted: <div className={styles.notStartedIcon}></div>,
+            scheduled: <div className={styles.scheduledDot}></div>,
+            cancelled: <div className={styles.cancelledDot}></div>,
+            finished: <div className={styles.finishedDot}></div>,
+            error: <div className={styles.errorDot}></div>,
+          };
 
-                    return (
-                        <div>
-                            {Object.entries(totalTargetsPerStatus).map(([status, count]) => (
-                                <div key={status} className={styles.statusCell}>
-                                    {statusMapper[status as TotalTargetCountStatus]} {count} {status}
-                                </div>
-                            ))}
-                        </div>
-                    );
-                },
-            }),
-            columnHelper.accessor('totalGroups', {
-                header: 'Groups',
-                cell: (cell) => cell.getValue(),
-            }),
-            columnHelper.accessor('totalTargets', {
-                header: 'Targets',
-                cell: (cell) => cell.getValue(),
-            }),
-            columnHelper.display({
-                id: 'actions',
-                header: 'Actions',
-                cell: (info) => (
-                    <div className={styles.actionButtons}>
-                        <IconButton height={'24px'} width={'24px'} onClick={() => onPlayClick(info.row.original)}>
-                            <PlayIcon />
-                        </IconButton>
-                        <IconButton height={'24px'} width={'24px'} onClick={() => onPinClick(info.row.original)}>
-                            <ThumbsUpIcon />
-                        </IconButton>
-                        <IconButton height={'24px'} width={'24px'} onClick={() => onDetailsClick(info.row.original)}>
-                            <PauseIcon />
-                        </IconButton>
-                        <IconButton height={'24px'} width={'24px'} onClick={() => onDetailsClick(info.row.original)}>
-                            <ForwardIcon />
-                        </IconButton>
-                        <IconButton height={'24px'} width={'24px'} onClick={() => onEditClick(info.row.original)}>
-                            <EditIcon />
-                        </IconButton>
-                        <IconButton height={'24px'} width={'24px'} onClick={() => onCopyClick(info.row.original)}>
-                            <CopyIcon />
-                        </IconButton>
-                        <IconButton height={'24px'} width={'24px'} onClick={() => onDeleteClick(info.row.original)}>
-                            <TrashIcon />
-                        </IconButton>
-                    </div>
-                ),
-            }),
-        ];
-    }, [columnHelper, onRolloutNameClick, onPlayClick, onPinClick, onDetailsClick, onEditClick, onCopyClick, onDeleteClick]);
+          return (
+            <div>
+              {Object.entries(totalTargetsPerStatus).map(([status, count]) => (
+                <div key={status} className={styles.statusCell}>
+                  {statusMapper[status as TotalTargetCountStatus]} {count} {status}
+                </div>
+              ))}
+            </div>
+          );
+        },
+      }),
+      columnHelper.accessor('totalGroups', {
+        header: 'Groups',
+        cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.accessor('totalTargets', {
+        header: 'Targets',
+        cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.display({
+        id: 'actions',
+        header: 'Actions',
+        cell: (info) => (
+          <div className={styles.actionButtons}>
+            <IconButton height={'24px'} width={'24px'} onClick={() => onPlayClick(info.row.original)}>
+              <PlayIcon />
+            </IconButton>
+            <IconButton height={'24px'} width={'24px'} onClick={() => onPinClick(info.row.original)}>
+              <ThumbsUpIcon />
+            </IconButton>
+            <IconButton height={'24px'} width={'24px'} onClick={() => onDetailsClick(info.row.original)}>
+              <PauseIcon />
+            </IconButton>
+            <IconButton height={'24px'} width={'24px'} onClick={() => onDetailsClick(info.row.original)}>
+              <ForwardIcon />
+            </IconButton>
+            <IconButton height={'24px'} width={'24px'} onClick={() => onEditClick(info.row.original)}>
+              <EditIcon />
+            </IconButton>
+            <IconButton height={'24px'} width={'24px'} onClick={() => onCopyClick(info.row.original)}>
+              <CopyIcon />
+            </IconButton>
+            <IconButton height={'24px'} width={'24px'} onClick={() => onDeleteClick(info.row.original)}>
+              <TrashIcon />
+            </IconButton>
+          </div>
+        ),
+      }),
+    ];
+  }, [columnHelper, onPlayClick, onPinClick, onDetailsClick, onEditClick, onCopyClick, onDeleteClick]);
 
-    return (
-        <>
-            <Table columns={columns} data={rollouts} />
-        </>
-    );
+  return (
+    <>
+      <Table columns={columns} data={rollouts} />
+    </>
+  );
 }
