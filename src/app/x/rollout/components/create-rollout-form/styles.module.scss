@@ -1,17 +1,5 @@
 @use 'src/app/styles/variables' as *;
 
-.formContent {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.threeColumns {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
-}
-
 .tabGroup {
   margin-top: 32px;
 }

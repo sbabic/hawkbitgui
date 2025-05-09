@@ -11,6 +11,8 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import Button from '@/app/components/button';
 import { CreateRolloutFormData, RolloutGroup } from '../../types';
+import { Condition } from '@/services/rollouts-service.types';
+import PlusIcon from '@/app/components/icons/plus-icon';
 
 export default function RolloutGroupsTable() {
   const {
@@ -35,8 +37,8 @@ export default function RolloutGroupsTable() {
         name: 'Group 1',
         targetFilterQuery: '',
         targetPercentage: 100,
-        successCondition: { condition: 'THRESHOLD', expression: 50 },
-        errorCondition: { condition: 'THRESHOLD', expression: 50 },
+        successCondition: { condition: Condition.THRESHOLD, expression: 50 },
+        errorCondition: { condition: Condition.THRESHOLD, expression: 50 },
       });
       didInit.current = true;
     }
@@ -47,8 +49,8 @@ export default function RolloutGroupsTable() {
       name: `Group ${groupsField.length + 1}`,
       targetFilterQuery: '',
       targetPercentage: 100,
-      successCondition: { condition: 'THRESHOLD', expression: 50 },
-      errorCondition: { condition: 'THRESHOLD', expression: 50 },
+      successCondition: { condition: Condition.THRESHOLD, expression: 50 },
+      errorCondition: { condition: Condition.THRESHOLD, expression: 50 },
     });
   };
 
@@ -123,7 +125,7 @@ export default function RolloutGroupsTable() {
                   inputSize='sm'
                   value={field.value?.expression ?? ''}
                   onChange={(e) => {
-                    field.onChange({ condition: 'THRESHOLD', expression: Number(e.target.value) });
+                    field.onChange({ condition: Condition.THRESHOLD, expression: Number(e.target.value) });
                   }}
                 />
               )}
@@ -146,7 +148,7 @@ export default function RolloutGroupsTable() {
                   inputSize='sm'
                   value={field.value?.expression ?? ''}
                   onChange={(e) => {
-                    field.onChange({ condition: 'THRESHOLD', expression: Number(e.target.value) });
+                    field.onChange({ condition: Condition.THRESHOLD, expression: Number(e.target.value) });
                   }}
                 />
               )}
@@ -173,7 +175,9 @@ export default function RolloutGroupsTable() {
     <div>
       <Table variant='unstyled' columns={columns} data={groupsField} />
       <div style={{ marginTop: 16 }}>
-        <Button onClick={handleAddGroup}>Add group</Button>
+        <Button onClick={handleAddGroup} leftIcon={<PlusIcon />}>
+          Add group
+        </Button>
       </div>
     </div>
   );

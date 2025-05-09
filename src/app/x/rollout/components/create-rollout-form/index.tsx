@@ -22,6 +22,8 @@ import ClockIcon from '@/app/components/icons/clock-icon';
 import PlayCircleIcon from '@/app/components/icons/play-circle-icon';
 import RolloutGroupsTable from './components/rollout-groups-table';
 import { CreateRolloutFormData, CreateRolloutFormSchema } from './types';
+import RolloutNumberOfGroups from './components/rollout-number-of-groups';
+import Form from '@/app/components/form';
 
 type CreateRolloutFormProps = {
   distributionSets: Distribution[];
@@ -64,8 +66,8 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
   ];
 
   return (
-    <form className={styles.formContent} onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles.threeColumns}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
         <FormControl id='name' label='Name' errorMessage={errors.name?.message} required>
           <Input id='name' placeholder='Enter rollout name' {...register('name', { required: 'Name is required' })} />
         </FormControl>
@@ -151,63 +153,19 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
           {activeTab === 'numberOfGroups' && (
             <>
               <p className={styles.tabDescription}>Generate the groups automatically with the specified thresholds.</p>
-
-              <div className={styles.threeColumns}>
-                <FormControl id='amountGroups' label='Number of groups' errorMessage={errors.amountGroups?.message} required>
-                  <Input
-                    id='amountGroups'
-                    placeholder='Enter group count'
-                    type='number'
-                    {...register('amountGroups', {
-                      setValueAs: (v) => (v === '' ? undefined : Number(v)),
-                    })}
-                  />
-                </FormControl>
-
-                <FormControl id='successCondition' label='Trigger threshold' errorMessage={errors.successCondition?.expression?.message}>
-                  <Controller
-                    control={control}
-                    name='successCondition'
-                    render={({ field }) => (
-                      <Input
-                        id='successCondition'
-                        placeholder='Enter trigger value (%)'
-                        type='number'
-                        onChange={(e) => {
-                          field.onChange({ condition: 'THRESHOLD', expression: Number(e.target.value) });
-                        }}
-                      />
-                    )}
-                  />
-                </FormControl>
-
-                <FormControl id='errorCondition' label='Error threshold' errorMessage={errors.errorCondition?.expression?.message}>
-                  <Controller
-                    control={control}
-                    name='errorCondition'
-                    render={({ field }) => (
-                      <Input
-                        id='errorCondition'
-                        placeholder='Enter max errors'
-                        type='number'
-                        onChange={(e) => {
-                          field.onChange({ condition: 'THRESHOLD', expression: Number(e.target.value) });
-                        }}
-                      />
-                    )}
-                  />
-                </FormControl>
-              </div>
+              <FormProvider {...formMethods}>
+                <RolloutNumberOfGroups />
+              </FormProvider>
             </>
           )}
 
           {activeTab === 'advancedDefinition' && (
-            <div className={styles.tabDescription}>
-              <p>Define which groups the Rollout should have.</p>
+            <>
+              <p className={styles.tabDescription}>Define which groups the Rollout should have.</p>
               <FormProvider {...formMethods}>
                 <RolloutGroupsTable />
               </FormProvider>
-            </div>
+            </>
           )}
         </div>
       </div>
@@ -218,6 +176,6 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
         <ActionButtons.Primary type='submit'>Save</ActionButtons.Primary>
         <ActionButtons.Secondary onClick={onCancel}>Cancel</ActionButtons.Secondary>
       </ActionButtons>
-    </form>
+    </Form>
   );
 }
