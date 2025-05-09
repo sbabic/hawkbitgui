@@ -25,16 +25,7 @@ export type RolloutsTableProps = {
   onDeleteClick: (rollout: Rollout) => void;
 };
 
-export default function RolloutsTable({
-  rollouts = [],
-  onRolloutNameClick,
-  onPlayClick,
-  onPinClick,
-  onDetailsClick,
-  onEditClick,
-  onCopyClick,
-  onDeleteClick,
-}: RolloutsTableProps) {
+export default function RolloutsTable({ rollouts = [], onPlayClick, onPinClick, onDetailsClick, onEditClick, onCopyClick, onDeleteClick }: RolloutsTableProps) {
   const columnHelper = createColumnHelper<Rollout>();
 
   const columns = useMemo(() => {
