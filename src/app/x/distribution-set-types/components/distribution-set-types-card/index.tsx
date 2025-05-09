@@ -1,6 +1,5 @@
 'use client';
 
-import styles from './styles.module.scss';
 import Card from '@/app/components/card';
 import Button from '@/app/components/button';
 import IconButton from '@/app/components/icon-button';
@@ -13,45 +12,43 @@ import DistributionSetTypesTableContainer from '../../containers/distribution-se
 import DistributionSetTypeFormContainer from '../../containers/distribution-set-type-form-container';
 
 export default function DistributionSetTypesCard() {
-    const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
 
-    const openForm = () => {
-        setIsCreateFormOpen(true);
-    };
+  const openForm = () => {
+    setIsCreateFormOpen(true);
+  };
 
-    const closeForm = () => {
-        setIsCreateFormOpen(false);
-    };
+  const closeForm = () => {
+    setIsCreateFormOpen(false);
+  };
 
-    return (
-        <div>
-            <Card expanded={true}>
-                <div className={styles.cardBody}>
-                    <div className={styles.header}>
-                        <h2>Distribution Set Types</h2>
-                        <div className={styles.headerButtons}>
-                            <IconButton width='30px' height='30px'>
-                                <SearchIcon />
-                            </IconButton>
-                            <Button leftIcon={<PlusIcon width={18} height={18} />} onClick={openForm}>
-                                Create new type
-                            </Button>
-                            <Button variant='ghost' rightIcon={<ChevronDownIcon width={18} height={18} />}>
-                                Manage columns
-                            </Button>
-                        </div>
-                    </div>
-                    <div className={styles.table}>
-                        <DistributionSetTypesTableContainer />
-                    </div>
-                </div>
-            </Card>
-            <Modal isOpen={isCreateFormOpen} onClose={closeForm}>
-                <Modal.Header>Create new distribution set type</Modal.Header>
-                <Modal.Content>
-                    <DistributionSetTypeFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
-                </Modal.Content>
-            </Modal>
-        </div>
-    );
+  return (
+    <>
+      <Card expanded={true}>
+        <Card.Header>
+          <Card.Title>Distribution Set Types</Card.Title>
+          <Card.Actions>
+            <IconButton width='30px' height='30px'>
+              <SearchIcon />
+            </IconButton>
+            <Button leftIcon={<PlusIcon width={18} height={18} />} onClick={openForm}>
+              Create new type
+            </Button>
+            <Button variant='ghost' rightIcon={<ChevronDownIcon width={18} height={18} />}>
+              Manage columns
+            </Button>
+          </Card.Actions>
+        </Card.Header>
+        <Card.Body>
+          <DistributionSetTypesTableContainer />
+        </Card.Body>
+      </Card>
+      <Modal isOpen={isCreateFormOpen} onClose={closeForm}>
+        <Modal.Header>Create new distribution set type</Modal.Header>
+        <Modal.Content>
+          <DistributionSetTypeFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
+        </Modal.Content>
+      </Modal>
+    </>
+  );
 }
