@@ -56,26 +56,24 @@ export default function Card({ children, expanded = false }: { children?: React.
   }, []);
 
   return (
-    <div>
-      <motion.div
-        ref={cardRef}
-        className={`${styles.card} ${expanded ? styles.expanded : ''}`}
-        initial={{ minWidth: 300, minHeight: 200 }}
-        animate={
-          expanded
-            ? {
-                width: parentWidth,
-                height: parentHeight > 0 ? parentHeight : 'fit-content',
-              }
-            : {
-                width: 'fit-content',
-              }
-        }
-        transition={{ duration: 0.4, ease: 'easeInOut' }}
-      >
-        <div className={styles.container}>{children}</div>
-      </motion.div>
-    </div>
+    <motion.div
+      ref={cardRef}
+      className={`${styles.card} ${expanded ? styles.expanded : ''}`}
+      initial={{ minWidth: 300, minHeight: 200 }}
+      animate={
+        expanded
+          ? {
+              width: parentWidth,
+              height: parentHeight > 0 ? parentHeight : 'fit-content',
+            }
+          : {
+              width: 'fit-content',
+            }
+      }
+      transition={{ duration: 0.4, ease: 'easeInOut' }}
+    >
+      <div className={styles.container}>{children}</div>
+    </motion.div>
   );
 }
 
