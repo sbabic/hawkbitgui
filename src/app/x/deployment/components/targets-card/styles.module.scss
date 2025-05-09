@@ -1,13 +1,22 @@
 @use 'src/app/styles/variables' as *;
 
 .filterButton {
-    margin-left: auto;
+  display: flex;
+  margin-left: auto;
+  justify-self: end;
+}
+
+.mainActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
 }
 
 .bulkUploadButton {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }

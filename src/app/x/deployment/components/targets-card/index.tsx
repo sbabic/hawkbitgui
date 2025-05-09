@@ -13,55 +13,57 @@ import ExpandableSearchBarContainer from '@/app/containers/expandable-search-bar
 import PanelCard from '@/app/components/panel-card';
 
 type TargetsCardProps = {
-    isExpanded: boolean;
-    onToggleExpand: () => void;
-    isCreateTargetFormOpen: boolean;
-    onOpenCreateTargetForm: () => void;
-    onCloseCreateTargetForm: () => void;
-    isTargetFiltersModalOpen: boolean;
-    onOpenTargetFiltersModal: () => void;
-    onCloseTargetFiltersModal: () => void;
+  isExpanded: boolean;
+  onToggleExpand: () => void;
+  isCreateTargetFormOpen: boolean;
+  onOpenCreateTargetForm: () => void;
+  onCloseCreateTargetForm: () => void;
+  isTargetFiltersModalOpen: boolean;
+  onOpenTargetFiltersModal: () => void;
+  onCloseTargetFiltersModal: () => void;
 };
 
 export default function TargetsCard({
-    isExpanded,
-    onToggleExpand,
-    isCreateTargetFormOpen,
-    onOpenCreateTargetForm,
-    onCloseCreateTargetForm,
-    isTargetFiltersModalOpen,
-    onOpenTargetFiltersModal,
-    onCloseTargetFiltersModal,
+  isExpanded,
+  onToggleExpand,
+  isCreateTargetFormOpen,
+  onOpenCreateTargetForm,
+  onCloseCreateTargetForm,
+  isTargetFiltersModalOpen,
+  onOpenTargetFiltersModal,
+  onCloseTargetFiltersModal,
 }: TargetsCardProps) {
-    return (
-        <>
-            <PanelCard expanded={isExpanded}>
-                <PanelCard.Header title='Targets' isExpanded={isExpanded} onToggleExpand={onToggleExpand}>
-                    <ExpandableSearchBarContainer />
-                </PanelCard.Header>
+  return (
+    <>
+      <PanelCard expanded={isExpanded}>
+        <PanelCard.Header title='Targets' isExpanded={isExpanded} onToggleExpand={onToggleExpand}>
+          <ExpandableSearchBarContainer />
+        </PanelCard.Header>
 
-                <PanelCard.Actions>
-                    <Button onClick={onOpenCreateTargetForm}>+ New target</Button>
-                    <Button variant='outline' className={styles.bulkUploadButton}>
-                        <FolderIcon />
-                        Bulk Upload Targets
-                    </Button>
-                    <IconButton className={styles.filterButton} onClick={onOpenTargetFiltersModal}>
-                        <FilterIcon />
-                    </IconButton>
-                </PanelCard.Actions>
+        <PanelCard.Actions>
+          <div className={styles.mainActions}>
+            <Button onClick={onOpenCreateTargetForm}>+ New target</Button>
+            <Button variant='outline' className={styles.bulkUploadButton}>
+              <FolderIcon />
+              Bulk Upload Targets
+            </Button>
+          </div>
+          <IconButton className={styles.filterButton} onClick={onOpenTargetFiltersModal}>
+            <FilterIcon />
+          </IconButton>
+        </PanelCard.Actions>
 
-                <PanelCard.Content>
-                    <TargetTableContainer />
-                </PanelCard.Content>
-            </PanelCard>
+        <PanelCard.Content>
+          <TargetTableContainer />
+        </PanelCard.Content>
+      </PanelCard>
 
-            <Modal isOpen={isCreateTargetFormOpen} onClose={onCloseCreateTargetForm} size={'md'}>
-                <CreateTargetFormContainer onSubmitSuccess={onCloseCreateTargetForm} onCancel={onCloseCreateTargetForm} />
-            </Modal>
-            <Modal isOpen={isTargetFiltersModalOpen} onClose={onCloseTargetFiltersModal} size={'fitContent'}>
-                <TargetFilters />
-            </Modal>
-        </>
-    );
+      <Modal isOpen={isCreateTargetFormOpen} onClose={onCloseCreateTargetForm} size={'md'}>
+        <CreateTargetFormContainer onSubmitSuccess={onCloseCreateTargetForm} onCancel={onCloseCreateTargetForm} />
+      </Modal>
+      <Modal isOpen={isTargetFiltersModalOpen} onClose={onCloseTargetFiltersModal} size={'fitContent'}>
+        <TargetFilters />
+      </Modal>
+    </>
+  );
 }

@@ -64,7 +64,7 @@ export function useFilterMultipleSelect<T>({
     setFilters(newFilters);
 
     fetchEntities().catch((error) => console.error('Failed to fetch entities:', error));
-  }, [selectedOptions, fetchEntities, filters, setFilters, getOptionLabel]);
+  }, [selectedOptions]);
 
   return {
     allOptions,
