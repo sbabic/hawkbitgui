@@ -24,14 +24,16 @@ import RolloutGroupsTable from './components/rollout-groups-table';
 import { CreateRolloutFormData, CreateRolloutFormSchema } from './types';
 import RolloutNumberOfGroups from './components/rollout-number-of-groups';
 import Form from '@/app/components/form';
+import { TargetFilter } from '@/entities/target-filter';
 
 type CreateRolloutFormProps = {
   distributionSets: Distribution[];
+  targetFilters: TargetFilter[];
   onSubmit: (data: CreateRolloutFormData) => void;
   onCancel: () => void;
 };
 
-export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel }: CreateRolloutFormProps) {
+export default function CreateRolloutForm({ distributionSets, targetFilters, onSubmit, onCancel }: CreateRolloutFormProps) {
   const [activeTab, setActiveTab] = useState<'numberOfGroups' | 'advancedDefinition'>('numberOfGroups');
 
   const formMethods = useForm<CreateRolloutFormData>({
@@ -83,10 +85,14 @@ export default function CreateRolloutForm({ distributionSets, onSubmit, onCancel
           </Select>
         </FormControl>
 
-        <FormControl id='customTargetFilter' label='Custom target filter' errorMessage={errors.targetFilterQuery?.message} required>
+        <FormControl id='targetFilterId' label='Target filter' errorMessage={errors.targetFilterQuery?.message} required>
           <Select {...register('targetFilterQuery')} className={styles.select}>
-            <option value=''>Choose a custom target filter</option>
-            <option value='id==test*'>id==test*</option>
+            <option value=''>Choose a target filter</option>
+            {targetFilters.map((targetFilter) => (
+              <option key={targetFilter.id} value={targetFilter.query}>
+                {targetFilter.name}
+              </option>
+            ))}
           </Select>
         </FormControl>
       </div>

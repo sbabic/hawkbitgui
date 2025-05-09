@@ -12,60 +12,59 @@ import { useConfirmDialog } from '@/app/hooks';
 import EditTargetFormContainer from '@/app/containers/edit-target-form-container';
 
 export default function TargetTableContainer() {
-    const filteredTargets = useTargetsTableStore((state) => state.filteredTargets);
-    const isExpanded = useTargetsTableStore((state) => state.isExpanded);
-    const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
-    const targetsTableStore = useTargetsTableStore();
+  const filteredTargets = useTargetsTableStore((state) => state.filteredTargets);
+  const isExpanded = useTargetsTableStore((state) => state.isExpanded);
+  const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
+  const targetsTableStore = useTargetsTableStore();
 
-    const [isTargetInfoModalOpen, setIsTargetInfoModalOpen] = useState(false);
-    const [isEditTargetModalOpen, setIsEditTargetModalOpen] = useState(false);
+  const [isTargetInfoModalOpen, setIsTargetInfoModalOpen] = useState(false);
+  const [isEditTargetModalOpen, setIsEditTargetModalOpen] = useState(false);
 
-    const confirmDialog = useConfirmDialog<Target>();
+  const confirmDialog = useConfirmDialog<Target>();
 
-    const handleDeleteClick = (target: Target) => {
-        confirmDialog.open(target, async () => {
-            await TargetsService.deleteTarget(target.controllerId);
-            await fetchTargets();
-            targetsTableStore.resetSelectedTarget();
-        });
-    };
+  const handleDeleteClick = (target: Target) => {
+    confirmDialog.open(target, async () => {
+      await TargetsService.deleteTarget(target.controllerId);
+      await fetchTargets();
+      targetsTableStore.resetSelectedTarget();
+    });
+  };
 
-    const handleEditClick = (target: Target) => {
-        targetsTableStore.setSelectedTarget(target);
-        setIsEditTargetModalOpen(true);
-    };
+  const handleEditClick = (target: Target) => {
+    targetsTableStore.setSelectedTarget(target);
+    setIsEditTargetModalOpen(true);
+  };
 
-    useEffect(() => {
-        fetchTargets().catch(console.error);
-    }, [fetchTargets]);
+  useEffect(() => {
+    fetchTargets().catch(console.error);
+  }, [fetchTargets]);
 
-    return (
-        <>
-            <TargetTable
-                targets={filteredTargets.map((target) => ({
-                    ...target,
-                    status: 'Error',
-                }))}
-                expanded={isExpanded}
-                onTargetNameClick={(target) => {
-                    targetsTableStore.setSelectedTarget(target);
-                    setIsTargetInfoModalOpen(true);
-                }}
-                onDeleteClick={handleDeleteClick}
-                onEditClick={handleEditClick}
-            />
-            <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' onClose={() => setIsTargetInfoModalOpen(false)} size={'fitContent'}>
-                <TargetInfo />
-            </Modal>
-            <Modal isOpen={isEditTargetModalOpen} onClose={() => setIsEditTargetModalOpen(false)} size={'fitContent'}>
-                <EditTargetFormContainer onCancel={() => setIsEditTargetModalOpen(false)} onSubmitSuccess={() => setIsEditTargetModalOpen(false)} />
-            </Modal>
-            <ConfirmDeleteModal
-                message={`Are you sure you want to delete target "${confirmDialog.data?.name}"?`}
-                isOpen={confirmDialog.isOpen}
-                onConfirm={confirmDialog.confirm}
-                onClose={confirmDialog.close}
-            />
-        </>
-    );
+  return (
+    <>
+      <TargetTable
+        targets={filteredTargets.map((target) => ({
+          ...target,
+          status: 'Error',
+        }))}
+        expanded={isExpanded}
+        onTargetNameClick={(target) => {
+          targetsTableStore.setSelectedTarget(target);
+          setIsTargetInfoModalOpen(true);
+        }}
+        onDeleteClick={handleDeleteClick}
+        onEditClick={handleEditClick}
+      />
+      <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' onClose={() => setIsTargetInfoModalOpen(false)} size={'fitContent'}>
+        <TargetInfo />
+      </Modal>
+      <Modal isOpen={isEditTargetModalOpen} onClose={() => setIsEditTargetModalOpen(false)} size={'fitContent'}>
+        <EditTargetFormContainer onCancel={() => setIsEditTargetModalOpen(false)} onSubmitSuccess={() => setIsEditTargetModalOpen(false)} />
+      </Modal>
+      <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
+        <ConfirmDeleteModal.Message>
+          Are you sure you want to delete target <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?
+        </ConfirmDeleteModal.Message>
+      </ConfirmDeleteModal>
+    </>
+  );
 }

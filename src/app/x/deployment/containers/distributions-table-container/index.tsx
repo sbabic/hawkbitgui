@@ -11,62 +11,61 @@ import { Modal } from '@/app/components/modal';
 import DistributionInfo from '@/app/x/deployment/components/distribution-info';
 
 export default function DistributionsTableContainer() {
-    const filteredDistributions = useDistributionsTableStore((state) => state.filteredDistributions);
-    const isExpanded = useDistributionsTableStore((state) => state.isExpanded);
-    const fetchDistributions = useDistributionsTableStore((state) => state.fetchDistributions);
-    const distributionsTableStore = useDistributionsTableStore();
+  const filteredDistributions = useDistributionsTableStore((state) => state.filteredDistributions);
+  const isExpanded = useDistributionsTableStore((state) => state.isExpanded);
+  const fetchDistributions = useDistributionsTableStore((state) => state.fetchDistributions);
+  const distributionsTableStore = useDistributionsTableStore();
 
-    const [isDistributionInfoModalOpen, setIsDistributionInfoModalOpen] = useState(false);
-    // const [isEditDistributionModalOpen, setIsEditDistributionModalOpen] = useState(false);
+  const [isDistributionInfoModalOpen, setIsDistributionInfoModalOpen] = useState(false);
+  // const [isEditDistributionModalOpen, setIsEditDistributionModalOpen] = useState(false);
 
-    const confirmDialog = useConfirmDialog<Distribution>();
+  const confirmDialog = useConfirmDialog<Distribution>();
 
-    const handleDeleteClick = (distribution: Distribution) => {
-        confirmDialog.open(distribution, async () => {
-            await DistributionSetsService.deleteDistributionSet(distribution.id);
-            await fetchDistributions();
-            distributionsTableStore.resetSelectedDistribution();
-        });
-    };
+  const handleDeleteClick = (distribution: Distribution) => {
+    confirmDialog.open(distribution, async () => {
+      await DistributionSetsService.deleteDistributionSet(distribution.id);
+      await fetchDistributions();
+      distributionsTableStore.resetSelectedDistribution();
+    });
+  };
 
-    // const handleEditClick = (distribution: Distribution) => {
-    //     distributionsTableStore.setSelectedDistribution(distribution);
-    //     setIsEditDistributionModalOpen(true);
-    // };
+  // const handleEditClick = (distribution: Distribution) => {
+  //     distributionsTableStore.setSelectedDistribution(distribution);
+  //     setIsEditDistributionModalOpen(true);
+  // };
 
-    useEffect(() => {
-        fetchDistributions().catch(console.error);
-    }, [fetchDistributions]);
+  useEffect(() => {
+    fetchDistributions().catch(console.error);
+  }, [fetchDistributions]);
 
-    return (
-        <>
-            <DistributionsTable
-                distributions={filteredDistributions.map((distribution) => ({
-                    ...distribution,
-                    status: 'Error',
-                }))}
-                expanded={isExpanded}
-                onNameClick={(distribution) => {
-                    distributionsTableStore.setSelectedDistribution(distribution);
-                    setIsDistributionInfoModalOpen(true);
-                }}
-                onDeleteClick={handleDeleteClick}
-            />
-            <Modal isOpen={isDistributionInfoModalOpen} variant='unstyled' onClose={() => setIsDistributionInfoModalOpen(false)} size='fitContent'>
-                <DistributionInfo />
-            </Modal>
-            {/*<Modal isOpen={isEditDistributionModalOpen} onClose={() => setIsEditDistributionModalOpen(false)} size='fitContent'>*/}
-            {/*    <EditDistributionFormContainer*/}
-            {/*        onCancel={() => setIsEditDistributionModalOpen(false)}*/}
-            {/*        onSubmitSuccess={() => setIsEditDistributionModalOpen(false)}*/}
-            {/*    />*/}
-            {/*</Modal>*/}
-            <ConfirmDeleteModal
-                message={`Are you sure you want to delete distribution "${confirmDialog.data?.name}"?`}
-                isOpen={confirmDialog.isOpen}
-                onConfirm={confirmDialog.confirm}
-                onClose={confirmDialog.close}
-            />
-        </>
-    );
+  return (
+    <>
+      <DistributionsTable
+        distributions={filteredDistributions.map((distribution) => ({
+          ...distribution,
+          status: 'Error',
+        }))}
+        expanded={isExpanded}
+        onNameClick={(distribution) => {
+          distributionsTableStore.setSelectedDistribution(distribution);
+          setIsDistributionInfoModalOpen(true);
+        }}
+        onDeleteClick={handleDeleteClick}
+      />
+      <Modal isOpen={isDistributionInfoModalOpen} variant='unstyled' onClose={() => setIsDistributionInfoModalOpen(false)} size='fitContent'>
+        <DistributionInfo />
+      </Modal>
+      {/*<Modal isOpen={isEditDistributionModalOpen} onClose={() => setIsEditDistributionModalOpen(false)} size='fitContent'>*/}
+      {/*    <EditDistributionFormContainer*/}
+      {/*        onCancel={() => setIsEditDistributionModalOpen(false)}*/}
+      {/*        onSubmitSuccess={() => setIsEditDistributionModalOpen(false)}*/}
+      {/*    />*/}
+      {/*</Modal>*/}
+      <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
+        <ConfirmDeleteModal.Message>
+          Are you sure you want to delete distribution <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?
+        </ConfirmDeleteModal.Message>
+      </ConfirmDeleteModal>
+    </>
+  );
 }

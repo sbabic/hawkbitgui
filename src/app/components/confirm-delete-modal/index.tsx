@@ -2,33 +2,36 @@
 
 import styles from './styles.module.scss';
 import { Modal } from '@/app/components/modal';
-import Button from '@/app/components/button';
+
+import { ActionButtons } from '../action-buttons';
+
+function Message({ children }: { children: React.ReactNode }) {
+  return <div className={styles.message}>{children}</div>;
+}
 
 export default function ConfirmDeleteModal({
-    message,
-    onConfirm,
-    onClose,
-    isOpen,
+  onConfirm,
+  onClose,
+  isOpen,
+  children,
 }: {
-    message: string;
-    onClose?: () => void;
-    onConfirm?: () => void;
-    isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  isOpen: boolean;
+  children?: React.ReactNode;
 }) {
-    return (
-        <Modal isOpen={isOpen} onClose={onClose} size={'fitContent'} variant={'unstyled'}>
-            <div className={styles.container}>
-                <h2 className={styles.title}>Confirm Deletion</h2>
-                <p className={styles.message}>{message}</p>
-                <div className={styles.actionButtons}>
-                    <Button variant={'default'} onClick={onConfirm}>
-                        Yes, delete
-                    </Button>
-                    <Button variant={'outline'} onClick={onClose}>
-                        Cancel
-                    </Button>
-                </div>
-            </div>
-        </Modal>
-    );
+  return (
+    <Modal size='sm' isOpen={isOpen} onClose={onClose}>
+      <Modal.Header>Confirm Deletion</Modal.Header>
+      <Modal.Content>
+        {children}
+        <ActionButtons>
+          <ActionButtons.Primary onClick={onConfirm}>Yes, delete</ActionButtons.Primary>
+          <ActionButtons.Secondary onClick={onClose}>Cancel</ActionButtons.Secondary>
+        </ActionButtons>
+      </Modal.Content>
+    </Modal>
+  );
 }
+
+ConfirmDeleteModal.Message = Message;

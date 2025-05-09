@@ -44,13 +44,17 @@
     }
 
     .default {
-        padding: 32px 42px;
+        padding: 32px;
         max-width: 100%;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .fitContent {
         width: fit-content;
+    }
+
+    .sm {
+        width: 370px;
     }
 
     .md {
