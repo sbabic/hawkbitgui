@@ -20,7 +20,7 @@ export default function TargetFiltersCard() {
   };
 
   return (
-    <>
+    <div>
       <Card expanded={true}>
         <Card.Header>
           <Card.Title>Target Filters</Card.Title>
@@ -43,6 +43,6 @@ export default function TargetFiltersCard() {
           <TargetFiltersFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
         </Modal.Content>
       </Modal>
-    </>
+    </div>
   );
 }

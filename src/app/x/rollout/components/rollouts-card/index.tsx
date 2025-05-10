@@ -23,7 +23,7 @@ export default function RolloutsCard() {
   };
 
   return (
-    <>
+    <div>
       <Card expanded={true}>
         <Card.Header>
           <Card.Title>Rollouts</Card.Title>
@@ -51,6 +51,6 @@ export default function RolloutsCard() {
           </div>
         </Modal.Content>
       </Modal>
-    </>
+    </div>
   );
 }
