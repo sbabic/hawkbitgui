@@ -21,7 +21,7 @@ export default function SoftwareModulesCard() {
   };
 
   return (
-    <>
+    <div>
       <Card expanded={true}>
         <Card.Header>
           <Card.Title>Software Modules</Card.Title>
@@ -47,6 +47,6 @@ export default function SoftwareModulesCard() {
           <SoftwareModuleFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
         </Modal.Content>
       </Modal>
-    </>
+    </div>
   );
 }
