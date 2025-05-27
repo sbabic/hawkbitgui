@@ -18,7 +18,7 @@ export default function TagFilterManager() {
         </Button>
       </div>
       <Modal isOpen={createNewTagModal.isOpen} onClose={createNewTagModal.close}>
-        <CreateTargetTagFormContainer />
+        <CreateTargetTagFormContainer onSubmitSuccess={createNewTagModal.close} onCancel={createNewTagModal.close} />
       </Modal>
     </>
   );

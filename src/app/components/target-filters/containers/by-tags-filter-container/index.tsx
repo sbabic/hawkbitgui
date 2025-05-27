@@ -2,32 +2,41 @@
 
 import MultipleSelect from '@/app/components/multiple-select';
 import { useTargetsFiltersStore } from '@/stores/targets-filters-store';
-import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { useTargetTagsStore } from '@/stores/targets-tags-store';
-import { TargetTagsService } from '@/services/target-tags-service';
 import { Tag } from '@/entities';
 import { useFilterMultipleSelect } from '@/app/hooks';
+import { useEffect } from 'react';
 
 export default function ByTagsFilterContainer() {
-    const selectedTags = useTargetTagsStore((state) => state.selectedTags);
-    const setSelectedTags = useTargetTagsStore((state) => state.setSelectedTags);
+  const selectedTags = useTargetTagsStore((state) => state.selectedTags);
+  const setSelectedTags = useTargetTagsStore((state) => state.setSelectedTags);
+  const allTags = useTargetTagsStore((state) => state.allTags);
+  const areTagsLoading = useTargetTagsStore((state) => state.isLoading);
+  const fetchAllTags = useTargetTagsStore((state) => state.fetchAllTags);
 
-    const filters = useTargetsFiltersStore((state) => state.filters);
-    const setFilters = useTargetsFiltersStore((state) => state.setFilters);
+  const filters = useTargetsFiltersStore((state) => state.filters);
+  const setFilters = useTargetsFiltersStore((state) => state.setFilters);
 
-    const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
+  const { handleOnChange } = useFilterMultipleSelect<Tag>({
+    filterField: 'tag.name',
+    allOptions: allTags,
+    selectedOptions: selectedTags,
+    setSelectedOptions: setSelectedTags,
+    getOptionId: (tag) => tag.id,
+    getOptionLabel: (tag) => tag.name,
+    onFilterChanged: async () => {
+      await fetchAllTags();
+    },
+    setFilters,
+    filters,
+  });
 
-    const { allOptions, isLoading, handleOnChange } = useFilterMultipleSelect<Tag>({
-        filterField: 'tag.name',
-        fetchOptions: TargetTagsService.getTags,
-        selectedOptions: selectedTags,
-        setSelectedOptions: setSelectedTags,
-        getOptionId: (tag) => tag.id,
-        getOptionLabel: (tag) => tag.name,
-        fetchEntities: fetchTargets,
-        setFilters,
-        filters,
-    });
+  useEffect(() => {
+    const fetchTags = async () => {
+      await fetchAllTags();
+    };
+    fetchTags();
+  }, [fetchAllTags]);
 
-    return <MultipleSelect selectedOptions={selectedTags} options={allOptions} isLoading={isLoading} onChange={handleOnChange} />;
+  return <MultipleSelect selectedOptions={selectedTags} options={allTags} isLoading={areTagsLoading} onChange={handleOnChange} />;
 }

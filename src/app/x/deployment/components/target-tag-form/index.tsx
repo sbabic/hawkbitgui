@@ -32,7 +32,7 @@ export default function TargetTagForm({ onSubmit, onCancel, defaultValues, mode 
     defaultValues,
   });
 
-  const [color, setColor] = useState<string>('');
+  const [color, setColor] = useState<string>('#FFFFFF');
 
   const isEditing = mode === 'edit';
 
