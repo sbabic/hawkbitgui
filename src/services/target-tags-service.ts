@@ -55,4 +55,13 @@ export class TargetTagsService {
       throw error;
     }
   }
+
+  static async deleteTag(tagId: number): Promise<void> {
+    try {
+      await axiosInstance.delete(`/targettags/${tagId}`);
+    } catch (error) {
+      console.error('Failed to delete tag', error);
+      throw error;
+    }
+  }
 }
