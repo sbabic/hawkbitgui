@@ -7,10 +7,10 @@ import IconButton from '@/app/components/icon-button';
 import { Modal } from '@/app/components/modal';
 import FilterIcon from '@/app/components/icons/filter-icon';
 import TargetFilters from '@/app/components/target-filters';
-import TargetTableContainer from '@/app/containers/target-table-container';
-import CreateTargetFormContainer from '@/app/containers/create-target-form-container';
-import ExpandableSearchBarContainer from '@/app/containers/expandable-search-bar-container';
 import PanelCard from '@/app/components/panel-card';
+import TargetTableContainer from '@/app/x/deployment/containers/target-table-container';
+import CreateTargetFormContainer from '@/app/x/deployment/containers/create-target-form-container';
+import ExpandableSearchBarContainer from '@/app/x/deployment/containers/expandable-search-bar-container';
 
 type TargetsCardProps = {
   isExpanded: boolean;

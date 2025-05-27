@@ -3,7 +3,7 @@
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { Metadata } from '@/entities';
 import React, { useEffect } from 'react';
-import TargetMetadataTable from '@/app/components/target-metadata-table';
+import TargetMetadataTable from '../../components/target-metadata-table';
 import { useTargetsMetadataTableStore } from '@/stores/targets-metadata-table-store';
 import { TargetsService } from '@/services/targets-service';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';

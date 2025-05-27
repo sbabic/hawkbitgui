@@ -1,6 +1,6 @@
 'use client';
 
-import TargetTable from '@/app/components/target-table';
+import TargetTable from '../../components/target-table';
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { Target } from '@/entities';
 import React, { useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ import TargetInfo from '@/app/components/target-info-modal';
 import { Modal } from '@/app/components/modal';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useConfirmDialog } from '@/app/hooks';
-import EditTargetFormContainer from '@/app/containers/edit-target-form-container';
+import EditTargetFormContainer from '../edit-target-form-container';
 
 export default function TargetTableContainer() {
   const filteredTargets = useTargetsTableStore((state) => state.filteredTargets);
