@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 import styles from './styles.module.scss';
 
 export default function IconButton({
@@ -12,7 +12,7 @@ export default function IconButton({
   className?: string;
   width?: string;
   height?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }) {
   return (
     <button
