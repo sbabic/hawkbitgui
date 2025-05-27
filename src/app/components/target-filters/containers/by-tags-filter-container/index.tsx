@@ -6,6 +6,7 @@ import { useTargetTagsStore } from '@/stores/targets-tags-store';
 import { Tag } from '@/entities';
 import { useFilterMultipleSelect } from '@/app/hooks';
 import { useEffect } from 'react';
+import { useTargetsTableStore } from '@/stores/targets-table-store';
 
 export default function ByTagsFilterContainer() {
   const selectedTags = useTargetTagsStore((state) => state.selectedTags);
@@ -16,6 +17,7 @@ export default function ByTagsFilterContainer() {
 
   const filters = useTargetsFiltersStore((state) => state.filters);
   const setFilters = useTargetsFiltersStore((state) => state.setFilters);
+  const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
 
   const { handleOnChange } = useFilterMultipleSelect<Tag>({
     filterField: 'tag.name',
@@ -25,7 +27,7 @@ export default function ByTagsFilterContainer() {
     getOptionId: (tag) => tag.id,
     getOptionLabel: (tag) => tag.name,
     onFilterChanged: async () => {
-      await fetchAllTags();
+      await fetchTargets();
     },
     setFilters,
     filters,

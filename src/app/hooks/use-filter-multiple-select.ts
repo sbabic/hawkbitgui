@@ -28,12 +28,9 @@ export function useFilterMultipleSelect<T>({
 
   const optionMap = useMemo(() => new Map(allOptions?.map((opt) => [getOptionId(opt), opt])), [allOptions, getOptionId]);
 
-  console.log('optionMap:', optionMap);
-
   const handleOnChange = useCallback(
     (changedOptions: { id: string | number }[]) => {
       const mapped = changedOptions.map((opt) => optionMap.get(opt.id)).filter((opt): opt is T => !!opt);
-      console.log(mapped);
       setSelectedOptions(mapped);
     },
     [optionMap, setSelectedOptions]
