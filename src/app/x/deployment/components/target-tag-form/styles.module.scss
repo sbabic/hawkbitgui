@@ -1,45 +1,56 @@
-@use 'src/app/styles/variables' as *;
+@use '../../../../styles/variables' as *;
 
-.statusCell {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background: #fff;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .error {
+    color: $error-color;
+  }
+
+  .input {
     width: 100%;
+  }
 
-    .status {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 8px 12px;
-        background-color: $secondary-color;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 400;
-    }
-}
-
-.linkButton {
-    all: unset;
-    cursor: pointer;
-    color: $accent-color;
-    font-weight: 400;
+  .label {
     font-size: 16px;
-    &:hover {
-        text-decoration: underline;
-    }
+    font-weight: 700;
+    color: $light-primary-text-color;
+  }
+
+  .textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .select {
+    width: 100%;
+  }
+
+  .colorPicker {
+    width: 100% !important;
+  }
 }
 
-.actionButtons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-}
-
-.statusIndicator {
-    display: inline-block;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    margin-right: 0.5rem;
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
 }

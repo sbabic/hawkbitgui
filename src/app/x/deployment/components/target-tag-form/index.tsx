@@ -1,11 +1,12 @@
 'use client';
 
-import styles from '@/app/x/deployment/components/target-form/styles.module.scss';
+import styles from './styles.module.scss';
 import Input from '@/app/components/input';
 import TextArea from '@/app/components/text-area';
 import { ActionButtons } from '@/app/components/action-buttons';
 import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ChromePicker } from 'react-color';
 
 export interface FormData {
   name: string;
@@ -26,15 +27,19 @@ export default function TargetTagForm({ onSubmit, onCancel, defaultValues, mode 
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<FormData>({
     defaultValues,
   });
+
+  const [color, setColor] = useState<string>('');
 
   const isEditing = mode === 'edit';
 
   useEffect(() => {
     if (defaultValues) {
       reset(defaultValues);
+      if (defaultValues.color) setColor(defaultValues.color);
     }
   }, [defaultValues, reset]);
 
@@ -59,6 +64,19 @@ export default function TargetTagForm({ onSubmit, onCancel, defaultValues, mode 
           <div className={styles.inputContainer}>
             <label className={styles.label}>Description</label>
             <TextArea placeholder='Add additional details' {...register('description')} className={styles.textarea} />
+          </div>
+
+          <div className={styles.inputContainer}>
+            <label className={styles.label}>Color</label>
+            <ChromePicker
+              disableAlpha={true}
+              className={styles.colorPicker}
+              color={color}
+              onChange={(color) => {
+                setColor(color.hex);
+                setValue('color', color.hex);
+              }}
+            />
           </div>
 
           <ActionButtons>
