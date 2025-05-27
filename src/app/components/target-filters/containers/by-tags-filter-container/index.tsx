@@ -1,12 +1,12 @@
 'use client';
 
-import MultipleSelect from '@/app/components/multiple-select';
 import { useTargetsFiltersStore } from '@/stores/targets-filters-store';
 import { useTargetTagsStore } from '@/stores/targets-tags-store';
 import { Tag } from '@/entities';
 import { useFilterMultipleSelect } from '@/app/hooks';
 import { useEffect } from 'react';
 import { useTargetsTableStore } from '@/stores/targets-table-store';
+import EditableMultipleSelect from '@/app/components/editable-multiple-select';
 
 export default function ByTagsFilterContainer() {
   const selectedTags = useTargetTagsStore((state) => state.selectedTags);
@@ -40,5 +40,5 @@ export default function ByTagsFilterContainer() {
     fetchTags();
   }, [fetchAllTags]);
 
-  return <MultipleSelect selectedOptions={selectedTags} options={allTags} isLoading={areTagsLoading} onChange={handleOnChange} />;
+  return <EditableMultipleSelect selectedOptions={selectedTags} options={allTags} isLoading={areTagsLoading} onChange={handleOnChange} />;
 }

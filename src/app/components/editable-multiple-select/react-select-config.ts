@@ -3,7 +3,7 @@ import { StylesConfig } from 'react-select';
 export interface BaseOption {
   id: number | string;
   name: string;
-  color: string;
+  colour: string;
   onEdit?: (opt: BaseOption) => void;
   onDelete?: (opt: BaseOption) => void;
 }

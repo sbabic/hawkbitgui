@@ -1,7 +1,8 @@
 'use client';
 
-import Select, { components, MultiValueGenericProps } from 'react-select';
+import Select, { components, MultiValueGenericProps, OptionProps } from 'react-select';
 import { BaseOption, createCustomStyles } from './react-select-config';
+import { useCallback } from 'react';
 
 const ColourDot = ({ color }: { color: string }) => (
   <span
@@ -24,12 +25,38 @@ export interface MultipleSelectProps<T extends BaseOption> {
 }
 
 export default function MultipleSelect<T extends BaseOption>({ isLoading, options, selectedOptions, onChange }: MultipleSelectProps<T>) {
-  const MultiValueLabel = (props: MultiValueGenericProps<T>) => (
-    <components.MultiValueLabel {...props}>
-      <ColourDot color={props.data.colour} />
-      {props.data.label}
-    </components.MultiValueLabel>
+  const MultiValueLabel = useCallback(
+    (props: MultiValueGenericProps<T>) => (
+      <components.MultiValueLabel {...props}>
+        <ColourDot color={props.data.colour} />
+        {props.data.label}
+      </components.MultiValueLabel>
+    ),
+    []
   );
+
+  const Option = useCallback((props: OptionProps<T, true>) => {
+    const { data, innerRef, innerProps } = props;
+
+    return (
+      <div
+        ref={innerRef}
+        {...innerProps}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '16px 20px',
+          backgroundColor: props.isFocused ? '#f5f5f5' : 'white',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <ColourDot color={data.colour} />
+          {data.name}
+        </div>
+      </div>
+    );
+  }, []);
 
   const handleChange = (selected: readonly T[]) => {
     onChange?.([...selected]);
@@ -43,7 +70,7 @@ export default function MultipleSelect<T extends BaseOption>({ isLoading, option
       options={options?.map((option) => ({ ...option, value: option.id, label: option.name }))}
       className='basic-multi-select'
       classNamePrefix='select'
-      components={{ MultiValueLabel }}
+      components={{ MultiValueLabel, Option }}
       styles={createCustomStyles<T>()}
       onChange={handleChange}
       isLoading={isLoading}

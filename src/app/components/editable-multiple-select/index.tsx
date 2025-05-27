@@ -3,6 +3,9 @@
 import Select, { components, MultiValueGenericProps, OptionProps } from 'react-select';
 import { BaseOption, createCustomStyles } from './react-select-config';
 import IconButton from '@/app/components/icon-button';
+import React, { useCallback } from 'react';
+import TrashIcon from '@/app/components/icons/trash-icon';
+import EditIcon from '@/app/components/icons/edit-icon';
 
 const ColourDot = ({ color }: { color: string }) => (
   <span
@@ -29,14 +32,17 @@ export default function EditableMultipleSelect<T extends BaseOption>({ isLoading
     onChange?.([...selected]);
   };
 
-  const MultiValueLabel = (props: MultiValueGenericProps<T>) => (
-    <components.MultiValueLabel {...props}>
-      <ColourDot color={props.data.color} />
-      {props.data.label}
-    </components.MultiValueLabel>
+  const MultiValueLabel = useCallback(
+    (props: MultiValueGenericProps<T>) => (
+      <components.MultiValueLabel {...props}>
+        <ColourDot color={props.data.colour} />
+        {props.data.label}
+      </components.MultiValueLabel>
+    ),
+    []
   );
 
-  const EditableOption = (props: OptionProps<T, true>) => {
+  const EditableOption = useCallback((props: OptionProps<T, true>) => {
     const { data, innerRef, innerProps } = props;
 
     return (
@@ -47,38 +53,44 @@ export default function EditableMultipleSelect<T extends BaseOption>({ isLoading
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '6px 12px',
+          padding: '16px 20px',
           backgroundColor: props.isFocused ? '#f5f5f5' : 'white',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <ColourDot color={data.color} />
+          <ColourDot color={data.colour} />
           {data.name}
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 24 }}>
           <IconButton
+            width={'24px'}
             onClick={(e) => {
               e.stopPropagation();
               data.onEdit?.(data);
             }}
-          ></IconButton>
+          >
+            <EditIcon />
+          </IconButton>
           <IconButton
+            width={'24px'}
             onClick={(e) => {
               e.stopPropagation();
               data.onDelete?.(data);
             }}
-          />
+          >
+            <TrashIcon />
+          </IconButton>
         </div>
       </div>
     );
-  };
+  }, []);
 
   return (
     <Select<T, true>
-      value={selectedOptions}
+      value={selectedOptions?.map((option) => ({ ...option, value: option.id, label: option.name }))}
       isMulti
       name='colors'
-      options={options}
+      options={options?.map((option) => ({ ...option, value: option.id, label: option.name }))}
       className='basic-multi-select'
       classNamePrefix='select'
       components={{ MultiValueLabel, Option: EditableOption }}
