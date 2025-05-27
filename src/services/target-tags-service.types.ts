@@ -8,3 +8,11 @@ export type GetTagsByControllerIdOutput = Tag[];
 export type GetTagsResponse = ApiResponse<Tag[]>;
 
 export type GetTagsOutput = Tag[];
+
+export type CreateTagResponse = Tag[];
+
+export type CreateTagInput = {
+  name: string;
+  description: string;
+  color?: string;
+};
