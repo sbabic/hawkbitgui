@@ -21,6 +21,7 @@ export default function ByStatusFilterContainer() {
 
   const { handleOnChange } = useFilterMultipleSelect<TargetStatus>({
     filterField: 'updateStatus',
+    allOptions: targetStatusEnum as TargetStatus[],
     selectedOptions: selectedStatuses,
     setSelectedOptions: setSelectedStatuses,
     getOptionId: (status) => status,

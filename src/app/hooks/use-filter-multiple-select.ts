@@ -26,7 +26,7 @@ export function useFilterMultipleSelect<T>({
 }: UseFilterMultipleSelectProps<T>) {
   const filter = useRef(new FilterFiql(filterField, ','));
 
-  const optionMap = useMemo(() => new Map(allOptions?.map((opt) => [getOptionId(opt), opt])), [allOptions, getOptionId]);
+  const optionMap = useMemo(() => new Map(allOptions.map((opt) => [getOptionId(opt), opt])), [allOptions, getOptionId]);
 
   const handleOnChange = useCallback(
     (changedOptions: { id: string | number }[]) => {
