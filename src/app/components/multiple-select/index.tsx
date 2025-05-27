@@ -1,8 +1,7 @@
 'use client';
 
 import Select, { components, MultiValueGenericProps } from 'react-select';
-import { useMemo } from 'react';
-import { OptionType, BaseOption, customStyles } from './react-select-config';
+import { BaseOption, createCustomStyles } from './react-select-config';
 
 const ColourDot = ({ color }: { color: string }) => (
   <span
@@ -17,13 +16,6 @@ const ColourDot = ({ color }: { color: string }) => (
   />
 );
 
-const MultiValueLabel = (props: MultiValueGenericProps<OptionType>) => (
-  <components.MultiValueLabel {...props}>
-    <ColourDot color={props.data.color} />
-    {props.data.label}
-  </components.MultiValueLabel>
-);
-
 export interface MultipleSelectProps<T extends BaseOption> {
   options: T[];
   selectedOptions?: T[];
@@ -32,45 +24,27 @@ export interface MultipleSelectProps<T extends BaseOption> {
 }
 
 export default function MultipleSelect<T extends BaseOption>({ isLoading, options, selectedOptions, onChange }: MultipleSelectProps<T>) {
-  const mappedOptions = useMemo(
-    () =>
-      options.map((opt) => ({
-        value: opt.id,
-        label: opt.name,
-        color: opt.colour,
-      })),
-    [options]
+  const MultiValueLabel = (props: MultiValueGenericProps<T>) => (
+    <components.MultiValueLabel {...props}>
+      <ColourDot color={props.data.colour} />
+      {props.data.label}
+    </components.MultiValueLabel>
   );
 
-  const mappedSelectedOptions = useMemo(
-    () =>
-      selectedOptions?.map((opt) => ({
-        value: opt.id,
-        label: opt.name,
-        color: opt.colour,
-      })) ?? [],
-    [selectedOptions]
-  );
-
-  const handleChange = (selected: readonly OptionType[]) => {
-    const newSelected = selected.map((opt) => ({
-      id: opt.value,
-      name: opt.label,
-      colour: opt.color,
-    })) as T[];
-    onChange?.(newSelected);
+  const handleChange = (selected: readonly T[]) => {
+    onChange?.([...selected]);
   };
 
   return (
-    <Select<OptionType, true>
-      value={mappedSelectedOptions}
+    <Select<T, true>
+      value={selectedOptions?.map((option) => ({ ...option, value: option.id, label: option.name }))}
       isMulti
       name='colors'
-      options={mappedOptions}
+      options={options?.map((option) => ({ ...option, value: option.id, label: option.name }))}
       className='basic-multi-select'
       classNamePrefix='select'
       components={{ MultiValueLabel }}
-      styles={customStyles}
+      styles={createCustomStyles<T>()}
       onChange={handleChange}
       isLoading={isLoading}
     />
