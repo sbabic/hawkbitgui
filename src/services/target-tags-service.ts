@@ -6,6 +6,8 @@ import {
   GetTagsByControllerIdResponse,
   GetTagsOutput,
   GetTagsResponse,
+  UpdateTagInput,
+  UpdateTagResponse,
 } from '@/services/target-tags-service.types';
 
 export class TargetTagsService {
@@ -61,6 +63,15 @@ export class TargetTagsService {
       await axiosInstance.delete(`/targettags/${tagId}`);
     } catch (error) {
       console.error('Failed to delete tag', error);
+      throw error;
+    }
+  }
+
+  static async updateTag(input: UpdateTagInput): Promise<void> {
+    try {
+      await axiosInstance.put<UpdateTagResponse>(`/targettags/${input.id}`, { ...input, colour: input.color });
+    } catch (error) {
+      console.error('Failed to update tag', error);
       throw error;
     }
   }

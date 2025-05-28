@@ -3,20 +3,24 @@
 import { useTargetsFiltersStore } from '@/stores/targets-filters-store';
 import { useTargetTagsStore } from '@/stores/targets-tags-store';
 import { Tag } from '@/entities';
-import { useConfirmDialog, useFilterMultipleSelect } from '@/app/hooks';
+import { useConfirmDialog, useFilterMultipleSelect, useModal } from '@/app/hooks';
 import React, { useEffect, useMemo } from 'react';
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import EditableMultipleSelect from '@/app/components/editable-multiple-select';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { TargetTagsService } from '@/services/target-tags-service';
+import { Modal } from '@/app/components/modal';
+import EditTargetTagFormContainer from '@/app/x/deployment/containers/edit-target-tag-form-container';
 
 export default function ByTagsFilterContainer() {
   const selectedTags = useTargetTagsStore((state) => state.selectedTags);
   const setSelectedTags = useTargetTagsStore((state) => state.setSelectedTags);
+  const setSelectedTag = useTargetTagsStore((state) => state.setSelectedTag);
   const allTags = useTargetTagsStore((state) => state.allTags);
   const areTagsLoading = useTargetTagsStore((state) => state.isLoading);
   const fetchAllTags = useTargetTagsStore((state) => state.fetchAllTags);
   const confirmDialog = useConfirmDialog<Tag>();
+  const editTagModal = useModal();
 
   const filters = useTargetsFiltersStore((state) => state.filters);
   const setFilters = useTargetsFiltersStore((state) => state.setFilters);
@@ -25,9 +29,11 @@ export default function ByTagsFilterContainer() {
   const options = useMemo(() => {
     return allTags.map((tag) => ({
       ...tag,
-      onEdit: () => {
-        // Handle edit action for the tag
-        console.log(`Edit tag: ${tag.name}`);
+      onEdit: async () => {
+        setSelectedTag(tag);
+        editTagModal.open();
+        await fetchAllTags();
+        await fetchTargets();
       },
       onDelete: () => {
         confirmDialog.open(tag, async () => {
@@ -37,7 +43,7 @@ export default function ByTagsFilterContainer() {
         });
       },
     }));
-  }, [allTags]);
+  }, [allTags, confirmDialog, editTagModal, fetchAllTags, fetchTargets, setSelectedTag]);
 
   const { handleOnChange } = useFilterMultipleSelect<Tag>({
     filterField: 'tag.name',
@@ -68,6 +74,9 @@ export default function ByTagsFilterContainer() {
           Are you sure you want to delete tag <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?
         </ConfirmDeleteModal.Message>
       </ConfirmDeleteModal>
+      <Modal isOpen={editTagModal.isOpen} onClose={editTagModal.close}>
+        <EditTargetTagFormContainer onSubmitSuccess={() => editTagModal.close()} onCancel={editTagModal.close} />
+      </Modal>
     </>
   );
 }

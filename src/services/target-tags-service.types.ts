@@ -16,3 +16,12 @@ export type CreateTagInput = {
   description: string;
   color?: string;
 };
+
+export type UpdateTagResponse = Tag;
+
+export type UpdateTagInput = {
+  id: number;
+  name?: string;
+  description?: string;
+  color?: string;
+};
