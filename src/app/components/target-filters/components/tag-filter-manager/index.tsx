@@ -13,7 +13,7 @@ export default function TagFilterManager() {
     <>
       <div className={styles.container}>
         <ByTagsFilterContainer />
-        <Button variant='ghost' onClick={createNewTagModal.open}>
+        <Button variant='outline' onClick={createNewTagModal.open}>
           + Create new tag
         </Button>
       </div>
