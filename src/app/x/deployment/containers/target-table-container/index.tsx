@@ -3,12 +3,12 @@
 import TargetTable from '../../components/target-table';
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { Target } from '@/entities';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TargetsService } from '@/services/targets-service';
 import TargetInfo from '@/app/components/target-info-modal';
 import { Modal } from '@/app/components/modal';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
-import { useConfirmDialog } from '@/app/hooks';
+import { useConfirmDialog, useTargetsPolling } from '@/app/hooks';
 import EditTargetFormContainer from '../edit-target-form-container';
 
 export default function TargetTableContainer() {
@@ -35,9 +35,7 @@ export default function TargetTableContainer() {
     setIsEditTargetModalOpen(true);
   };
 
-  useEffect(() => {
-    fetchTargets().catch(console.error);
-  }, [fetchTargets]);
+  useTargetsPolling();
 
   return (
     <>
