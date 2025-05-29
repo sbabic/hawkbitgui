@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useMemo } from 'react';
-import MultipleSelect from '@/app/components/multiple-select';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { Modal } from '@/app/components/modal';
 import { useTargetsFiltersStore } from '@/stores/targets-filters-store';
