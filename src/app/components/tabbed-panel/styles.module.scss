@@ -4,14 +4,15 @@
   display: flex;
   flex-direction: column;
   gap: 28px;
+  min-width: 400px;
 
-  .filters {
+  .tabs {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 
-    .filter {
+    .tab {
       all: unset;
       border-radius: 16px;
       padding: 8px 24px;
