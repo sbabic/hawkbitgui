@@ -1,29 +1,38 @@
 @use 'src/app/styles/variables' as *;
 
 .container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+
+  .filters {
     display: flex;
-    flex-direction: column;
-    gap: 28px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
-    .filters {
-        display: flex;
-        flex-direction: row;
-        gap: 24px;
+    .filter {
+      all: unset;
+      border-radius: 16px;
+      padding: 8px 24px;
+      color: $primary-text-color;
+      cursor: pointer;
 
-        .filter {
-            all: unset;
-            border-radius: 16px;
-            padding: 8px 24px;
-            color: $primary-text-color;
-            cursor: pointer;
-            &:hover,
-            &.active {
-                color: white;
-                background-color: $accent-color;
-            }
-        }
+      &:hover,
+      &.active {
+        color: white;
+        background-color: $accent-color;
+      }
     }
 
-    .content {
+    .divider {
+      width: 2px;
+      height: 13px;
+      background-color: $primary-text-color;
+      opacity: 0.2;
     }
+  }
+}
+
+.content {
 }

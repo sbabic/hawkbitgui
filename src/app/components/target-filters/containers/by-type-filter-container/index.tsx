@@ -11,6 +11,7 @@ import { useConfirmDialog, useFilterMultipleSelect, useModal } from '@/app/hooks
 import { TargetType } from '@/entities';
 import { TargetsTypesService } from '@/services/targets-types-service';
 import EditTargetTypeFormContainer from '@/app/x/deployment/containers/edit-target-type-form-container';
+import EditableMultipleSelect from '@/app/components/editable-multiple-select';
 
 export default function ByTypeFilterContainer() {
   const selectedTypes = useTargetTypesStore((state) => state.selectedTypes);
@@ -70,7 +71,7 @@ export default function ByTypeFilterContainer() {
 
   return (
     <>
-      <MultipleSelect selectedOptions={selectedTypes} options={options} isLoading={areTypesLoading} onChange={handleOnChange} />
+      <EditableMultipleSelect selectedOptions={selectedTypes} options={options} isLoading={areTypesLoading} onChange={handleOnChange} />
       <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
         <ConfirmDeleteModal.Message>
           Are you sure you want to delete type <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?

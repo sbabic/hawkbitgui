@@ -32,14 +32,17 @@ export default function TargetFilters() {
   return (
     <div className={styles.container}>
       <div className={styles.filters}>
-        {content.map((item) => (
-          <button
-            key={item.title}
-            className={`${styles.filter} ${selectedTitle === item.title ? styles.active : ''}`}
-            onClick={() => setSelectedTitle(item.title)}
-          >
-            {item.title}
-          </button>
+        {content.map((item, index) => (
+          <>
+            <button
+              key={item.title}
+              className={`${styles.filter} ${selectedTitle === item.title ? styles.active : ''}`}
+              onClick={() => setSelectedTitle(item.title)}
+            >
+              {item.title}
+            </button>
+            {index !== content.length - 1 && <div className={styles.divider}></div>}
+          </>
         ))}
       </div>
       <div className={styles.content}>{content.find((item) => item.title === selectedTitle)?.component}</div>
