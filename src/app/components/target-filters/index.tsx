@@ -1,8 +1,8 @@
 import { ReactNode, useState } from 'react';
 import styles from './styles.module.scss';
 import ByStatusFilterContainer from '@/app/components/target-filters/containers/by-status-filter-container';
-import ByTypeFilterContainer from '@/app/components/target-filters/containers/by-type-filter-container';
 import TagFilterManager from '@/app/components/target-filters/components/tag-filter-manager';
+import TypeFilterManager from '@/app/components/target-filters/components/type-filter-manager';
 
 export default function TargetFilters() {
   const content: {
@@ -19,7 +19,7 @@ export default function TargetFilters() {
     },
     {
       title: 'By Type',
-      component: <ByTypeFilterContainer />,
+      component: <TypeFilterManager />,
     },
     {
       title: 'Custom Filter',

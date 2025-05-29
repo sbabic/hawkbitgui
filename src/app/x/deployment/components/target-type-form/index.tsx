@@ -14,14 +14,14 @@ export interface FormData {
   color?: string;
 }
 
-export interface TargetTagFormProps {
+export interface TargetTypeFormProps {
   onSubmit: (data: FormData) => void;
   onCancel?: () => void;
   defaultValues?: Partial<FormData>;
   mode?: 'create' | 'edit';
 }
 
-export default function TargetTagForm({ onSubmit, onCancel, defaultValues, mode = 'create' }: TargetTagFormProps) {
+export default function TargetTypeForm({ onSubmit, onCancel, defaultValues, mode = 'create' }: TargetTypeFormProps) {
   const {
     register,
     handleSubmit,
@@ -46,7 +46,7 @@ export default function TargetTagForm({ onSubmit, onCancel, defaultValues, mode 
   return (
     <>
       <div className={styles.container}>
-        <h3>{isEditing ? 'Edit Tag' : 'Create New Tag'}</h3>
+        <h3>{isEditing ? 'Edit Type' : 'Create New Type'}</h3>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div className={styles.inputContainer}>
             <label className={styles.label}>
@@ -55,7 +55,7 @@ export default function TargetTagForm({ onSubmit, onCancel, defaultValues, mode 
             <Input
               className={styles.input}
               type='text'
-              placeholder='Enter the tag name'
+              placeholder='Enter the type name'
               {...register('name', { required: true })}
               error={errors.name && 'This field is required'}
             />
