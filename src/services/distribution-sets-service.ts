@@ -77,6 +77,15 @@ export class DistributionSetsService {
     }
   }
 
+  static async updateMetadata(distributionId: number | string, metadata: { key: string; value: string }): Promise<void> {
+    try {
+      await axiosInstance.put(`/distributionsets/${distributionId}/metadata/${metadata.key}`, { value: metadata.value });
+    } catch (error) {
+      console.error('Failed to update Metadata', error);
+      throw error;
+    }
+  }
+
   static async deleteMetadata(distributionId: number | string, key: string): Promise<void> {
     try {
       await axiosInstance.delete(`/distributionsets/${distributionId}/metadata/${key}`);

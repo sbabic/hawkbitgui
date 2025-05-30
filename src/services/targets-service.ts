@@ -106,6 +106,15 @@ export class TargetsService {
     }
   }
 
+  static async updateMetadata(controllerId: number | string, metadata: { key: string; value: string }): Promise<void> {
+    try {
+      await axiosInstance.put(`/targets/${controllerId}/metadata/${metadata.key}`, { value: metadata.value });
+    } catch (error) {
+      console.error('Failed to update Metadata', error);
+      throw error;
+    }
+  }
+
   static async deleteMetadata(controllerId: string, key: string): Promise<void> {
     try {
       await axiosInstance.delete(`/targets/${controllerId}/metadata/${key}`);

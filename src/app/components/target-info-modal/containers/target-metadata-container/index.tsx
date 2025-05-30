@@ -2,11 +2,11 @@
 
 import TargetMetadata from '@/app/components/target-info-modal/components/target-metadata';
 import { Modal } from '@/app/components/modal';
-import CreateMetadataForm from '@/app/components/create-metadata-form';
 import { useState } from 'react';
 import { TargetsService } from '@/services/targets-service';
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { useTargetsMetadataTableStore } from '@/stores/targets-metadata-table-store';
+import CreateMetadataForm from '@/app/components/metadata-form';
 
 export default function TargetMetadataContainer() {
   const selectedTarget = useTargetsTableStore((state) => state.selectedTarget);
@@ -28,7 +28,7 @@ export default function TargetMetadataContainer() {
     <>
       <TargetMetadata onAddClick={handleOnAddClick} />
       <Modal isOpen={isCreateMetadataModalOpen} onClose={() => setIsCreateMetadataModalOpen(false)} size={'fitContent'}>
-        <CreateMetadataForm onSubmit={handleOnSubmit} />
+        <CreateMetadataForm onSubmit={handleOnSubmit} mode={'create'} />
       </Modal>
     </>
   );

@@ -1,12 +1,12 @@
 'use client';
 
 import { Modal } from '@/app/components/modal';
-import CreateMetadataForm from '@/app/components/create-metadata-form';
 import { useState } from 'react';
 import DistributionMetadata from '@/app/x/deployment/components/distribution-info/components/distribution-metadata';
 import { useDistributionsTableStore } from '@/stores/distributions-table-store';
 import { useDistributionMetadataTableStore } from '@/stores/distribution-metadata-table-store';
 import { DistributionSetsService } from '@/services/distribution-sets-service';
+import CreateMetadataForm from '@/app/components/metadata-form';
 
 export default function DistributionMetadataContainer() {
   const selectedDistribution = useDistributionsTableStore((state) => state.selectedDistribution);

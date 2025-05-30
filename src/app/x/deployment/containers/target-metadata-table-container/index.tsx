@@ -7,13 +7,16 @@ import TargetMetadataTable from '../../components/target-metadata-table';
 import { useTargetsMetadataTableStore } from '@/stores/targets-metadata-table-store';
 import { TargetsService } from '@/services/targets-service';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
-import { useConfirmDialog } from '@/app/hooks';
+import { useConfirmDialog, useModal } from '@/app/hooks';
+import { Modal } from '@/app/components/modal';
+import EditTargetMetadataFormContainer from '@/app/x/deployment/containers/edit-target-metadata-form-container';
 
 export default function TargetMetadataTableContainer() {
   const selectedTarget = useTargetsTableStore((state) => state.selectedTarget);
+  const setSelectedMetadata = useTargetsMetadataTableStore((state) => state.setSelectedMetadata);
   const fetchMetadata = useTargetsMetadataTableStore((state) => state.fetchMetadata);
   const metadata = useTargetsMetadataTableStore((state) => state.metadata);
-
+  const editMetadataModal = useModal();
   const confirmDialog = useConfirmDialog<Metadata>();
 
   const handleDeleteClick = (item: Metadata) => {
@@ -25,7 +28,8 @@ export default function TargetMetadataTableContainer() {
   };
 
   const handleEditClick = (metadata: Metadata) => {
-    console.log(metadata);
+    setSelectedMetadata(metadata);
+    editMetadataModal.open();
   };
 
   useEffect(() => {
@@ -41,6 +45,9 @@ export default function TargetMetadataTableContainer() {
           Are you sure you want to delete metadata <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.key}</span>?
         </ConfirmDeleteModal.Message>
       </ConfirmDeleteModal>
+      <Modal isOpen={editMetadataModal.isOpen} onClose={editMetadataModal.close}>
+        <EditTargetMetadataFormContainer onSubmitSuccess={editMetadataModal.close} />
+      </Modal>
     </>
   );
 }
