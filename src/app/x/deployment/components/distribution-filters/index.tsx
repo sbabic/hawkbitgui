@@ -1,6 +1,6 @@
-import { ReactNode, useState } from 'react';
-import ByDistributionsFilterContainer from '@/app/x/deployment/components/distribution-filters/containers/by-distributions-filter-container';
+import { ReactNode } from 'react';
 import TabbedPanel from '@/app/components/tabbed-panel';
+import TagFilterManager from '@/app/x/deployment/components/distribution-filters/components/tag-filter-manager';
 
 export default function DistributionFilters() {
   const content: {
@@ -9,7 +9,7 @@ export default function DistributionFilters() {
   }[] = [
     {
       title: 'By Tags',
-      component: <ByDistributionsFilterContainer />,
+      component: <TagFilterManager />,
     },
   ];
 

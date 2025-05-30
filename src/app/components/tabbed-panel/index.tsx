@@ -29,7 +29,7 @@ export default function TabbedPanel({ items, defaultTitle = items[0]?.title ?? '
             >
               {item.title}
             </button>
-            {index !== items.length - 1 && <div className={styles.divider}></div>}
+            {index !== items.length - 1 && <div key={`${item.title}-${index}`} className={styles.divider}></div>}
           </>
         ))}
       </div>
