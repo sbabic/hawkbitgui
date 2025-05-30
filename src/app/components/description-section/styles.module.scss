@@ -1,0 +1,18 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    color: $primary-text-color;
+    width: 100%;
+    padding-right: 100px;
+    gap: 32px;
+
+    h2 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+        color: $accent-color;
+    }
+}

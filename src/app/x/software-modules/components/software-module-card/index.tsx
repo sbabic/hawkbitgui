@@ -1,16 +1,20 @@
-import Card from '@/app/components/card';
 import Button from '@/app/components/button';
 import IconButton from '@/app/components/icon-button';
-import SearchIcon from '@/app/components/icons/search-icon';
-import ChevronDownIcon from '@/app/components/icons/chevron-down-icon';
-import PlusIcon from '@/app/components/icons/plus-icon';
 import { Modal } from '@/app/components/modal';
 import { useState } from 'react';
 import SoftwareModuleTableContainer from '../../containers/software-module-table-container';
 import SoftwareModuleFormContainer from '../../containers/software-module-form-container';
+import PanelCard from '@/app/components/panel-card';
+import ExpandableSearchBarContainer from '@/app/x/deployment/containers/expandable-search-bar-container';
+import FilterIcon from '@/app/components/icons/filter-icon';
 
 export default function SoftwareModulesCard() {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleExpand = () => {
+    setIsExpanded((prev) => !prev);
+  };
 
   const openForm = () => {
     setIsFormOpen(true);
@@ -22,25 +26,22 @@ export default function SoftwareModulesCard() {
 
   return (
     <div>
-      <Card expanded={true}>
-        <Card.Header>
-          <Card.Title>Software Modules</Card.Title>
-          <Card.Actions>
-            <IconButton width='30px' height='30px'>
-              <SearchIcon />
-            </IconButton>
-            <Button leftIcon={<PlusIcon width={18} height={18} />} onClick={openForm}>
-              Create new module
-            </Button>
-            <Button variant='ghost' rightIcon={<ChevronDownIcon width={18} height={18} />}>
-              Manage columns
-            </Button>
-          </Card.Actions>
-        </Card.Header>
-        <Card.Body>
+      <PanelCard expanded={isExpanded}>
+        <PanelCard.Header title='Software Modules' isExpanded={isExpanded} onToggleExpand={handleExpand}>
+          <ExpandableSearchBarContainer />
+        </PanelCard.Header>
+
+        <PanelCard.Actions>
+          <Button onClick={openForm}>+ New Software Module</Button>
+          <IconButton onClick={() => {}}>
+            <FilterIcon />
+          </IconButton>
+        </PanelCard.Actions>
+
+        <PanelCard.Content>
           <SoftwareModuleTableContainer />
-        </Card.Body>
-      </Card>
+        </PanelCard.Content>
+      </PanelCard>
       <Modal isOpen={isFormOpen} onClose={closeForm}>
         <Modal.Header>Create new software module</Modal.Header>
         <Modal.Content>

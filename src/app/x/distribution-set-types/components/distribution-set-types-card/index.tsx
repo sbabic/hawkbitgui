@@ -24,7 +24,7 @@ export default function DistributionSetTypesCard() {
 
   return (
     <>
-      <Card expanded={true}>
+      <Card>
         <Card.Header>
           <Card.Title>Distribution Set Types</Card.Title>
           <Card.Actions>
