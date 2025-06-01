@@ -12,6 +12,21 @@ export interface RolloutFormContainerProps {
   onCancel: () => void;
 }
 
+function getErrorConditionExpression(data: CreateRolloutFormData): string {
+  if (!data.errorCondition) {
+    return '';
+  }
+
+  if (data.isErrorCount && data.amountGroups) {
+    const targetsCountInGroup = Math.floor(data.selectedTargetsCount / data.amountGroups); // take the minimum number of targets per group
+    const countOfErrorsPerGroup = data.errorCondition.expression;
+    const percentageOfErrorsPerGroup = Math.round((countOfErrorsPerGroup * 100) / targetsCountInGroup);
+    return percentageOfErrorsPerGroup.toString();
+  }
+
+  return data.errorCondition.expression.toString();
+}
+
 function mapFormDataToCreateRolloutInput(data: CreateRolloutFormData): CreateRolloutInput {
   if (data.type !== RolloutTypes.TIME_FORCED && data.forcetime) {
     data.forcetime = undefined;
@@ -32,7 +47,7 @@ function mapFormDataToCreateRolloutInput(data: CreateRolloutFormData): CreateRol
     errorCondition: data.errorCondition
       ? {
           ...data.errorCondition,
-          expression: data.errorCondition.expression.toString(),
+          expression: getErrorConditionExpression(data),
         }
       : undefined,
     groups: data.groups?.map((group) => ({
@@ -62,5 +77,6 @@ export default function RolloutFormContainer({ onSubmitSuccess, onCancel }: Roll
     onSubmitSuccess();
     refetch();
   };
+
   return <CreateRolloutForm distributionSets={distributionSets ?? []} targetFilters={targetFilters ?? []} onSubmit={handleSubmit} onCancel={onCancel} />;
 }

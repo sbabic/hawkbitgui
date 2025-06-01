@@ -25,6 +25,7 @@ import { CreateRolloutFormData, CreateRolloutFormSchema } from './types';
 import RolloutNumberOfGroups from './components/rollout-number-of-groups';
 import Form from '@/app/components/form';
 import { TargetFilter } from '@/entities/target-filter';
+import { SelectTargetFilterContainer } from './containers';
 
 type CreateRolloutFormProps = {
   distributionSets: Distribution[];
@@ -35,11 +36,11 @@ type CreateRolloutFormProps = {
 
 export default function CreateRolloutForm({ distributionSets, targetFilters, onSubmit, onCancel }: CreateRolloutFormProps) {
   const [activeTab, setActiveTab] = useState<'numberOfGroups' | 'advancedDefinition'>('numberOfGroups');
-
   const formMethods = useForm<CreateRolloutFormData>({
     defaultValues: {
       type: RolloutTypes.FORCED,
       startType: StartType.MANUAL,
+      isErrorCount: false,
     },
     resolver: zodResolver(CreateRolloutFormSchema),
   });
@@ -50,6 +51,8 @@ export default function CreateRolloutForm({ distributionSets, targetFilters, onS
     formState: { errors },
     watch,
     resetField,
+    setValue,
+    trigger,
   } = formMethods;
 
   const actionType = watch('type');
@@ -67,121 +70,115 @@ export default function CreateRolloutForm({ distributionSets, targetFilters, onS
     { id: StartType.SCHEDULED, label: 'Scheduled', icon: <ClockIcon width={20} height={20} /> },
   ];
 
+  const handleSelectedTargetsChange = (targetsCount: number) => {
+    setValue('selectedTargetsCount', targetsCount);
+    trigger('selectedTargetsCount');
+  };
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
-        <FormControl id='name' label='Name' errorMessage={errors.name?.message} required>
-          <Input id='name' placeholder='Enter rollout name' {...register('name', { required: 'Name is required' })} />
-        </FormControl>
-
-        <FormControl id='distributionSetId' label='Distribution set' errorMessage={errors.distributionSetId?.message} required>
-          <Select {...register('distributionSetId', { valueAsNumber: true })} className={styles.select}>
-            <option value=''>Choose a distribution set</option>
-            {distributionSets.map((distributionSet) => (
-              <option key={distributionSet.id} value={distributionSet.id}>
-                {distributionSet.name}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl id='targetFilterId' label='Target filter' errorMessage={errors.targetFilterQuery?.message} required>
-          <Select {...register('targetFilterQuery')} className={styles.select}>
-            <option value=''>Choose a target filter</option>
-            {targetFilters.map((targetFilter) => (
-              <option key={targetFilter.id} value={targetFilter.query}>
-                {targetFilter.name}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-
-      <FormControl id='description' label='Description' errorMessage={errors.description?.message}>
-        <TextArea id='description' placeholder='Add additional details' {...register('description')} />
-      </FormControl>
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <FormControl id='type' label='Action type' errorMessage={errors.type?.message} required>
-          <Controller
-            name='type'
-            control={control}
-            render={({ field }) => <RadioGroup value={field.value ?? ''} options={actionTypeOptions} onChange={field.onChange} />}
-          />
-        </FormControl>
-        {actionType === RolloutTypes.TIME_FORCED && (
-          <FormControl id='forcetime' errorMessage={errors.forcetime?.message}>
-            <Controller control={control} name='forcetime' render={({ field }) => <DateTimePicker {...field} />} />
+    <FormProvider {...formMethods}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+          <FormControl id='name' label='Name' errorMessage={errors.name?.message} required>
+            <Input id='name' placeholder='Enter rollout name' {...register('name', { required: 'Name is required' })} />
           </FormControl>
-        )}
-      </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <FormControl id='startType' label='Start type' errorMessage={errors.startType?.message} required>
-          <Controller
-            name='startType'
-            control={control}
-            render={({ field }) => <RadioGroup value={field.value ?? ''} options={startTypeOptions} onChange={field.onChange} />}
-          />
-        </FormControl>
-        {startType === StartType.SCHEDULED && (
-          <FormControl id='startAt' errorMessage={errors.startAt?.message}>
-            <Controller control={control} name='startAt' render={({ field }) => <DateTimePicker {...field} />} />
+          <FormControl id='distributionSetId' label='Distribution set' errorMessage={errors.distributionSetId?.message} required>
+            <Select {...register('distributionSetId', { valueAsNumber: true })} className={styles.select}>
+              <option value=''>Choose a distribution set</option>
+              {distributionSets.map((distributionSet) => (
+                <option key={distributionSet.id} value={distributionSet.id}>
+                  {distributionSet.name}
+                </option>
+              ))}
+            </Select>
           </FormControl>
-        )}
-      </div>
 
-      <div className={styles.tabGroup}>
-        <div className={styles.tabs}>
-          <button
-            type='button'
-            className={`${styles.tab} ${activeTab === 'numberOfGroups' ? styles.activeTab : ''}`}
-            onClick={() => {
-              setActiveTab('numberOfGroups');
-              resetField('groups');
-            }}
-          >
-            Number of groups
-          </button>
-          <button
-            type='button'
-            className={`${styles.tab} ${activeTab === 'advancedDefinition' ? styles.activeTab : ''}`}
-            onClick={() => {
-              setActiveTab('advancedDefinition');
-              resetField('amountGroups');
-            }}
-          >
-            Advanced group definition
-          </button>
+          <SelectTargetFilterContainer targetFilters={targetFilters} onSelectedTargetsChange={handleSelectedTargetsChange} />
         </div>
 
-        <div className={styles.tabContent}>
-          {activeTab === 'numberOfGroups' && (
-            <>
-              <p className={styles.tabDescription}>Generate the groups automatically with the specified thresholds.</p>
-              <FormProvider {...formMethods}>
+        <FormControl id='description' label='Description' errorMessage={errors.description?.message}>
+          <TextArea id='description' placeholder='Add additional details' {...register('description')} />
+        </FormControl>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <FormControl id='type' label='Action type' errorMessage={errors.type?.message} required>
+            <Controller
+              name='type'
+              control={control}
+              render={({ field }) => <RadioGroup value={field.value ?? ''} options={actionTypeOptions} onChange={field.onChange} />}
+            />
+          </FormControl>
+          {actionType === RolloutTypes.TIME_FORCED && (
+            <FormControl id='forcetime' errorMessage={errors.forcetime?.message}>
+              <Controller control={control} name='forcetime' render={({ field }) => <DateTimePicker {...field} />} />
+            </FormControl>
+          )}
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <FormControl id='startType' label='Start type' errorMessage={errors.startType?.message} required>
+            <Controller
+              name='startType'
+              control={control}
+              render={({ field }) => <RadioGroup value={field.value ?? ''} options={startTypeOptions} onChange={field.onChange} />}
+            />
+          </FormControl>
+          {startType === StartType.SCHEDULED && (
+            <FormControl id='startAt' errorMessage={errors.startAt?.message}>
+              <Controller control={control} name='startAt' render={({ field }) => <DateTimePicker {...field} />} />
+            </FormControl>
+          )}
+        </div>
+
+        <div className={styles.tabGroup}>
+          <div className={styles.tabs}>
+            <button
+              type='button'
+              className={`${styles.tab} ${activeTab === 'numberOfGroups' ? styles.activeTab : ''}`}
+              onClick={() => {
+                setActiveTab('numberOfGroups');
+                resetField('groups');
+              }}
+            >
+              Number of groups
+            </button>
+            <button
+              type='button'
+              className={`${styles.tab} ${activeTab === 'advancedDefinition' ? styles.activeTab : ''}`}
+              onClick={() => {
+                setActiveTab('advancedDefinition');
+                resetField('amountGroups');
+              }}
+            >
+              Advanced group definition
+            </button>
+          </div>
+
+          <div className={styles.tabContent}>
+            {activeTab === 'numberOfGroups' && (
+              <>
+                <p className={styles.tabDescription}>Generate the groups automatically with the specified thresholds.</p>
                 <RolloutNumberOfGroups />
-              </FormProvider>
-            </>
-          )}
+              </>
+            )}
 
-          {activeTab === 'advancedDefinition' && (
-            <>
-              <p className={styles.tabDescription}>Define which groups the Rollout should have.</p>
-              <FormProvider {...formMethods}>
+            {activeTab === 'advancedDefinition' && (
+              <>
+                <p className={styles.tabDescription}>Define which groups the Rollout should have.</p>
                 <RolloutGroupsTable />
-              </FormProvider>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
-      </div>
 
-      <div className={styles.errorMessage}>Mandatory field*</div>
+        <div className={styles.errorMessage}>Mandatory field*</div>
 
-      <ActionButtons>
-        <ActionButtons.Primary type='submit'>Save</ActionButtons.Primary>
-        <ActionButtons.Secondary onClick={onCancel}>Cancel</ActionButtons.Secondary>
-      </ActionButtons>
-    </Form>
+        <ActionButtons>
+          <ActionButtons.Primary type='submit'>Save</ActionButtons.Primary>
+          <ActionButtons.Secondary onClick={onCancel}>Cancel</ActionButtons.Secondary>
+        </ActionButtons>
+      </Form>
+    </FormProvider>
   );
 }

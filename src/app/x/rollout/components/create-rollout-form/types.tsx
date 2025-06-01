@@ -27,6 +27,7 @@ export const CreateRolloutFormSchema = z
     forcetime: z.date().optional(),
     startType: z.nativeEnum(StartType, { message: 'Start type is required' }),
     startAt: z.date().optional(),
+    selectedTargetsCount: z.number().min(1, { message: 'No targets in filter query' }),
     amountGroups: z.number({ message: 'Number of groups is required' }).min(1, { message: 'Number of groups is required' }).optional(),
     successCondition: z
       .object({
@@ -40,6 +41,7 @@ export const CreateRolloutFormSchema = z
         expression: z.number().min(1, { message: 'Error threshold must be greater than 0' }),
       })
       .optional(),
+    isErrorCount: z.boolean(),
     groups: z.array(RolloutGroupSchema).optional(),
   })
   .refine((data) => !(data.type === RolloutTypes.TIME_FORCED && !data.forcetime), {
@@ -47,7 +49,8 @@ export const CreateRolloutFormSchema = z
     path: ['forcetime'],
   })
   .refine((data) => !(data.groups === undefined && data.amountGroups === undefined), {
-    message: 'Number of groups is required x2',
+    message: 'Number of groups is required',
     path: ['amountGroups'],
   });
+
 export type CreateRolloutFormData = z.infer<typeof CreateRolloutFormSchema>;
