@@ -1,0 +1,14 @@
+@use 'src/app/styles/variables' as *;
+
+.running {
+  color: $status-in-sync;
+}
+
+.finished {
+  color: $status-in-sync;
+}
+
+.ready {
+  color: $light-primary-text-color;
+}
+

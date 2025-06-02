@@ -76,6 +76,9 @@ export default function RolloutFormContainer({ onSubmitSuccess, onCancel }: Roll
     await createRollout(input);
     onSubmitSuccess();
     refetch();
+    setTimeout(() => {
+      refetch();
+    }, 5000);
   };
 
   return <CreateRolloutForm distributionSets={distributionSets ?? []} targetFilters={targetFilters ?? []} onSubmit={handleSubmit} onCancel={onCancel} />;

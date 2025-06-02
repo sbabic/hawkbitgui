@@ -21,7 +21,7 @@ export const CreateRolloutFormSchema = z
   .object({
     name: z.string().min(1, { message: 'Name is required' }),
     distributionSetId: z.number({ message: 'Distribution set is required' }).min(1, { message: 'Distribution set is required' }),
-    targetFilterQuery: z.string().min(1, { message: 'Custom target filter is required' }),
+    targetFilterQuery: z.string({ message: 'Custom target filter is required' }).min(1, { message: 'Custom target filter is required' }),
     description: z.string().optional(),
     type: z.nativeEnum(RolloutTypes, { message: 'Action type is required' }),
     forcetime: z.date().optional(),

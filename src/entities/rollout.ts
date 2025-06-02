@@ -1,26 +1,26 @@
 export const RolloutStatus = {
-  CREATING: 'CREATING',
-  WAITING_FOR_APPROVAL: 'WAITING_FOR_APPROVAL',
-  APPROVAL_DENIED: 'APPROVAL_DENIED',
-  READY: 'READY',
-  PAUSED: 'PAUSED',
-  STARTING: 'STARTING',
-  STOPPED: 'STOPPED',
-  STOPPING: 'STOPPING',
-  RUNNING: 'RUNNING',
-  FINISHED: 'FINISHED',
-  DELETING: 'DELETING',
-  DELETED: 'DELETED',
+  creating: 'creating',
+  waiting_for_approval: 'waiting_for_approval',
+  approval_denied: 'approval_denied',
+  ready: 'ready',
+  paused: 'paused',
+  starting: 'starting',
+  stopped: 'stopped',
+  stopping: 'stopping',
+  running: 'running',
+  finished: 'finished',
+  deleting: 'deleting',
+  deleted: 'deleted',
 } as const;
 export type RolloutStatus = (typeof RolloutStatus)[keyof typeof RolloutStatus];
 
 export const TotalTargetCountStatus = {
-  RUNNING: 'running',
-  NOT_STARTED: 'notstarted',
-  SCHEDULED: 'scheduled',
-  CANCELLED: 'cancelled',
-  FINISHED: 'finished',
-  ERROR: 'error',
+  running: 'running',
+  notstarted: 'notstarted',
+  scheduled: 'scheduled',
+  cancelled: 'cancelled',
+  finished: 'finished',
+  error: 'error',
 } as const;
 export type TotalTargetCountStatus = (typeof TotalTargetCountStatus)[keyof typeof TotalTargetCountStatus];
 

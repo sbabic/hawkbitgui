@@ -25,6 +25,8 @@
             th {
                 padding: 8px;
                 text-align: left;
+                color: $light-primary-text-color;
+                font-weight: 700;
 
                 &:first-child {
                     border-top-left-radius: 8px;

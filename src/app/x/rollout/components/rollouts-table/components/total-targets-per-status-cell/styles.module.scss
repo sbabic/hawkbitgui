@@ -1,0 +1,29 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+
+  p {
+    margin: 0;
+    white-space: nowrap;
+  }
+}
+
+.notstarted {
+  color: $light-primary-text-color;
+}
+
+.running {
+  color: $status-in-sync;
+}
+
+.error {
+  color: $error-dark-color;
+}
+
+.finished {
+  color: $status-in-sync;
+}

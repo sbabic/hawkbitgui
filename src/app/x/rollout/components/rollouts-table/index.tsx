@@ -13,6 +13,8 @@ import { Rollout, TotalTargetCountStatus } from '@/entities/rollout';
 import ThumbsUpIcon from '@/app/components/icons/thumbs-up-icon';
 import ForwardIcon from '@/app/components/icons/forward-icon';
 import PauseIcon from '@/app/components/icons/pause-icon';
+import { TotalTargetsPerStatusCell } from './components/total-targets-per-status-cell';
+import { RolloutStatusCell } from './components/rollout-status-cell';
 
 export type RolloutsTableProps = {
   rollouts: Rollout[];
@@ -40,10 +42,11 @@ export default function RolloutsTable({ rollouts = [], onPlayClick, onPinClick, 
       }),
       columnHelper.accessor('status', {
         header: 'Status',
-        cell: (cell) => cell.getValue(),
+        cell: (cell) => <RolloutStatusCell status={cell.getValue()} />,
       }),
       columnHelper.accessor('totalTargetsPerStatus', {
         header: 'Detail status',
+        size: 180,
         cell: (cell) => {
           const totalTargetsPerStatus = cell.getValue();
           if (!totalTargetsPerStatus) {
@@ -57,21 +60,10 @@ export default function RolloutsTable({ rollouts = [], onPlayClick, onPinClick, 
             }
           }
 
-          const statusMapper: Record<TotalTargetCountStatus, React.ReactElement | null> = {
-            running: <div className={styles.runningDot}></div>,
-            notstarted: <div className={styles.notStartedIcon}></div>,
-            scheduled: <div className={styles.scheduledDot}></div>,
-            cancelled: <div className={styles.cancelledDot}></div>,
-            finished: <div className={styles.finishedDot}></div>,
-            error: <div className={styles.errorDot}></div>,
-          };
-
           return (
-            <div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {Object.entries(totalTargetsPerStatus).map(([status, count]) => (
-                <div key={status} className={styles.statusCell}>
-                  {statusMapper[status as TotalTargetCountStatus]} {count} {status}
-                </div>
+                <TotalTargetsPerStatusCell key={status} status={status as TotalTargetCountStatus} count={count} />
               ))}
             </div>
           );
@@ -117,9 +109,5 @@ export default function RolloutsTable({ rollouts = [], onPlayClick, onPinClick, 
     ];
   }, [columnHelper, onPlayClick, onPinClick, onDetailsClick, onEditClick, onCopyClick, onDeleteClick]);
 
-  return (
-    <>
-      <Table columns={columns} data={rollouts} />
-    </>
-  );
+  return <Table columns={columns} data={rollouts} />;
 }

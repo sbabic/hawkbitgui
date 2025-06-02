@@ -41,7 +41,10 @@ export default function RolloutsTableContainer() {
   const handleDeleteClick = (rollout: Rollout) => {
     confirmDialog.open(rollout, async () => {
       await deleteRollout(rollout.id);
-      await refetch();
+      refetch();
+      setTimeout(() => {
+        refetch();
+      }, 5000);
     });
   };
 
