@@ -6,13 +6,11 @@ import styles from './styles.module.scss';
 
 export type TableProps<T> = {
   data: T[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<T, any>[];
   variant?: 'default' | 'unstyled';
 };
 
 export default function Table<T>({ data, columns, variant = 'default' }: TableProps<T>) {
-  // Create the table instance
   const table = useReactTable({
     data,
     columns,
@@ -21,15 +19,15 @@ export default function Table<T>({ data, columns, variant = 'default' }: TablePr
 
   const tableClassName = variant === 'unstyled' ? styles.unstyledTable : styles.defaultTable;
 
-  // Render the table
   return (
     <div className={`${styles.tableContainer} ${tableClassName}`}>
-      <table>
-        <thead>
+      <div className={styles.table}>
+        <div className={styles.thead}>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            <div className={styles.tr} key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th
+                <div
+                  className={styles.th}
                   key={header.id}
                   style={{
                     width: header.getSize(),
@@ -37,16 +35,17 @@ export default function Table<T>({ data, columns, variant = 'default' }: TablePr
                   }}
                 >
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
+                </div>
               ))}
-            </tr>
+            </div>
           ))}
-        </thead>
-        <tbody>
+        </div>
+        <div className={styles.tbody}>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <div className={styles.tr} key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td
+                <div
+                  className={styles.td}
                   key={cell.id}
                   style={{
                     width: cell.column.getSize(),
@@ -54,12 +53,12 @@ export default function Table<T>({ data, columns, variant = 'default' }: TablePr
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+                </div>
               ))}
-            </tr>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 }

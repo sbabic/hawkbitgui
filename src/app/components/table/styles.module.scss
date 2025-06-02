@@ -1,90 +1,77 @@
 @use 'src/app/styles/variables' as *;
 
 .tableContainer {
-    display: flex;
-    width: 100%;
-    overflow-x: auto;
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 100%;
+}
+
+.thead,
+.tbody {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tr {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.th,
+.td {
+  padding: 8px;
+  flex-shrink: 0;
+  text-align: left;
 }
 
 .defaultTable {
-    table {
-        width: 100%;
-        min-width: 100%;
-        border-radius: 8px;
-        border-collapse: collapse;
-        overflow: hidden;
+  .thead {
+    background-color: $secondary-color;
+    border-radius: 8px;
 
-        thead {
-            width: 100%;
-            background-color: $secondary-color;
+    .th {
+      color: $light-primary-text-color;
+      font-weight: 700;
 
-            tr {
-                width: 100%;
-            }
-
-            th {
-                padding: 8px;
-                text-align: left;
-                color: $light-primary-text-color;
-                font-weight: 700;
-
-                &:first-child {
-                    border-top-left-radius: 8px;
-                    border-bottom-left-radius: 8px;
-                }
-
-                &:last-child {
-                    border-top-right-radius: 8px;
-                    border-bottom-right-radius: 8px;
-                }
-
-                &:not(:last-child) {
-                    border-right: 2px solid #e6eafb;
-                }
-            }
-        }
-
-        tbody {
-            overflow: scroll;
-            width: 100%;
-            tr {
-                width: 100%;
-                &:hover {
-                    background-color: #fafafa;
-                }
-            }
-
-            td {
-                padding: 8px;
-                border-bottom: 2px solid #e6eafb;
-            }
-        }
+      &:not(:last-child) {
+        border-right: 2px solid #e6eafb;
+      }
     }
+  }
+
+  .tbody {
+    .tr {
+      border-bottom: 2px solid #e6eafb;
+      &:hover {
+        background-color: #fafafa;
+      }
+    }
+
+    .td {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
 
 .unstyledTable {
-    table {
-        thead {
-            tr {
-                width: 100%;
-            }
+  .th {
+    font-size: 14px;
+    font-weight: 700;
+    color: $primary-text-color;
+  }
 
-            th {
-                padding: 8px;
-                text-align: left;
-                font-size: 14px;
-                font-weight: 700;
-                color: $primary-text-color;
-            }
-        }
-
-        tbody {
-            overflow: scroll;
-            width: 100%;
-
-            td {
-                padding: 4px 4px;
-            }
-        }
-    }
+  .td {
+    padding: 4px;
+  }
 }
