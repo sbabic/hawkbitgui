@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 
 export type TableProps<T> = {
   data: T[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<T, any>[];
   variant?: 'default' | 'unstyled';
 };
