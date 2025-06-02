@@ -3,6 +3,7 @@
 import React from 'react';
 import { useReactTable, getCoreRowModel, flexRender, ColumnDef } from '@tanstack/react-table';
 import styles from './styles.module.scss';
+import DraggableDroppableRow from '@/app/components/draggable-droppable-row';
 
 export type TableProps<T> = {
   data: T[];
@@ -43,7 +44,7 @@ export default function Table<T>({ data, columns, variant = 'default' }: TablePr
         </div>
         <div className={styles.tbody}>
           {table.getRowModel().rows.map((row) => (
-            <div className={styles.tr} key={row.id}>
+            <DraggableDroppableRow className={styles.tr} key={row.id} id={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <div
                   className={styles.td}
@@ -56,7 +57,7 @@ export default function Table<T>({ data, columns, variant = 'default' }: TablePr
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </div>
               ))}
-            </div>
+            </DraggableDroppableRow>
           ))}
         </div>
       </div>
