@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useReactTable, getCoreRowModel, flexRender, ColumnDef } from '@tanstack/react-table';
 import styles from './styles.module.scss';
 import DraggableDroppableRow from '@/app/components/draggable-droppable-row';
@@ -10,14 +10,20 @@ export type TableProps<T> = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<T, any>[];
   variant?: 'default' | 'unstyled';
+  draggable?: boolean;
 };
 
-export default function Table<T>({ data, columns, variant = 'default' }: TableProps<T>) {
+export default function Table<T>({ data, columns, variant = 'default', draggable }: TableProps<T>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const uuid = useMemo(() => {
+    // Generate a unique ID for the table instance
+    return `table-${Math.random().toString(36).substr(2, 9)}`;
+  }, []);
 
   const tableClassName = variant === 'unstyled' ? styles.unstyledTable : styles.defaultTable;
 
@@ -43,22 +49,32 @@ export default function Table<T>({ data, columns, variant = 'default' }: TablePr
           ))}
         </div>
         <div className={styles.tbody}>
-          {table.getRowModel().rows.map((row) => (
-            <DraggableDroppableRow className={styles.tr} key={row.id} id={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <div
-                  className={styles.td}
-                  key={cell.id}
-                  style={{
-                    width: cell.column.getSize(),
-                    minWidth: cell.column.getSize(),
-                  }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </div>
-              ))}
-            </DraggableDroppableRow>
-          ))}
+          {table.getRowModel().rows.map((row) => {
+            return (
+              <DraggableDroppableRow
+                className={`${styles.tr}`}
+                key={row.id}
+                id={`${uuid}-${row.id}`}
+                dragData={row.original}
+                dropData={row.original}
+                draggable={draggable}
+                droppable={draggable}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <div
+                    className={styles.td}
+                    key={cell.id}
+                    style={{
+                      width: cell.column.getSize(),
+                      minWidth: cell.column.getSize(),
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </div>
+                ))}
+              </DraggableDroppableRow>
+            );
+          })}
         </div>
       </div>
     </div>

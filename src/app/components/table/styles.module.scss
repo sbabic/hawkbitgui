@@ -31,6 +31,10 @@
   text-align: left;
 }
 
+.selectedRow {
+  background-color: $light-primary-text-color;
+}
+
 .defaultTable {
   .thead {
     background-color: $secondary-color;

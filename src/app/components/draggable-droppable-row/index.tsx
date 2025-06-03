@@ -1,32 +1,53 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { ReactNode } from 'react';
 
-export default function DraggableDroppableRow({ id, children, className }: { id: string; children: ReactNode; className?: string }) {
+type Props<T> = {
+  id: string | number;
+  children: ReactNode;
+  className?: string;
+  draggable?: boolean;
+  droppable?: boolean;
+  dragData?: T;
+  dropData?: T;
+};
+
+export default function DraggableDroppableRow<T>({ id, children, className, draggable = false, droppable = false, dragData, dropData }: Props<T>) {
   const {
     setNodeRef: setDragRef,
     attributes,
     listeners,
   } = useDraggable({
     id,
-  });
-  const { setNodeRef: setDropRef, isOver } = useDroppable({
-    id,
+    disabled: !draggable,
+    data: {
+      dragData,
+    },
   });
 
+  const drop = useDroppable({
+    id,
+    disabled: !droppable,
+    data: {
+      dropData: dropData,
+    },
+  });
+
+  const { setNodeRef: setDropRef, isOver } = drop;
+
   const ref = (el: HTMLElement | null) => {
-    setDragRef(el);
-    setDropRef(el);
+    if (droppable) setDropRef(el);
+    if (draggable) setDragRef(el);
   };
 
   return (
     <div
       ref={ref}
-      {...attributes}
-      {...listeners}
+      {...(draggable ? attributes : {})}
+      {...(draggable ? listeners : {})}
       className={className}
       style={{
-        backgroundColor: isOver ? '#e0ffe0' : undefined,
-        cursor: 'grab',
+        backgroundColor: droppable && isOver ? '#e0ffe0' : undefined,
+        cursor: draggable ? 'grab' : 'default',
       }}
     >
       {children}
