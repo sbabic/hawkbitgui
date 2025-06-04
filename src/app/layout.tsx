@@ -3,24 +3,26 @@ import './globals.scss';
 import { getServerSession } from 'next-auth';
 import Providers from './providers';
 import { authOptions } from '@/lib/auth-options';
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
-    title: 'Hawkbit',
-    description: 'Hawkbit',
+  title: 'Hawkbit',
+  description: 'Hawkbit',
 };
 
 export default async function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
-    return (
-        <html lang='en'>
-            <body>
-                <Providers session={session}>{children}</Providers>
-            </body>
-        </html>
-    );
+  return (
+    <html lang='en'>
+      <body>
+        <Providers session={session}>{children}</Providers>
+        <Toaster />
+      </body>
+    </html>
+  );
 }

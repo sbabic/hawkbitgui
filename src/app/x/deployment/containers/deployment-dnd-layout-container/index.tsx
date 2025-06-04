@@ -5,9 +5,11 @@ import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/
 import TargetsCardContainer from '@/app/x/deployment/containers/targets-card-container';
 import DistributionsCardContainer from '@/app/x/deployment/containers/distributions-card-container';
 import { Distribution, isDistribution, isTarget, Target } from '@/entities';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DraggedItemPreview from '@/app/components/dragged-item-preview';
 import { TargetsService } from '@/services/targets-service';
+import { toast } from 'react-hot-toast';
+import { isErrorWithMessage } from '@/utils/is-error-with-message';
 
 export default function DeploymentDndLayoutContainer() {
   const [isDragging, setIsDragging] = useState(false);
@@ -55,14 +57,23 @@ export default function DeploymentDndLayoutContainer() {
 
   async function handleDistributionOverTarget(distribution: Distribution, target: Target) {
     console.log('distribution over target', distribution, target);
-    await TargetsService.assignDistributionsToTarget({
-      controllerId: target.controllerId,
-      distributionsConfigs: [
-        {
-          id: distribution.id,
-        },
-      ],
-    });
+    try {
+      await TargetsService.assignDistributionsToTarget({
+        controllerId: target.controllerId,
+        distributionsConfigs: [
+          {
+            id: distribution.id,
+          },
+        ],
+      });
+    } catch (error) {
+      console.error('Failed to assign distribution to target', error);
+      if (isErrorWithMessage(error)) {
+        toast.error(error.message, {});
+        return;
+      }
+      toast.error('Failed to assign distribution to target', {});
+    }
   }
 
   function handleTargetOverDistribution(target: Target, distribution: Distribution) {
