@@ -30,6 +30,7 @@
         "react-color": "^2.19.3",
         "react-dom": "^19.0.0",
         "react-hook-form": "^7.55.0",
+        "react-hot-toast": "^2.5.2",
         "react-select": "^5.10.1",
         "sass": "^1.86.3",
         "zod": "^3.24.4",
