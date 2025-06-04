@@ -7,6 +7,7 @@ import DistributionsCardContainer from '@/app/x/deployment/containers/distributi
 import { Distribution, isDistribution, isTarget, Target } from '@/entities';
 import { useEffect, useState } from 'react';
 import DraggedItemPreview from '@/app/components/dragged-item-preview';
+import { TargetsService } from '@/services/targets-service';
 
 export default function DeploymentDndLayoutContainer() {
   const [isDragging, setIsDragging] = useState(false);
@@ -52,18 +53,22 @@ export default function DeploymentDndLayoutContainer() {
     setIsDragging(false);
   }
 
-  function handleDistributionOverTarget(distribution: Distribution, target: Target) {
+  async function handleDistributionOverTarget(distribution: Distribution, target: Target) {
     console.log('distribution over target', distribution, target);
+    await TargetsService.assignDistributionsToTarget({
+      controllerId: target.controllerId,
+      distributionsConfigs: [
+        {
+          id: distribution.id,
+        },
+      ],
+    });
   }
 
   function handleTargetOverDistribution(target: Target, distribution: Distribution) {
     console.log('target over distribution', target, distribution);
   }
 
-  useEffect(() => {
-    console.log('sdsdsd');
-    console.log(draggedTarget);
-  }, [draggedTarget]);
   return (
     <div className={styles.cardsContainer}>
       <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>

@@ -1,6 +1,7 @@
 import { FilterFiql, Target } from '@/entities';
 import axiosInstance from '@/lib/axios';
 import {
+  AssignDistributionsToTargetInput,
   CreateTargetInput,
   FetchTargetsInput,
   GetAssignedDistributionOutput,
@@ -120,6 +121,15 @@ export class TargetsService {
       await axiosInstance.delete(`/targets/${controllerId}/metadata/${key}`);
     } catch (error) {
       console.error('Failed to delete Metadata', error);
+      throw error;
+    }
+  }
+
+  static async assignDistributionsToTarget(input: AssignDistributionsToTargetInput): Promise<void> {
+    try {
+      await axiosInstance.post(`/targets/${input.controllerId}/assignedDS`, input.distributionsConfigs);
+    } catch (error) {
+      console.error('Failed to assign distributions to target', error);
       throw error;
     }
   }

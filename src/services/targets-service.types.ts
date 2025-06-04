@@ -2,27 +2,27 @@ import { Distribution, FilterFiql, Metadata, Target } from '@/entities';
 import { ApiResponse } from '@/services/types';
 
 export interface FetchTargetsInput {
-    filters: FilterFiql[];
+  filters: FilterFiql[];
 }
 
 export interface CreateTargetInput {
-    name: string;
-    description?: string;
-    controllerId: string;
-    address?: string;
-    securityToken?: string;
-    requestAttributes?: boolean;
-    targetType?: number;
+  name: string;
+  description?: string;
+  controllerId: string;
+  address?: string;
+  securityToken?: string;
+  requestAttributes?: boolean;
+  targetType?: number;
 }
 
 export interface UpdateTargetInput {
-    name: string;
-    description?: string;
-    controllerId: string;
-    address?: string;
-    securityToken?: string;
-    requestAttributes?: boolean;
-    targetType?: number;
+  name: string;
+  description?: string;
+  controllerId: string;
+  address?: string;
+  securityToken?: string;
+  requestAttributes?: boolean;
+  targetType?: number;
 }
 
 export type GetTargetsResponse = ApiResponse<Target[]>;
@@ -42,3 +42,21 @@ export type GetAssignedDistributionOutput = Distribution;
 export type GetMetadataResponse = ApiResponse<Metadata[]>;
 
 export type GetMetadataOutput = Metadata[];
+
+type MaintenanceWindow = {
+  schedule: string;
+  duration: string;
+  timezone: string;
+};
+
+export type AssignDistributionsToTargetInput = {
+  controllerId: string;
+  distributionsConfigs: {
+    id: number | string;
+    forcetime?: number; // Unix timestamp (ms)
+    weight?: number;
+    confirmationRequired?: boolean;
+    type?: 'soft' | 'hard'; // assuming possible values
+    maintenanceWindow?: MaintenanceWindow;
+  }[];
+};
