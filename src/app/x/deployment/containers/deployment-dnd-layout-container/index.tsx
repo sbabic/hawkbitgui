@@ -1,17 +1,31 @@
 'use client';
 
 import styles from './styles.module.scss';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import TargetsCardContainer from '@/app/x/deployment/containers/targets-card-container';
 import DistributionsCardContainer from '@/app/x/deployment/containers/distributions-card-container';
 import { Distribution, isDistribution, isTarget, Target } from '@/entities';
 import { useState } from 'react';
 import DraggedItemPreview from '@/app/components/dragged-item-preview';
 import { TargetsService } from '@/services/targets-service';
-import { toast } from 'react-hot-toast';
-import { isErrorWithMessage } from '@/utils/is-error-with-message';
+import { handleErrorWithToast } from '@/utils/handle-error-with-toast';
+import { DistributionSetsService } from '@/services/distribution-sets-service';
 
 export default function DeploymentDndLayoutContainer() {
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 250,
+      tolerance: 5,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
+
   const [isDragging, setIsDragging] = useState(false);
   const [draggedTarget, setDraggedTarget] = useState<Target | undefined>();
   function handleDragStart(event: DragStartEvent) {
@@ -67,22 +81,29 @@ export default function DeploymentDndLayoutContainer() {
         ],
       });
     } catch (error) {
-      console.error('Failed to assign distribution to target', error);
-      if (isErrorWithMessage(error)) {
-        toast.error(error.message, {});
-        return;
-      }
-      toast.error('Failed to assign distribution to target', {});
+      handleErrorWithToast(error, 'Failed to assign distribution to target');
     }
   }
 
-  function handleTargetOverDistribution(target: Target, distribution: Distribution) {
+  async function handleTargetOverDistribution(target: Target, distribution: Distribution) {
     console.log('target over distribution', target, distribution);
+    try {
+      await DistributionSetsService.assignTargetsToDistributionSet({
+        distributionId: distribution.id,
+        targetConfigs: [
+          {
+            id: distribution.id,
+          },
+        ],
+      });
+    } catch (error) {
+      handleErrorWithToast(error, 'Failed to assign target to Distribution Set');
+    }
   }
 
   return (
     <div className={styles.cardsContainer}>
-      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <TargetsCardContainer />
         <DistributionsCardContainer />
         <DragOverlay>{isDragging ? <DraggedItemPreview name={draggedTarget?.name} /> : null}</DragOverlay>

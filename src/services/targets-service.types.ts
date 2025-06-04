@@ -53,10 +53,10 @@ export type AssignDistributionsToTargetInput = {
   controllerId: string;
   distributionsConfigs: {
     id: number | string;
-    forcetime?: number; // Unix timestamp (ms)
+    forcetime?: number;
     weight?: number;
     confirmationRequired?: boolean;
-    type?: 'soft' | 'hard'; // assuming possible values
+    type?: 'soft' | 'forced' | 'timeforced' | 'downloadonly';
     maintenanceWindow?: MaintenanceWindow;
   }[];
 };

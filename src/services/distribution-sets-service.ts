@@ -2,6 +2,7 @@ import { Distribution } from '@/entities/distribution';
 import axiosInstance from '@/lib/axios';
 import {
   AssignModulesToDistributionSetInput,
+  AssignTargetsToDistributionInput,
   CreateDistributionSetInput,
   CreateDistributionSetResponse,
   GetAssignedSoftwareModulesResponse,
@@ -91,6 +92,15 @@ export class DistributionSetsService {
       await axiosInstance.delete(`/distributionsets/${distributionId}/metadata/${key}`);
     } catch (error) {
       console.error('Failed to delete Metadata', error);
+      throw error;
+    }
+  }
+
+  static async assignTargetsToDistributionSet(input: AssignTargetsToDistributionInput): Promise<void> {
+    try {
+      await axiosInstance.post(`/distributionsets/${input.distributionId}/assignedTargets`, input.targetConfigs);
+    } catch (error) {
+      console.error('Failed to assign targets to distribution set', error);
       throw error;
     }
   }
