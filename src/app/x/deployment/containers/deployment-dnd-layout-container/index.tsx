@@ -10,6 +10,8 @@ import DraggedItemPreview from '@/app/components/dragged-item-preview';
 import { TargetsService } from '@/services/targets-service';
 import { handleErrorWithToast } from '@/utils/handle-error-with-toast';
 import { DistributionSetsService } from '@/services/distribution-sets-service';
+import ConfirmationModal from '@/app/components/confirmation-modal';
+import { useConfirmDialog } from '@/app/hooks';
 
 export default function DeploymentDndLayoutContainer() {
   const mouseSensor = useSensor(MouseSensor, {
@@ -25,6 +27,8 @@ export default function DeploymentDndLayoutContainer() {
   });
 
   const sensors = useSensors(mouseSensor, touchSensor);
+
+  const targetOverDistributionConfirmationModal = useConfirmDialog();
 
   const [isDragging, setIsDragging] = useState(false);
   const [draggedTarget, setDraggedTarget] = useState<Target | undefined>();
@@ -55,7 +59,10 @@ export default function DeploymentDndLayoutContainer() {
     if (isDistribution(dragged) && isTarget(over)) {
       const distribution = dragged;
       const target = over;
-      handleDistributionOverTarget(distribution, target);
+      targetOverDistributionConfirmationModal.open({}, () => {
+        handleDistributionOverTarget(distribution, target);
+      });
+
       setIsDragging(false);
     }
 
@@ -108,6 +115,14 @@ export default function DeploymentDndLayoutContainer() {
         <DistributionsCardContainer />
         <DragOverlay>{isDragging ? <DraggedItemPreview name={draggedTarget?.name} /> : null}</DragOverlay>
       </DndContext>
+      <ConfirmationModal
+        title={'Confirm Assignment'}
+        onClose={targetOverDistributionConfirmationModal.close}
+        onConfirm={targetOverDistributionConfirmationModal.confirm}
+        isOpen={targetOverDistributionConfirmationModal.isOpen}
+      >
+        Are you sure you want to assign Distribution set Ganshorn:1.0.0 to Target controlhaus-dhcor-e8:eb:1b:12:e4:fb?
+      </ConfirmationModal>
     </div>
   );
 }
