@@ -5,13 +5,15 @@ import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, MouseSensor, Tou
 import TargetsCardContainer from '@/app/x/deployment/containers/targets-card-container';
 import DistributionsCardContainer from '@/app/x/deployment/containers/distributions-card-container';
 import { Distribution, isDistribution, isTarget, Target } from '@/entities';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import DraggedItemPreview from '@/app/components/dragged-item-preview';
 import { TargetsService } from '@/services/targets-service';
 import { handleErrorWithToast } from '@/utils/handle-error-with-toast';
 import { DistributionSetsService } from '@/services/distribution-sets-service';
 import ConfirmationModal from '@/app/components/confirmation-modal';
 import { useConfirmDialog } from '@/app/hooks';
+import ScheduleForm, { FormData as ScheduleFormData } from '@/app/x/deployment/components/schedule-form';
+import { AssignConfig } from '@/services/targets-service.types';
 
 export default function DeploymentDndLayoutContainer() {
   const mouseSensor = useSensor(MouseSensor, {
@@ -28,7 +30,9 @@ export default function DeploymentDndLayoutContainer() {
 
   const sensors = useSensors(mouseSensor, touchSensor);
 
-  const targetOverDistributionConfirmationModal = useConfirmDialog();
+  const targetOverDistributionConfirmationModal = useConfirmDialog<{ target: Target; distribution: Distribution }>();
+
+  const scheduleFormData = useRef<ScheduleFormData | undefined>(undefined);
 
   const [isDragging, setIsDragging] = useState(false);
   const [draggedTarget, setDraggedTarget] = useState<Target | undefined>();
@@ -59,8 +63,8 @@ export default function DeploymentDndLayoutContainer() {
     if (isDistribution(dragged) && isTarget(over)) {
       const distribution = dragged;
       const target = over;
-      targetOverDistributionConfirmationModal.open({}, () => {
-        handleDistributionOverTarget(distribution, target);
+      targetOverDistributionConfirmationModal.open({ target, distribution }, () => {
+        handleDistributionOverTarget(distribution, target, scheduleFormData.current);
       });
 
       setIsDragging(false);
@@ -76,37 +80,56 @@ export default function DeploymentDndLayoutContainer() {
     setIsDragging(false);
   }
 
-  async function handleDistributionOverTarget(distribution: Distribution, target: Target) {
+  async function handleDistributionOverTarget(distribution: Distribution, target: Target, scheduleData?: ScheduleFormData) {
     console.log('distribution over target', distribution, target);
+    const config = mapScheduleFormDataToAssignConfig(distribution.id, scheduleData);
+    console.log('config', config);
     try {
       await TargetsService.assignDistributionsToTarget({
         controllerId: target.controllerId,
-        distributionsConfigs: [
-          {
-            id: distribution.id,
-          },
-        ],
+        distributionsConfigs: [config],
       });
     } catch (error) {
       handleErrorWithToast(error, 'Failed to assign distribution to target');
     }
   }
 
-  async function handleTargetOverDistribution(target: Target, distribution: Distribution) {
+  async function handleTargetOverDistribution(target: Target, distribution: Distribution, scheduleData?: ScheduleFormData) {
     console.log('target over distribution', target, distribution);
+    const config = mapScheduleFormDataToAssignConfig(target.controllerId, scheduleData);
+    console.log('config', config);
     try {
       await DistributionSetsService.assignTargetsToDistributionSet({
         distributionId: distribution.id,
-        targetConfigs: [
-          {
-            id: distribution.id,
-          },
-        ],
+        targetConfigs: [config],
       });
     } catch (error) {
       handleErrorWithToast(error, 'Failed to assign target to Distribution Set');
     }
   }
+
+  const mapScheduleFormDataToAssignConfig = (id: string | number, data?: ScheduleFormData): AssignConfig => {
+    if (!data) {
+      return {
+        id: id,
+      };
+    }
+    const assignConfig: AssignConfig = {
+      type: data.mode,
+      maintenanceWindow: data.maintenanceWindow
+        ? {
+            schedule: data.schedule,
+            duration: data.duration,
+            timezone: data.timeZone,
+          }
+        : undefined,
+      id: id,
+    };
+    if (data.mode === 'timeforced' && data.forcedDate) {
+      assignConfig.forcetime = new Date(data.forcedDate).getTime();
+    }
+    return assignConfig;
+  };
 
   return (
     <div className={styles.cardsContainer}>
@@ -116,12 +139,15 @@ export default function DeploymentDndLayoutContainer() {
         <DragOverlay>{isDragging ? <DraggedItemPreview name={draggedTarget?.name} /> : null}</DragOverlay>
       </DndContext>
       <ConfirmationModal
+        size={'lg'}
         title={'Confirm Assignment'}
         onClose={targetOverDistributionConfirmationModal.close}
         onConfirm={targetOverDistributionConfirmationModal.confirm}
         isOpen={targetOverDistributionConfirmationModal.isOpen}
       >
-        Are you sure you want to assign Distribution set Ganshorn:1.0.0 to Target controlhaus-dhcor-e8:eb:1b:12:e4:fb?
+        Are you sure you want to assign Distribution set <b>{targetOverDistributionConfirmationModal.data?.distribution.name}</b> to Target{' '}
+        <b>{targetOverDistributionConfirmationModal.data?.target.name}</b> ?
+        <ScheduleForm onChange={(data) => (scheduleFormData.current = data)} />
       </ConfirmationModal>
     </div>
   );

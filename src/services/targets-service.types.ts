@@ -49,14 +49,16 @@ type MaintenanceWindow = {
   timezone: string;
 };
 
+export type AssignConfig = {
+  id: number | string;
+  forcetime?: number;
+  weight?: number;
+  confirmationRequired?: boolean;
+  type?: 'soft' | 'forced' | 'timeforced' | 'downloadonly';
+  maintenanceWindow?: MaintenanceWindow;
+};
+
 export type AssignDistributionsToTargetInput = {
   controllerId: string;
-  distributionsConfigs: {
-    id: number | string;
-    forcetime?: number;
-    weight?: number;
-    confirmationRequired?: boolean;
-    type?: 'soft' | 'forced' | 'timeforced' | 'downloadonly';
-    maintenanceWindow?: MaintenanceWindow;
-  }[];
+  distributionsConfigs: AssignConfig[];
 };
