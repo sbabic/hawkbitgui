@@ -32,7 +32,11 @@
 }
 
 .selectedRow {
-  background-color: $light-primary-text-color;
+  background-color: $accent-color !important;
+  color: $secondary-color !important;
+  * {
+    color: inherit !important;
+  }
 }
 
 .defaultTable {

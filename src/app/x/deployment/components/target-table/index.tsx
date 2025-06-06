@@ -125,7 +125,7 @@ export default function TargetTable({ expanded, onTargetNameClick, targets = [],
 
   return (
     <>
-      <Table columns={expanded ? fullColumns : shortColumns} data={targets} draggable={true} />
+      <Table columns={expanded ? fullColumns : shortColumns} data={targets} draggable={true} selectable={true} />
     </>
   );
 }

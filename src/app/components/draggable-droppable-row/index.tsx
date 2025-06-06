@@ -1,17 +1,27 @@
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 
-type Props<T> = {
+type Props<T, Y> = {
   id: string | number;
   children: ReactNode;
   className?: string;
   draggable?: boolean;
   droppable?: boolean;
   dragData?: T;
-  dropData?: T;
+  dropData?: Y;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 };
 
-export default function DraggableDroppableRow<T>({ id, children, className, draggable = false, droppable = false, dragData, dropData }: Props<T>) {
+export default function DraggableDroppableRow<T, Y>({
+  id,
+  children,
+  className,
+  draggable = false,
+  droppable = false,
+  dragData,
+  dropData,
+  onClick,
+}: Props<T, Y>) {
   const {
     setNodeRef: setDragRef,
     attributes,
@@ -49,6 +59,7 @@ export default function DraggableDroppableRow<T>({ id, children, className, drag
         backgroundColor: droppable && isOver ? '#e0ffe0' : undefined,
         cursor: draggable ? 'grab' : 'default',
       }}
+      onClick={onClick}
     >
       {children}
     </div>

@@ -74,3 +74,9 @@ export function isTarget(obj: any): obj is Target {
     (obj.autoConfirmActive === undefined || typeof obj.autoConfirmActive === 'boolean')
   );
 }
+
+export function isTargetRecord(value: unknown): value is Record<string, Target> {
+  if (typeof value !== 'object' || value === null) return false;
+
+  return Object.entries(value).every(([key, val]) => typeof key === 'string' && isTarget(val));
+}
