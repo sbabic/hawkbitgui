@@ -7,7 +7,7 @@ import DraggableDroppableRow from '@/app/components/draggable-droppable-row';
 
 export type TableProps<T> = {
   data: T[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   columns: ColumnDef<T, any>[];
   variant?: 'default' | 'unstyled';
   draggable?: boolean;
@@ -38,6 +38,7 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
                   className={styles.th}
                   key={header.id}
                   style={{
+                    flex: 1,
                     width: header.getSize(),
                     minWidth: header.getSize(),
                   }}
@@ -65,6 +66,7 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
                     className={styles.td}
                     key={cell.id}
                     style={{
+                      flex: 1,
                       width: cell.column.getSize(),
                       minWidth: cell.column.getSize(),
                     }}

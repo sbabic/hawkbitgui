@@ -28,7 +28,7 @@ export default function DistributionSetsCard() {
 
   return (
     <>
-      <PanelCard expanded={isExpanded}>
+      <PanelCard defaultWidth='100%' expanded={isExpanded}>
         <PanelCard.Header title='Distributions' isExpanded={isExpanded} onToggleExpand={handleExpand}>
           <ExpandableSearchBarContainer />
         </PanelCard.Header>

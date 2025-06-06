@@ -48,9 +48,5 @@ export default function DistributionSetsTable({ distributionSets, onNameClick }:
     ];
   }, [columnHelper, onNameClick]);
 
-  return (
-    <>
-      <Table columns={fullColumns} data={distributionSets} />
-    </>
-  );
+  return <Table columns={fullColumns} data={distributionSets} />;
 }

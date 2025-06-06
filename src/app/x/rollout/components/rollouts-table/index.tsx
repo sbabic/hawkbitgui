@@ -74,6 +74,7 @@ export default function RolloutsTable({
       columnHelper.display({
         id: 'actions',
         header: 'Actions',
+        size: 310,
         cell: (info) => (
           <div className={styles.actionButtons}>
             <IconButton height={'24px'} width={'24px'} onClick={() => onPlayClick(info.row.original)}>
