@@ -89,3 +89,16 @@ export interface RolloutLinks {
     href: string;
   };
 }
+
+export interface RolloutGroup {
+  id: number;
+  name: string;
+  status: RolloutStatus;
+  totalTargetsPerStatus: Record<TotalTargetCountStatus, number>;
+  errorThreshold: number;
+  triggerThreshold: number;
+  createdAt: number;
+  createdBy: string;
+  lastModifiedAt: number;
+  lastModifiedBy: string;
+}

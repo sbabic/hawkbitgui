@@ -13,6 +13,16 @@ export interface RolloutsQueryParams {
 }
 
 export class RolloutsService {
+  static async fetchRollout({ rolloutId }: { rolloutId: number }): Promise<Rollout> {
+    try {
+      const response = await axiosInstance.get<Rollout>(`/rollouts/${rolloutId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch rollout', error);
+      throw error;
+    }
+  }
+
   static async fetchRollouts({ queryParams }: { queryParams?: RolloutsQueryParams }): Promise<Rollout[]> {
     try {
       const response = await axiosInstance.get<GetRolloutsResponse>(`/rollouts`, {

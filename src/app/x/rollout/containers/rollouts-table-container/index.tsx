@@ -6,16 +6,18 @@ import { useGetRollouts } from '../../hooks/use-get-rollouts';
 import { useConfirmDialog } from '@/app/hooks';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useDeleteRollout } from '../../hooks/use-delete-rollout';
+import { useRolloutsPageStore } from '@/stores/rollouts-page-store';
 
 export default function RolloutsTableContainer() {
   const { data: rollouts, refetch } = useGetRollouts();
+  const setSelectedRollout = useRolloutsPageStore((state) => state.setSelectedRollout);
 
   const { deleteRollout } = useDeleteRollout();
 
   const confirmDialog = useConfirmDialog<Rollout>();
 
   const handleRolloutNameClick = (rollout: Rollout) => {
-    console.log('Rollout name clicked:', rollout.name);
+    setSelectedRollout(rollout);
   };
 
   const handlePlayClick = (rollout: Rollout) => {

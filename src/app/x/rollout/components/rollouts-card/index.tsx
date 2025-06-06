@@ -10,9 +10,14 @@ import PlusIcon from '@/app/components/icons/plus-icon';
 import { Modal } from '@/app/components/modal';
 import { useState } from 'react';
 import RolloutFormContainer from '../../containers/rollout-form-container';
+import { useRolloutsPageStore } from '@/stores/rollouts-page-store';
+import RolloutDetailsTableContainer from '../../containers/rollout-details-table-container';
+import { RolloutsDetailsCardHeader } from '../rollouts-details-card-header';
 
 export default function RolloutsCard() {
   const [isCreateRolloutFormOpen, setIsCreateRolloutFormOpen] = useState(false);
+  const selectedRollout = useRolloutsPageStore((state) => state.selectedRollout);
+  const setSelectedRollout = useRolloutsPageStore((state) => state.setSelectedRollout);
 
   const openForm = () => {
     setIsCreateRolloutFormOpen(true);
@@ -26,7 +31,10 @@ export default function RolloutsCard() {
     <div>
       <Card expanded={true}>
         <Card.Header>
-          <Card.Title>Rollouts</Card.Title>
+          <Card.Title>
+            {!selectedRollout && 'Rollouts'}
+            {selectedRollout && <RolloutsDetailsCardHeader rolloutName={selectedRollout.name} onBackClick={() => setSelectedRollout(undefined)} />}
+          </Card.Title>
           <Card.Actions>
             <IconButton width='30px' height='30px'>
               <SearchIcon />
@@ -40,7 +48,8 @@ export default function RolloutsCard() {
           </Card.Actions>
         </Card.Header>
         <Card.Body>
-          <RolloutsTableContainer />
+          {!selectedRollout && <RolloutsTableContainer />}
+          {selectedRollout && <RolloutDetailsTableContainer />}
         </Card.Body>
       </Card>
       <Modal size='xl' isOpen={isCreateRolloutFormOpen} onClose={closeForm}>
