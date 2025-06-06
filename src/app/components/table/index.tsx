@@ -55,6 +55,7 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
                   className={styles.th}
                   key={header.id}
                   style={{
+                    flex: 1,
                     width: header.getSize(),
                     minWidth: header.getSize(),
                   }}
@@ -84,6 +85,7 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
                     className={styles.td}
                     key={cell.id}
                     style={{
+                      flex: 1,
                       width: cell.column.getSize(),
                       minWidth: cell.column.getSize(),
                     }}

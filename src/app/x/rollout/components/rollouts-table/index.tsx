@@ -9,12 +9,13 @@ import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import PlayIcon from '@/app/components/icons/play-icon';
 import CopyIcon from '@/app/components/icons/copy-icon';
-import { Rollout, TotalTargetCountStatus } from '@/entities/rollout';
+import { Rollout } from '@/entities/rollout';
 import ThumbsUpIcon from '@/app/components/icons/thumbs-up-icon';
 import ForwardIcon from '@/app/components/icons/forward-icon';
 import PauseIcon from '@/app/components/icons/pause-icon';
 import { TotalTargetsPerStatusCell } from './components/total-targets-per-status-cell';
 import { RolloutStatusCell } from './components/rollout-status-cell';
+import Button from '@/app/components/button';
 
 export type RolloutsTableProps = {
   rollouts: Rollout[];
@@ -27,14 +28,27 @@ export type RolloutsTableProps = {
   onDeleteClick: (rollout: Rollout) => void;
 };
 
-export default function RolloutsTable({ rollouts = [], onPlayClick, onPinClick, onDetailsClick, onEditClick, onCopyClick, onDeleteClick }: RolloutsTableProps) {
+export default function RolloutsTable({
+  rollouts = [],
+  onRolloutNameClick,
+  onPlayClick,
+  onPinClick,
+  onDetailsClick,
+  onEditClick,
+  onCopyClick,
+  onDeleteClick,
+}: RolloutsTableProps) {
   const columnHelper = createColumnHelper<Rollout>();
 
   const columns = useMemo(() => {
     return [
       columnHelper.accessor('name', {
         header: 'Name',
-        cell: (cell) => cell.getValue(),
+        cell: (cell) => (
+          <Button variant='text' onClick={() => onRolloutNameClick(cell.row.original)}>
+            {cell.getValue()}
+          </Button>
+        ),
       }),
       columnHelper.accessor('distributionSetId', {
         header: 'Distribution set',
@@ -47,27 +61,7 @@ export default function RolloutsTable({ rollouts = [], onPlayClick, onPinClick, 
       columnHelper.accessor('totalTargetsPerStatus', {
         header: 'Detail status',
         size: 180,
-        cell: (cell) => {
-          const totalTargetsPerStatus = cell.getValue();
-          if (!totalTargetsPerStatus) {
-            return null;
-          }
-
-          for (const status in totalTargetsPerStatus) {
-            const statusKey = status as TotalTargetCountStatus;
-            if (totalTargetsPerStatus[statusKey] === 0) {
-              delete totalTargetsPerStatus[statusKey];
-            }
-          }
-
-          return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {Object.entries(totalTargetsPerStatus).map(([status, count]) => (
-                <TotalTargetsPerStatusCell key={status} status={status as TotalTargetCountStatus} count={count} />
-              ))}
-            </div>
-          );
-        },
+        cell: (cell) => <TotalTargetsPerStatusCell totalTargetsPerStatus={cell.getValue()} />,
       }),
       columnHelper.accessor('totalGroups', {
         header: 'Groups',
@@ -80,6 +74,7 @@ export default function RolloutsTable({ rollouts = [], onPlayClick, onPinClick, 
       columnHelper.display({
         id: 'actions',
         header: 'Actions',
+        size: 310,
         cell: (info) => (
           <div className={styles.actionButtons}>
             <IconButton height={'24px'} width={'24px'} onClick={() => onPlayClick(info.row.original)}>

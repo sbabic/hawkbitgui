@@ -8,48 +8,49 @@ import MinimizeIcon from '@/app/components/icons/minimize-icon';
 import { ReactNode } from 'react';
 
 export type PanelCardRootProps = {
-    children: ReactNode;
-    expanded?: boolean;
+  defaultWidth?: 'fit-content' | '100%';
+  children: ReactNode;
+  expanded?: boolean;
 };
 
-export default function PanelCard({ children, expanded }: PanelCardRootProps) {
-    return (
-        <Card expanded={expanded}>
-            <div className={styles.cardBody}>{children}</div>
-        </Card>
-    );
+export default function PanelCard({ defaultWidth, children, expanded }: PanelCardRootProps) {
+  return (
+    <Card defaultWidth={defaultWidth} expanded={expanded}>
+      <div className={styles.cardBody}>{children}</div>
+    </Card>
+  );
 }
 
 type HeaderProps = {
-    title: string;
-    onToggleExpand: () => void;
-    isExpanded: boolean;
-    children?: ReactNode;
+  title: string;
+  onToggleExpand: () => void;
+  isExpanded: boolean;
+  children?: ReactNode;
 };
 
 function PanelCardHeader({ title, onToggleExpand, isExpanded, children }: HeaderProps) {
-    return (
-        <>
-            <div className={styles.header}>
-                <h2>{title}</h2>
-                <div className={styles.headerButtons}>
-                    {children}
-                    <IconButton width='30px' height='30px' onClick={onToggleExpand}>
-                        {isExpanded ? <MinimizeIcon /> : <ExpandIcon />}
-                    </IconButton>
-                </div>
-            </div>
-            <hr className={styles.divider} />
-        </>
-    );
+  return (
+    <>
+      <div className={styles.header}>
+        <h2>{title}</h2>
+        <div className={styles.headerButtons}>
+          {children}
+          <IconButton width='30px' height='30px' onClick={onToggleExpand}>
+            {isExpanded ? <MinimizeIcon /> : <ExpandIcon />}
+          </IconButton>
+        </div>
+      </div>
+      <hr className={styles.divider} />
+    </>
+  );
 }
 
 function PanelCardActions({ children }: { children: ReactNode }) {
-    return <div className={styles.actionButtons}>{children}</div>;
+  return <div className={styles.actionButtons}>{children}</div>;
 }
 
 function PanelCardContent({ children }: { children: ReactNode }) {
-    return <div className={styles.table}>{children}</div>;
+  return <div className={styles.table}>{children}</div>;
 }
 
 PanelCard.Header = PanelCardHeader;

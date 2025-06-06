@@ -26,7 +26,7 @@ export default function SoftwareModulesCard() {
 
   return (
     <div>
-      <PanelCard expanded={isExpanded}>
+      <PanelCard defaultWidth='100%' expanded={isExpanded}>
         <PanelCard.Header title='Software Modules' isExpanded={isExpanded} onToggleExpand={handleExpand}>
           <ExpandableSearchBarContainer />
         </PanelCard.Header>

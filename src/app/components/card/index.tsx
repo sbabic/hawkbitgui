@@ -20,7 +20,13 @@ function CardBody({ children }: { children?: React.ReactNode }) {
   return <div className={styles.body}>{children}</div>;
 }
 
-export default function Card({ children, expanded = false }: { children?: React.ReactNode; expanded?: boolean }) {
+interface CardProps {
+  defaultWidth?: 'fit-content' | '100%';
+  expanded?: boolean;
+  children: React.ReactNode;
+}
+
+export default function Card({ defaultWidth = 'fit-content', children, expanded = false }: CardProps) {
   const [parentWidth, setParentWidth] = useState(300); // Default width
   const [parentHeight, setParentHeight] = useState(200); // Default height
   const cardRef = useRef<HTMLDivElement | null>(null);
@@ -67,7 +73,7 @@ export default function Card({ children, expanded = false }: { children?: React.
               height: parentHeight > 0 ? parentHeight : 'fit-content',
             }
           : {
-              width: 'fit-content',
+              width: defaultWidth,
             }
       }
       transition={{ duration: 0.4, ease: 'easeInOut' }}
