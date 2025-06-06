@@ -1,10 +1,27 @@
 @use 'src/app/styles/variables' as *;
 
 .container {
+  position: relative;
   background: $accent-color;
   color: $bright-text-color;
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .counter {
+    display: flex;
+    background-color: #6ab252;
+    color: whitesmoke;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+  }
 }

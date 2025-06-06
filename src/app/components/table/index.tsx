@@ -71,13 +71,14 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
             const isSelected = !!selectedRows[row.id];
             return (
               <DraggableDroppableRow
-                className={`${styles.tr} ${isSelected ? styles.selectedRow : ''}`}
+                className={`${styles.tr}`}
                 key={row.id}
                 id={`${uuid}-${row.id}`}
                 dragData={{ ...selectedRows, [row.id]: row.original }}
                 dropData={row.original}
                 draggable={draggable}
                 droppable={draggable}
+                isSelected={isSelected}
                 onClick={(event) => handleRowClick(row.id, row.original, event)}
               >
                 {row.getVisibleCells().map((cell) => (

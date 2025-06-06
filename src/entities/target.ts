@@ -42,11 +42,9 @@ export function isTargetStatus(value: any): value is TargetStatus {
 
 export function isTarget(obj: any): obj is Target {
   if (typeof obj !== 'object' || obj === null) {
-    console.log('Invalid: not an object or is null');
     return false;
   }
 
-  console.log('Validating Target object:', obj);
   return (
     typeof obj.createdBy === 'string' &&
     typeof obj.createdAt === 'number' &&

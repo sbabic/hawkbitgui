@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import TargetsCardContainer from '@/app/x/deployment/containers/targets-card-container';
 import DistributionsCardContainer from '@/app/x/deployment/containers/distributions-card-container';
-import { Distribution, isDistribution, isTarget, Target } from '@/entities';
+import { Distribution, isDistribution, isDistributionRecord, isTarget, isTargetRecord, Target } from '@/entities';
 import { useRef, useState } from 'react';
 import DraggedItemPreview from '@/app/components/dragged-item-preview';
 import { TargetsService } from '@/services/targets-service';
@@ -53,26 +53,27 @@ export default function DeploymentDndLayoutContainer() {
 
   const sensors = useSensors(mouseSensor, touchSensor);
 
-  const targetOverDistributionConfirmationModal = useConfirmDialog<{ target: Target; distribution: Distribution }>();
+  const targetOverDistributionConfirmationModal = useConfirmDialog<{ targets: Target[]; distributions: Distribution[] }>();
 
   const scheduleFormData = useRef<ScheduleFormData | undefined>(undefined);
 
   const [isDragging, setIsDragging] = useState(false);
   const [isDraggingDistribution, setIsDraggingDistribution] = useState(false);
-  const draggedTarget = useRef<Target | undefined>(undefined);
-  const draggedDistribution = useRef<Distribution | undefined>(undefined);
+  const draggedTargets = useRef<Target[]>([]);
+  const draggedDistributions = useRef<Distribution[]>([]);
 
   function handleDragStart(event: DragStartEvent) {
     const draggedData = event.active.data.current?.dragData;
     setIsDragging(true);
-    if (isTarget(draggedData)) {
-      draggedTarget.current = draggedData;
-      draggedDistribution.current = undefined;
+
+    if (isTargetRecord(draggedData)) {
+      draggedTargets.current = Object.values(draggedData);
+      draggedDistributions.current = [];
     }
-    if (isDistribution(draggedData)) {
+    if (isDistributionRecord(draggedData)) {
       setIsDraggingDistribution(true);
-      draggedDistribution.current = draggedData;
-      draggedTarget.current = undefined;
+      draggedDistributions.current = Object.values(draggedData);
+      draggedTargets.current = [];
     }
   }
 
@@ -84,11 +85,12 @@ export default function DeploymentDndLayoutContainer() {
       return;
     }
 
-    if (isDistribution(dragged) && isTarget(over)) {
-      const distribution = dragged;
+    if (isDistributionRecord(dragged) && isTarget(over)) {
+      console.log('distributions over target');
+      const distributions = Object.values(dragged);
       const target = over;
-      targetOverDistributionConfirmationModal.open({ target, distribution }, () => {
-        handleDistributionOverTarget(distribution, target, scheduleFormData.current);
+      targetOverDistributionConfirmationModal.open({ targets: [target], distributions }, () => {
+        handleDistributionOverTarget(distributions, target, scheduleFormData.current);
       });
 
       setIsDragging(false);
@@ -96,11 +98,12 @@ export default function DeploymentDndLayoutContainer() {
       return;
     }
 
-    if (isTarget(dragged) && isDistribution(over)) {
-      const target = dragged;
+    if (isTargetRecord(dragged) && isDistribution(over)) {
+      console.log('targets over distribution');
+      const targets = Object.values(dragged);
       const distribution = over;
-      targetOverDistributionConfirmationModal.open({ target, distribution }, () => {
-        handleTargetOverDistribution(target, distribution, scheduleFormData.current);
+      targetOverDistributionConfirmationModal.open({ targets, distributions: [distribution] }, () => {
+        handleTargetOverDistribution(targets, distribution, scheduleFormData.current);
       });
       setIsDragging(false);
       setIsDraggingDistribution(false);
@@ -111,26 +114,26 @@ export default function DeploymentDndLayoutContainer() {
     setIsDraggingDistribution(false);
   }
 
-  async function handleDistributionOverTarget(distribution: Distribution, target: Target, scheduleData?: ScheduleFormData) {
-    console.log('distribution over target', distribution, target);
-    const config = mapScheduleFormDataToAssignConfig(distribution.id, scheduleData);
+  async function handleDistributionOverTarget(distributions: Distribution[], target: Target, scheduleData?: ScheduleFormData) {
+    console.log('distribution over target', distributions, target);
+    const configs = distributions.map((distribution) => mapScheduleFormDataToAssignConfig(distribution.id, scheduleData));
     try {
       await TargetsService.assignDistributionsToTarget({
         controllerId: target.controllerId,
-        distributionsConfigs: [config],
+        distributionsConfigs: configs,
       });
     } catch (error) {
       handleErrorWithToast(error, 'Failed to assign distribution to target');
     }
   }
 
-  async function handleTargetOverDistribution(target: Target, distribution: Distribution, scheduleData?: ScheduleFormData) {
-    console.log('target over distribution', target, distribution);
-    const config = mapScheduleFormDataToAssignConfig(target.controllerId, scheduleData);
+  async function handleTargetOverDistribution(targets: Target[], distribution: Distribution, scheduleData?: ScheduleFormData) {
+    console.log('target over distribution', targets, distribution);
+    const configs = targets.map((target) => mapScheduleFormDataToAssignConfig(target.controllerId, scheduleData));
     try {
       await DistributionSetsService.assignTargetsToDistributionSet({
         distributionId: distribution.id,
-        targetConfigs: [config],
+        targetConfigs: configs,
       });
     } catch (error) {
       handleErrorWithToast(error, 'Failed to assign target to Distribution Set');
@@ -143,7 +146,12 @@ export default function DeploymentDndLayoutContainer() {
         <TargetsCardContainer />
         <DistributionsCardContainer />
         <DragOverlay>
-          {isDragging ? <DraggedItemPreview name={isDraggingDistribution ? draggedDistribution.current?.name : draggedTarget.current?.name} /> : null}
+          {isDragging ? (
+            <DraggedItemPreview
+              name={isDraggingDistribution ? draggedDistributions.current[0]?.name : draggedTargets.current[0]?.name}
+              count={isDraggingDistribution ? draggedDistributions.current.length : draggedTargets.current.length}
+            />
+          ) : null}
         </DragOverlay>
       </DndContext>
       <ConfirmationModal
@@ -155,13 +163,13 @@ export default function DeploymentDndLayoutContainer() {
       >
         {isDraggingDistribution ? (
           <p>
-            Are you sure you want to assign if Distribution set <b>{targetOverDistributionConfirmationModal.data?.distribution.name}</b> to Target{' '}
-            <b>{targetOverDistributionConfirmationModal.data?.target.name}</b> ?
+            Are you sure you want to assign if Distribution set <b>{targetOverDistributionConfirmationModal.data?.distributions[0].name}</b> to Target{' '}
+            <b>{targetOverDistributionConfirmationModal.data?.targets[0].name}</b> ?
           </p>
         ) : (
           <p>
-            Are you sure you want to assign if Target <b>{targetOverDistributionConfirmationModal.data?.target.name}</b> to Distribution set{' '}
-            <b>{targetOverDistributionConfirmationModal.data?.distribution.name}</b> ?
+            Are you sure you want to assign if Target <b>{targetOverDistributionConfirmationModal.data?.targets[0].name}</b> to Distribution set{' '}
+            <b>{targetOverDistributionConfirmationModal.data?.distributions[0].name}</b> ?
           </p>
         )}
         <ScheduleForm onChange={(data) => (scheduleFormData.current = data)} />

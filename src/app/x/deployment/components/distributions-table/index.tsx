@@ -120,7 +120,7 @@ export default function DistributionsTable({
 
   return (
     <>
-      <Table columns={expanded ? fullColumns : shortColumns} data={distributions} draggable={true} />
+      <Table columns={expanded ? fullColumns : shortColumns} data={distributions} draggable={true} selectable={true} />
     </>
   );
 }

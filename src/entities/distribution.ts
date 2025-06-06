@@ -42,3 +42,9 @@ export function isDistribution(obj: any): obj is Distribution {
     typeof obj.lastModifiedAt === 'number'
   );
 }
+
+export function isDistributionRecord(value: unknown): value is Record<string, Distribution> {
+  if (typeof value !== 'object' || value === null) return false;
+
+  return Object.entries(value).every(([key, val]) => typeof key === 'string' && isDistribution(val));
+}
