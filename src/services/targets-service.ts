@@ -19,7 +19,11 @@ import {
 export class TargetsService {
   static async fetchTargets(input?: FetchTargetsInput): Promise<Target[]> {
     try {
-      const fiqlQueryParam = FilterFiql.parseFiltersToFiqlQueryParam(input?.filters || []);
+      const { query, filters } = input ?? {};
+      let fiqlQueryParam = FilterFiql.parseFiltersToFiqlQueryParam(filters || []);
+      if (query && query !== '') {
+        fiqlQueryParam = `q=${query}`;
+      }
       const response = await axiosInstance.get<GetTargetsResponse>(`/targets?${fiqlQueryParam}`);
       return response.data.content;
     } catch (error) {

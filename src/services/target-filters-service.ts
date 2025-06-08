@@ -1,6 +1,6 @@
 import axiosInstance from '@/lib/axios';
 import { TargetFilter } from '@/entities/target-filter';
-import { CreateTargetFilterInput, GetTargetFiltersResponse } from './target-filters-service.types';
+import { CreateTargetFilterInput, GetTargetFiltersResponse, UpdateTargetFilterInput } from './target-filters-service.types';
 
 export class TargetFiltersService {
   static async fetchTargetFilters(): Promise<TargetFilter[]> {
@@ -28,6 +28,16 @@ export class TargetFiltersService {
       await axiosInstance.delete(`/targetfilters/${filterId}`);
     } catch (error) {
       console.error('Failed to delete target filter', error);
+      throw error;
+    }
+  }
+
+  static async updateTargetFilter(filterId: number, data: UpdateTargetFilterInput): Promise<TargetFilter> {
+    try {
+      const response = await axiosInstance.put(`/targetfilters/${filterId}`, data);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to update target filter', error);
       throw error;
     }
   }

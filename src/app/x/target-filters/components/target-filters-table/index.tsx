@@ -9,17 +9,22 @@ import dayjs from 'dayjs';
 
 interface TargetFiltersTableProps {
   modules: TargetFilter[];
+  onNameClick: (targetFilter: TargetFilter) => void;
   onDelete: (targetFilter: TargetFilter) => void;
 }
 
-export default function TargetFiltersTable({ modules, onDelete }: TargetFiltersTableProps) {
+export default function TargetFiltersTable({ modules, onNameClick, onDelete }: TargetFiltersTableProps) {
   const columnHelper = createColumnHelper<TargetFilter>();
 
   const fullColumns = useMemo(
     () => [
       columnHelper.accessor('name', {
         header: 'Name',
-        cell: (cell) => <Button variant='text'>{cell.getValue()}</Button>,
+        cell: (cell) => (
+          <Button variant='text' onClick={() => onNameClick(cell.row.original)}>
+            {cell.getValue()}
+          </Button>
+        ),
       }),
       columnHelper.accessor('createdBy', {
         header: 'Created by',
@@ -52,7 +57,7 @@ export default function TargetFiltersTable({ modules, onDelete }: TargetFiltersT
         ),
       }),
     ],
-    [columnHelper, onDelete]
+    [columnHelper, onDelete, onNameClick]
   );
 
   return <Table columns={fullColumns} data={modules} />;

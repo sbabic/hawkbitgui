@@ -1,0 +1,22 @@
+@use 'src/app/styles/variables' as *;
+
+.formGroup {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+  align-items: center;
+
+  .label {
+    width: 80px;
+    margin: 0;
+
+    .required {
+      color: $error-dark-color;
+      margin-left: 2px;
+    }
+  }
+
+  .inputContainer {
+    flex: 1
+  }
+}

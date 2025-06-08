@@ -27,7 +27,7 @@ export function SelectTargetFilterContainer({ targetFilters, onSelectedTargetsCh
 
   useEffect(() => {
     if (selectedTargets) {
-      onSelectedTargetsChange(selectedTargets.total);
+      onSelectedTargetsChange(selectedTargets.length);
       setTargetFilterQuery(undefined);
     }
   }, [selectedTargets, onSelectedTargetsChange]);

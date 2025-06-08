@@ -3,6 +3,7 @@ import { ApiResponse } from '@/services/types';
 
 export interface FetchTargetsInput {
   filters: FilterFiql[];
+  query?: string;
 }
 
 export interface CreateTargetInput {

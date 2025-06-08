@@ -1,61 +1,7 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
 import { ApiError } from '@/types/hawkbit-api/error';
-
-interface PollStatus {
-  lastRequestAt: number;
-  nextExpectedRequestAt: number;
-  overdue: boolean;
-}
-
-interface Link {
-  href: string;
-  hreflang?: string;
-  title?: string;
-  type?: string;
-  deprecation?: string;
-  profile?: string;
-  name?: string;
-  templated?: boolean;
-}
-
-interface Target {
-  createdBy: string;
-  createdAt: number;
-  lastModifiedBy: string;
-  lastModifiedAt: number;
-  name: string;
-  description: string;
-  controllerId: string;
-  updateStatus: string;
-  lastControllerRequestAt: number;
-  installedAt: number;
-  ipAddress: string;
-  address: string;
-  pollStatus: PollStatus;
-  securityToken: string;
-  requestAttributes: boolean;
-  targetType: number;
-  targetTypeName: string;
-  autoConfirmActive: boolean;
-  _links: {
-    self: Link;
-    assignedDS: Link;
-    installedDS: Link;
-    attributes: Link;
-    actions: Link;
-    metadata: Link;
-    targetType: Link;
-    autoConfirm: Link;
-  };
-}
-
-interface TargetsResponse {
-  content: Target[];
-  total: number;
-  size: number;
-  _links: Record<string, Link>;
-}
+import { TargetsService } from '@/services/targets-service';
+import { Target } from '@/entities';
 
 interface TargetsQueryParams {
   q?: string;
@@ -63,19 +9,14 @@ interface TargetsQueryParams {
 
 type UseGetTargetsParams = {
   queryParams?: TargetsQueryParams;
-  queryOptions?: Omit<UseQueryOptions<TargetsResponse, ApiError, TargetsResponse>, 'queryKey' | 'queryFn'>;
-};
-
-const fetchTargets = async (queryParams: TargetsQueryParams): Promise<TargetsResponse> => {
-  const response = await axiosInstance.get<TargetsResponse>('/targets', { params: queryParams });
-  return response.data;
+  queryOptions?: Omit<UseQueryOptions<Target[], ApiError, Target[]>, 'queryKey' | 'queryFn'>;
 };
 
 export const useGetTargets = (params?: UseGetTargetsParams) => {
   const { queryParams = {}, queryOptions } = params ?? {};
-  const { data, isLoading, error, refetch } = useQuery<TargetsResponse, ApiError>({
+  const { data, isLoading, error, refetch } = useQuery<Target[], ApiError>({
     queryKey: ['targets', queryParams],
-    queryFn: () => fetchTargets(queryParams),
+    queryFn: () => TargetsService.fetchTargets({ query: queryParams.q, filters: [] }),
     ...queryOptions,
   });
 

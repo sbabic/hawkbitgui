@@ -7,3 +7,8 @@ export type CreateTargetFilterInput = {
 };
 
 export type GetTargetFiltersResponse = ApiResponse<TargetFilter[]>;
+
+export type UpdateTargetFilterInput = {
+  name: string;
+  query: string;
+};
