@@ -1,6 +1,6 @@
-import { Rollout } from '@/entities/rollout';
+import { DeployGroupTarget, Rollout, RolloutDeployGroup } from '@/entities/rollout';
 import axiosInstance from '@/lib/axios';
-import { CreateRolloutInput, GetRolloutsResponse } from './rollouts-service.types';
+import { CreateRolloutInput, GetDeployGroupTargetsResponse, GetRolloutDeployGroupsResponse, GetRolloutsResponse } from './rollouts-service.types';
 
 export const Representation = {
   COMPACT: 'compact',
@@ -57,6 +57,26 @@ export class RolloutsService {
       await axiosInstance.delete(`/rollouts/${rolloutId}`);
     } catch (error) {
       console.error('Failed to delete rollout', error);
+      throw error;
+    }
+  }
+
+  static async fetchRolloutDeployGroups({ rolloutId }: { rolloutId: number }): Promise<RolloutDeployGroup[]> {
+    try {
+      const response = await axiosInstance.get<GetRolloutDeployGroupsResponse>(`/rollouts/${rolloutId}/deploygroups`);
+      return response.data.content;
+    } catch (error) {
+      console.error('Failed to fetch rollout deploy groups', error);
+      throw error;
+    }
+  }
+
+  static async fetchDeployGroupTargets({ rolloutId, deployGroupId }: { rolloutId: number; deployGroupId: number }): Promise<DeployGroupTarget[]> {
+    try {
+      const response = await axiosInstance.get<GetDeployGroupTargetsResponse>(`/rollouts/${rolloutId}/deploygroups/${deployGroupId}/targets`);
+      return response.data.content;
+    } catch (error) {
+      console.error('Failed to fetch deploy group targets', error);
       throw error;
     }
   }

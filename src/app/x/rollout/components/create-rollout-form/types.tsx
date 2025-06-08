@@ -1,5 +1,4 @@
-import { RolloutTypes, StartType } from '@/entities/rollout';
-import { Condition } from '@/services/rollouts-service.types';
+import { Condition, RolloutTypes, StartType } from '@/entities/rollout';
 import { z } from 'zod';
 
 const RolloutGroupSchema = z.object({

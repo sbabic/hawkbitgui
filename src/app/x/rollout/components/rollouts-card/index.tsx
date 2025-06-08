@@ -13,11 +13,15 @@ import RolloutFormContainer from '../../containers/rollout-form-container';
 import { useRolloutsPageStore } from '@/stores/rollouts-page-store';
 import RolloutDetailsTableContainer from '../../containers/rollout-details-table-container';
 import { RolloutsDetailsCardHeader } from '../rollouts-details-card-header';
+import RolloutDeployGroupDetailsContainer from '../../containers/rollout-deploy-group-details-container';
+import { RolloutsDeployGroupTargetDetailsCardHeader } from '../rollout-deploy-group-target-details-header';
 
 export default function RolloutsCard() {
   const [isCreateRolloutFormOpen, setIsCreateRolloutFormOpen] = useState(false);
   const selectedRollout = useRolloutsPageStore((state) => state.selectedRollout);
-  const setSelectedRollout = useRolloutsPageStore((state) => state.setSelectedRollout);
+  const selectedDeployGroup = useRolloutsPageStore((state) => state.selectedDeployGroup);
+  const tableType = useRolloutsPageStore((state) => state.tableType);
+  const setTableType = useRolloutsPageStore((state) => state.setTableType);
 
   const openForm = () => {
     setIsCreateRolloutFormOpen(true);
@@ -32,8 +36,18 @@ export default function RolloutsCard() {
       <Card expanded={true}>
         <Card.Header>
           <Card.Title>
-            {!selectedRollout && 'Rollouts'}
-            {selectedRollout && <RolloutsDetailsCardHeader rolloutName={selectedRollout.name} onBackClick={() => setSelectedRollout(undefined)} />}
+            {tableType === 'rollouts' && 'Rollouts'}
+            {tableType === 'deploy-groups' && selectedRollout && (
+              <RolloutsDetailsCardHeader rolloutName={selectedRollout.name} onRolloutsClick={() => setTableType('rollouts')} />
+            )}
+            {tableType === 'deploy-group-targets' && selectedRollout && selectedDeployGroup && (
+              <RolloutsDeployGroupTargetDetailsCardHeader
+                rolloutName={selectedRollout.name}
+                deployGroupName={selectedDeployGroup.name}
+                onRolloutsClick={() => setTableType('rollouts')}
+                onDeployGroupNameClick={() => setTableType('deploy-groups')}
+              />
+            )}
           </Card.Title>
           <Card.Actions>
             <IconButton width='30px' height='30px'>
@@ -48,8 +62,9 @@ export default function RolloutsCard() {
           </Card.Actions>
         </Card.Header>
         <Card.Body>
-          {!selectedRollout && <RolloutsTableContainer />}
-          {selectedRollout && <RolloutDetailsTableContainer />}
+          {tableType === 'rollouts' && <RolloutsTableContainer />}
+          {tableType === 'deploy-groups' && selectedRollout && <RolloutDetailsTableContainer />}
+          {tableType === 'deploy-group-targets' && selectedRollout && selectedDeployGroup && <RolloutDeployGroupDetailsContainer />}
         </Card.Body>
       </Card>
       <Modal size='xl' isOpen={isCreateRolloutFormOpen} onClose={closeForm}>

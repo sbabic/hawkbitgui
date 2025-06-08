@@ -25,7 +25,7 @@ export default function SoftwareModulesCard() {
   };
 
   return (
-    <div>
+    <>
       <PanelCard defaultWidth='100%' expanded={isExpanded}>
         <PanelCard.Header title='Software Modules' isExpanded={isExpanded} onToggleExpand={handleExpand}>
           <ExpandableSearchBarContainer />
@@ -48,6 +48,6 @@ export default function SoftwareModulesCard() {
           <SoftwareModuleFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
         </Modal.Content>
       </Modal>
-    </div>
+    </>
   );
 }

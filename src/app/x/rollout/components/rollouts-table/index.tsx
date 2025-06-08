@@ -102,7 +102,7 @@ export default function RolloutsTable({
         ),
       }),
     ];
-  }, [columnHelper, onPlayClick, onPinClick, onDetailsClick, onEditClick, onCopyClick, onDeleteClick]);
+  }, [columnHelper, onRolloutNameClick, onPlayClick, onPinClick, onDetailsClick, onEditClick, onCopyClick, onDeleteClick]);
 
   return <Table columns={columns} data={rollouts} />;
 }

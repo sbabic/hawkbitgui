@@ -11,8 +11,8 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import Button from '@/app/components/button';
 import { CreateRolloutFormData, RolloutGroup } from '../../types';
-import { Condition } from '@/services/rollouts-service.types';
 import PlusIcon from '@/app/components/icons/plus-icon';
+import { Condition } from '@/entities/rollout';
 
 export default function RolloutGroupsTable() {
   const {

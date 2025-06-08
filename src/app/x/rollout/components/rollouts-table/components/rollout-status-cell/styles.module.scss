@@ -1,5 +1,12 @@
 @use 'src/app/styles/variables' as *;
 
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .running {
   color: $status-in-sync;
 }

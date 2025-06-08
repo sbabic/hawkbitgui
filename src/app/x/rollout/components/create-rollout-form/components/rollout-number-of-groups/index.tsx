@@ -6,7 +6,7 @@ import FormControl from '@/app/components/form-control';
 import { Controller, useFormContext } from 'react-hook-form';
 import styles from './styles.module.scss';
 import { CreateRolloutFormData } from '../../types';
-import { Condition } from '@/services/rollouts-service.types';
+import { Condition } from '@/entities/rollout';
 
 export default function RolloutNumberOfGroups() {
   const {

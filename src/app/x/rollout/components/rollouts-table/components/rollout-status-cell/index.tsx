@@ -23,5 +23,5 @@ export function RolloutStatusCell({ status }: RolloutStatusProps) {
     deleted: <div></div>,
   };
 
-  return <div className={styles[status.toLowerCase()]}>{statusMapper[status]}</div>;
+  return <div className={`${styles.container} ${styles[status.toLowerCase()]}`}>{statusMapper[status]}</div>;
 }

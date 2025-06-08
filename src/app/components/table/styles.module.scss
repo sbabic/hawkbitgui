@@ -28,9 +28,10 @@
 
 .th,
 .td {
-  padding: 8px;
+  padding: 8px 12px;
   flex-shrink: 0;
   text-align: left;
+  color: $text-disabled-color
 }
 
 .selectedRow {
@@ -67,7 +68,7 @@
     .td {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
   }
 }

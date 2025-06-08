@@ -3,13 +3,13 @@ import styles from './styles.module.scss';
 
 interface RolloutsDetailsCardHeaderProps {
   rolloutName: string;
-  onBackClick: () => void;
+  onRolloutsClick: () => void;
 }
 
-export function RolloutsDetailsCardHeader({ rolloutName, onBackClick }: RolloutsDetailsCardHeaderProps) {
+export function RolloutsDetailsCardHeader({ rolloutName, onRolloutsClick }: RolloutsDetailsCardHeaderProps) {
   return (
     <div className={styles.container}>
-      <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={onBackClick}>
+      <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={onRolloutsClick}>
         Rollouts
       </p>
       <ChevronDownIcon width={30} height={30} style={{ transform: 'rotate(270deg)' }} />
