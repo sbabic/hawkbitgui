@@ -6,14 +6,20 @@ import { TargetFilter } from '@/entities/target-filter';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import IconButton from '@/app/components/icon-button';
 import dayjs from 'dayjs';
+import { RolloutType, RolloutTypes } from '@/entities/rollout';
+import CloudIcon from '@/app/components/icons/cloud-icon';
+import ThunderCloudIcon from '@/app/components/icons/thunder-cloud-icon';
+import DownloadIcon from '@/app/components/icons/download-icon';
+import ClockCloudIcon from '@/app/components/icons/clock-cloud-icon';
 
 interface TargetFiltersTableProps {
   modules: TargetFilter[];
   onNameClick: (targetFilter: TargetFilter) => void;
   onDelete: (targetFilter: TargetFilter) => void;
+  onAutoAssignDistributionClick: (targetFilter: TargetFilter) => void;
 }
 
-export default function TargetFiltersTable({ modules, onNameClick, onDelete }: TargetFiltersTableProps) {
+export default function TargetFiltersTable({ modules, onNameClick, onDelete, onAutoAssignDistributionClick }: TargetFiltersTableProps) {
   const columnHelper = createColumnHelper<TargetFilter>();
 
   const fullColumns = useMemo(
@@ -46,7 +52,32 @@ export default function TargetFiltersTable({ modules, onNameClick, onDelete }: T
       }),
       columnHelper.accessor('autoAssignDistributionSet', {
         header: 'Auto assignment',
-        cell: (cell) => cell.getValue(),
+        cell: (cell) => {
+          const { autoAssignDistributionSet, autoAssignActionType } = cell.row.original;
+          if (!autoAssignDistributionSet || !autoAssignActionType) {
+            return (
+              <Button variant='text' onClick={() => onAutoAssignDistributionClick(cell.row.original)}>
+                none
+              </Button>
+            );
+          }
+
+          const iconsMapper: Record<RolloutType, React.ReactNode> = {
+            [RolloutTypes.SOFT]: <CloudIcon />,
+            [RolloutTypes.FORCED]: <ThunderCloudIcon />,
+            [RolloutTypes.DOWNLOAD_ONLY]: <DownloadIcon />,
+            [RolloutTypes.TIME_FORCED]: <ClockCloudIcon />,
+          };
+
+          return (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              {iconsMapper[autoAssignActionType]}
+              <Button variant='text' onClick={() => onAutoAssignDistributionClick(cell.row.original)}>
+                {autoAssignDistributionSet}
+              </Button>
+            </div>
+          );
+        },
       }),
       columnHelper.display({
         header: 'Actions',
@@ -57,7 +88,7 @@ export default function TargetFiltersTable({ modules, onNameClick, onDelete }: T
         ),
       }),
     ],
-    [columnHelper, onDelete, onNameClick]
+    [columnHelper, onDelete, onNameClick, onAutoAssignDistributionClick]
   );
 
   return <Table columns={fullColumns} data={modules} />;

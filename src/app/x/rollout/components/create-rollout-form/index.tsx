@@ -84,7 +84,7 @@ export default function CreateRolloutForm({ distributionSets, targetFilters, onS
           </FormControl>
 
           <FormControl id='distributionSetId' label='Distribution set' errorMessage={errors.distributionSetId?.message} required>
-            <Select {...register('distributionSetId', { valueAsNumber: true })} className={styles.select}>
+            <Select {...register('distributionSetId', { valueAsNumber: true })}>
               <option value=''>Choose a distribution set</option>
               {distributionSets.map((distributionSet) => (
                 <option key={distributionSet.id} value={distributionSet.id}>

@@ -1,0 +1,6 @@
+@use '@/app/styles/variables.scss' as *;
+
+.description {
+  margin: 0px;
+  color: $text-disabled-color;
+}
