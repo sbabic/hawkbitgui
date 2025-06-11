@@ -14,6 +14,8 @@ import ConfirmationModal from '@/app/components/confirmation-modal';
 import { useConfirmDialog } from '@/app/hooks';
 import ScheduleForm, { FormData as ScheduleFormData } from '@/app/x/deployment/components/schedule-form';
 import { AssignConfig } from '@/services/targets-service.types';
+import ActionHistoryCard from '@/app/x/deployment/components/action-history-card';
+import ActionHistoryCardContainer from '@/app/x/deployment/containers/action-history-card-container';
 
 const mapScheduleFormDataToAssignConfig = (id: string | number, data?: ScheduleFormData): AssignConfig => {
   if (!data) {
@@ -145,6 +147,7 @@ export default function DeploymentDndLayoutContainer() {
       <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <TargetsCardContainer />
         <DistributionsCardContainer />
+        <ActionHistoryCardContainer />
         <DragOverlay>
           {isDragging ? (
             <DraggedItemPreview
