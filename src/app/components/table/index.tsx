@@ -12,9 +12,10 @@ export type TableProps<T> = {
   variant?: 'default' | 'unstyled';
   draggable?: boolean;
   selectable?: boolean;
+  onRowClick?: (rowId: string, data: T, event: React.MouseEvent) => void;
 };
 
-export default function Table<T>({ data, columns, variant = 'default', draggable, selectable = false }: TableProps<T>) {
+export default function Table<T>({ data, columns, variant = 'default', draggable, selectable = false, onRowClick }: TableProps<T>) {
   const table = useReactTable({
     data,
     columns,
@@ -31,6 +32,7 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
   const tableClassName = variant === 'unstyled' ? styles.unstyledTable : styles.defaultTable;
 
   const handleRowClick = (rowId: string, data: T, event: React.MouseEvent) => {
+    onRowClick?.(rowId, data, event);
     if (!selectable) return;
     if (event.ctrlKey || event.metaKey) {
       setSelectedRows((prev) => {

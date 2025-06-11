@@ -1,7 +1,7 @@
 'use client';
 
 import PanelCard from '@/app/components/panel-card';
-import TargetTableContainer from '@/app/x/deployment/containers/target-table-container';
+import ActionHistoryTableContainer from '@/app/x/deployment/containers/action-history-table-container';
 
 type TargetsCardProps = {
   isExpanded: boolean;
@@ -15,7 +15,7 @@ export default function ActionHistoryCard({ isExpanded, onToggleExpand }: Target
         <PanelCard.Header title='Action History' isExpanded={isExpanded} onToggleExpand={onToggleExpand}></PanelCard.Header>
 
         <PanelCard.Content>
-          <TargetTableContainer />
+          <ActionHistoryTableContainer />
         </PanelCard.Content>
       </PanelCard>
     </>

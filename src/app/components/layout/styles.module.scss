@@ -4,139 +4,140 @@ $sidebar-width: 225px;
 $sidebar-collapsed: 60px;
 
 .layout {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    background: #f8f9fa;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background: #f8f9fa;
 }
 
 .sidebar {
-    width: $sidebar-width;
-    background: #fff;
-    transition: width 0.3s ease-in-out;
+  width: $sidebar-width;
+  background: #fff;
+  transition: width 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  inset: 0 auto 0 0;
+  z-index: 50;
+
+  &.collapsed {
+    width: $sidebar-collapsed;
+  }
+
+  .sidebarHeader {
     display: flex;
-    flex-direction: column;
-    inset: 0 auto 0 0;
-    z-index: 50;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
 
-    &.collapsed {
-        width: $sidebar-collapsed;
+    .brand {
+      font-weight: bold;
+      color: $accent-color;
     }
 
-    .sidebarHeader {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 12px;
-
-        .brand {
-            font-weight: bold;
-            color: $accent-color;
-        }
-
-        .toggleBtn {
-            cursor: pointer;
-        }
+    .toggleBtn {
+      cursor: pointer;
     }
+  }
 
-    .logout {
-        padding: 12px;
-    }
+  .logout {
+    padding: 12px;
+  }
 }
 
 .main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: scroll;
+  transition: margin-left 0.3s ease-in-out;
+
+  &.expanded {
+    margin-left: $sidebar-collapsed;
+  }
+
+  .header {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    transition: margin-left 0.3s ease-in-out;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: white;
 
-    &.expanded {
-        margin-left: $sidebar-collapsed;
+    .searchBar {
+      position: relative;
+
+      input {
+        padding: 0.5rem 2rem;
+        border-radius: 1rem;
+        border: 1px solid #ccc;
+        outline: none;
+      }
+
+      .searchIcon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: gray;
+      }
     }
 
-    .header {
+    .headerActions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .profile {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: gray;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 15px 20px;
-        background: white;
-
-        .searchBar {
-            position: relative;
-
-            input {
-                padding: 0.5rem 2rem;
-                border-radius: 1rem;
-                border: 1px solid #ccc;
-                outline: none;
-            }
-
-            .searchIcon {
-                position: absolute;
-                left: 0.75rem;
-                top: 50%;
-                transform: translateY(-50%);
-                color: gray;
-            }
-        }
-
-        .headerActions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-
-            .profile {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background: gray;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-                color: white;
-            }
-        }
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+      }
     }
+  }
 
-    .content {
-        display: flex;
-        width: 100%;
-        flex-grow: 1;
-        overflow: scroll;
-    }
+  .content {
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+    overflow: scroll;
+  }
 }
 
 .nav {
-    flex-grow: 1;
-    padding: 12px;
+  flex-grow: 1;
+  padding: 12px;
 }
 
 .navItem {
-    all: unset;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 1rem;
-    padding: 16px;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: $primary-text-color;
-    text-decoration: none;
-    margin-top: 2px;
-    &:first-child {
-        margin-top: 0;
-    }
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+  padding: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: $primary-text-color;
+  text-decoration: none;
+  margin-top: 2px;
+  &:first-child {
+    margin-top: 0;
+  }
 
-    &:hover,
-    &.active {
-        background: $accent-color;
-        color: $bright-text-color;
-    }
+  &:hover,
+  &.active {
+    background: $accent-color;
+    color: $bright-text-color;
+  }
 
-    .label {
-        flex: 1;
-    }
+  .label {
+    flex: 1;
+  }
 }

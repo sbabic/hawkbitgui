@@ -4,6 +4,8 @@ import {
   AssignDistributionsToTargetInput,
   CreateTargetInput,
   FetchTargetsInput,
+  GetActionsOutput,
+  GetActionsResponse,
   GetAssignedDistributionOutput,
   GetAssignedDistributionResponse,
   GetAttributesOutput,
@@ -134,6 +136,16 @@ export class TargetsService {
       await axiosInstance.post(`/targets/${input.controllerId}/assignedDS`, input.distributionsConfigs);
     } catch (error) {
       console.error('Failed to assign distributions to target', error);
+      throw error;
+    }
+  }
+
+  static async fetchActions(controllerId: string): Promise<GetActionsOutput> {
+    try {
+      const response = await axiosInstance.get<GetActionsResponse>(`/targets/${controllerId}/actions`);
+      return response.data.content;
+    } catch (error) {
+      console.error('Failed to fetch target actions', error);
       throw error;
     }
   }
