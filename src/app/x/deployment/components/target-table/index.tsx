@@ -18,9 +18,10 @@ export type TargetTableProps = {
   onEditClick?: (target: Target) => void;
   onDeleteClick?: (target: Target) => void;
   onPinClick?: (target: Target) => void;
+  onRowClick?: (target: Target) => void;
 };
 
-export default function TargetTable({ expanded, onTargetNameClick, targets = [], onEditClick, onDeleteClick, onPinClick }: TargetTableProps) {
+export default function TargetTable({ expanded, onTargetNameClick, targets = [], onEditClick, onDeleteClick, onPinClick, onRowClick }: TargetTableProps) {
   const columnHelper = createColumnHelper<Target>();
 
   const statusAccessor = useMemo(() => {
@@ -125,7 +126,13 @@ export default function TargetTable({ expanded, onTargetNameClick, targets = [],
 
   return (
     <>
-      <Table columns={expanded ? fullColumns : shortColumns} data={targets} draggable={true} selectable={true} />
+      <Table
+        columns={expanded ? fullColumns : shortColumns}
+        data={targets}
+        draggable={true}
+        selectable={true}
+        onRowClick={(_, target) => onRowClick?.(target)}
+      />
     </>
   );
 }

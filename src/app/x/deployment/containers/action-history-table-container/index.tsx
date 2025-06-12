@@ -7,10 +7,14 @@ import { useTargetActionsTableStore } from '@/stores/target-action-table-store';
 export default function ActionHistoryTableContainer() {
   const targetActions = useTargetActionsTableStore((state) => state.actions);
   const fetchTargetActions = useTargetActionsTableStore((state) => state.fetchActions);
-
+  const selectedTargetId = useTargetActionsTableStore((state) => state.selectedTargetId);
   useEffect(() => {
-    fetchTargetActions().catch(console.error);
-  }, [fetchTargetActions]);
+    if (!selectedTargetId) {
+      console.warn('No target ID selected. Skipping action history fetch.');
+      return;
+    }
+    fetchTargetActions(selectedTargetId).catch(console.error);
+  }, [fetchTargetActions, selectedTargetId]);
 
   return (
     <>

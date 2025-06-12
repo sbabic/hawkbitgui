@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { TargetAction } from '@/entities/target-action';
-import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { TargetsService } from '@/services/targets-service';
 
 interface TargetActionsTableState {
+  selectedTargetId?: string;
   actions: TargetAction[];
   isExpanded: boolean;
   selectedAction?: TargetAction;
@@ -12,11 +12,13 @@ interface TargetActionsTableState {
   setActions: (actions: TargetAction[]) => void;
   resetActions: () => void;
   setIsExpanded: (isExpanded: boolean) => void;
-  fetchActions: () => Promise<void>;
+  fetchActions: (controllerId: string) => Promise<void>;
+  setSelectedTargetId: (targetId: string) => void;
 }
 
 export const useTargetActionsTableStore = create<TargetActionsTableState>((set) => ({
   actions: [],
+  selectedTargetId: undefined,
   isExpanded: false,
   selectedAction: undefined,
   setSelectedAction: (action) => set({ selectedAction: action }),
@@ -24,14 +26,10 @@ export const useTargetActionsTableStore = create<TargetActionsTableState>((set) 
   setActions: (actions) => set({ actions }),
   resetActions: () => set({ actions: [] }),
   setIsExpanded: (isExpanded) => set({ isExpanded }),
-  fetchActions: async () => {
+  setSelectedTargetId: (targetId) => set({ selectedTargetId: targetId }),
+  fetchActions: async (controllerId: string) => {
     try {
-      const selectedTarget = useTargetsTableStore.getState().selectedTarget;
-      if (!selectedTarget) {
-        console.warn('No target selected or controllerId is missing');
-        return;
-      }
-      const targetActions = await TargetsService.fetchActions(selectedTarget.controllerId);
+      const targetActions = await TargetsService.fetchActions(controllerId);
       set({ actions: targetActions });
     } catch (error) {
       console.error('Failed to fetch target actions', error);

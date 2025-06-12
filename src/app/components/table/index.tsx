@@ -13,9 +13,10 @@ export type TableProps<T> = {
   draggable?: boolean;
   selectable?: boolean;
   onRowClick?: (rowId: string, data: T, event: React.MouseEvent) => void;
+  onRowSelect?: (rowId: string, data: T) => void;
 };
 
-export default function Table<T>({ data, columns, variant = 'default', draggable, selectable = false, onRowClick }: TableProps<T>) {
+export default function Table<T>({ data, columns, variant = 'default', draggable, selectable = false, onRowClick, onRowSelect }: TableProps<T>) {
   const table = useReactTable({
     data,
     columns,
@@ -32,18 +33,27 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
   const tableClassName = variant === 'unstyled' ? styles.unstyledTable : styles.defaultTable;
 
   const handleRowClick = (rowId: string, data: T, event: React.MouseEvent) => {
-    onRowClick?.(rowId, data, event);
-    if (!selectable) return;
-    if (event.ctrlKey || event.metaKey) {
-      setSelectedRows((prev) => {
+    setSelectedRows((prev) => {
+      let updated: Record<string, T>;
+
+      if (selectable && (event.ctrlKey || event.metaKey)) {
+        // Toggle selection
         if (prev[rowId] !== undefined) {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { [rowId]: _, ...rest } = prev;
-          return rest;
+          updated = rest;
+        } else {
+          updated = { ...prev, [rowId]: data };
+          onRowSelect?.(rowId, data);
         }
-        return { ...prev, [rowId]: data };
-      });
-    }
+      } else {
+        updated = { [rowId]: data };
+        onRowSelect?.(rowId, data);
+        onRowClick?.(rowId, data, event);
+      }
+
+      return updated;
+    });
   };
 
   return (

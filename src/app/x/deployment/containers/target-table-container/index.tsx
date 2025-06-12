@@ -10,12 +10,14 @@ import { Modal } from '@/app/components/modal';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useConfirmDialog, useTargetsPolling } from '@/app/hooks';
 import EditTargetFormContainer from '../edit-target-form-container';
+import { useTargetActionsTableStore } from '@/stores/target-action-table-store';
 
 export default function TargetTableContainer() {
   const filteredTargets = useTargetsTableStore((state) => state.filteredTargets);
   const isExpanded = useTargetsTableStore((state) => state.isExpanded);
   const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
   const targetsTableStore = useTargetsTableStore();
+  const setTargetActionTargetId = useTargetActionsTableStore((state) => state.setSelectedTargetId);
 
   const [isTargetInfoModalOpen, setIsTargetInfoModalOpen] = useState(false);
   const [isEditTargetModalOpen, setIsEditTargetModalOpen] = useState(false);
@@ -35,6 +37,10 @@ export default function TargetTableContainer() {
     setIsEditTargetModalOpen(true);
   };
 
+  const handleOnRowClick = (target: Target) => {
+    setTargetActionTargetId(target.controllerId);
+  };
+
   useTargetsPolling();
 
   return (
@@ -51,6 +57,7 @@ export default function TargetTableContainer() {
         }}
         onDeleteClick={handleDeleteClick}
         onEditClick={handleEditClick}
+        onRowClick={handleOnRowClick}
       />
       <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' onClose={() => setIsTargetInfoModalOpen(false)} size={'fitContent'}>
         <TargetInfo />
