@@ -8,7 +8,7 @@ import IconButton from '@/app/components/icon-button';
 import dayjs from 'dayjs';
 import { TargetAction } from '@/entities/target-action';
 import XIcon from '@/app/components/icons/x-icon';
-import RolloutIcon from '@/app/components/icons/rollout-icon';
+import ThunderCloudIcon from '@/app/components/icons/thunder-cloud-icon';
 
 export type ActionHistoryTableProps = {
   expanded?: boolean;
@@ -64,7 +64,7 @@ export default function ActionHistoryTable({
         cell: (info) => (
           <div className={styles.actionButtons}>
             <IconButton height={'30px'} width={'30px'} onClick={() => onForceClick?.(info.row.original)}>
-              <RolloutIcon />
+              <ThunderCloudIcon />
             </IconButton>
             <IconButton height={'30px'} width={'30px'} onClick={() => onCancelClick?.(info.row.original)}>
               <XIcon />
@@ -112,7 +112,7 @@ export default function ActionHistoryTable({
         cell: (info) => (
           <div className={styles.actionButtons}>
             <IconButton height={'30px'} width={'30px'} onClick={() => onForceClick?.(info.row.original)}>
-              <RolloutIcon />
+              <ThunderCloudIcon />
             </IconButton>
             <IconButton height={'30px'} width={'30px'} onClick={() => onCancelClick?.(info.row.original)}>
               <XIcon />

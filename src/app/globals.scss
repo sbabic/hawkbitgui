@@ -1,71 +1,112 @@
 @use 'src/app/styles/variables' as *;
 
 @font-face {
-    font-family: 'Nunito Sans';
-    src: url('/fonts/nunito-sans/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf') format('truetype');
-    font-weight: 100 900;
-    font-style: normal;
+  font-family: 'Nunito Sans';
+  src: url('/fonts/nunito-sans/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Nunito Sans';
-    src: url('/fonts/nunito-sans/NunitoSans-Italic-VariableFont_YTLC,opsz,wdth,wght.ttf') format('truetype');
-    font-weight: 100 900;
-    font-style: italic;
+  font-family: 'Nunito Sans';
+  src: url('/fonts/nunito-sans/NunitoSans-Italic-VariableFont_YTLC,opsz,wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
 }
 
 html,
 body {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    font-family: 'Nunito Sans', sans-serif;
-    overflow: auto;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'Nunito Sans', sans-serif;
+  overflow: auto;
 }
 
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 h3 {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0;
-    color: $accent-color;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: $accent-color;
 }
 
 .in_sync {
-    background-color: $status-in-sync;
+  background-color: $status-in-sync;
 }
 
 .error {
-    background-color: $status-error;
+  background-color: $status-error;
 }
 
 .pending {
-    background-color: $status-pending;
+  background-color: $status-pending;
 }
 
 .registered {
-    background-color: $status-registered;
+  background-color: $status-registered;
 }
 
 .unknown {
-    background-color: $status-unknown;
+  background-color: $status-unknown;
+}
+
+// New detailStatus styles using variables
+.finished {
+  background-color: $status-finished;
+}
+
+.running {
+  background-color: $status-running;
+}
+
+.warning {
+  background-color: $status-warning;
+}
+
+.scheduled {
+  background-color: $status-scheduled;
+}
+
+.canceling {
+  background-color: $status-canceling;
+}
+
+.canceled {
+  background-color: $status-canceled;
+}
+
+.download {
+  background-color: $status-download;
+}
+
+.downloaded {
+  background-color: $status-downloaded;
+}
+
+.retrieved {
+  background-color: $status-retrieved;
+}
+
+.cancel_rejected {
+  background-color: $status-cancel-rejected;
 }
 
 input {
-    border: 1px solid $border-disabled-color;
-    transition: border-color 0.2s ease;
+  border: 1px solid $border-disabled-color;
+  transition: border-color 0.2s ease;
 
-    &::placeholder {
-        color: $secondary-text-color;
-    }
+  &::placeholder {
+    color: $secondary-text-color;
+  }
 
-    &:focus {
-        outline: $primary-text-color;
-        border: 1px solid $primary-text-color;
-    }
+  &:focus {
+    outline: $primary-text-color;
+    border: 1px solid $primary-text-color;
+  }
 }

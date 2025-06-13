@@ -13,8 +13,19 @@ $status-error: #b92626;
 $status-pending: #dfb322;
 $status-registered: #2635b9;
 $status-unknown: #b2b4b4;
-$background-disabled-color: #F5F6FA;
+$background-disabled-color: #f5f6fa;
 $text-disabled-color: #707070;
-$border-disabled-color: #E4E7F2;
+$border-disabled-color: #e4e7f2;
 $border-primary-color: #707070;
-$error-dark-color: #B92626;
+$error-dark-color: #b92626;
+
+$status-finished: $status-in-sync; // #6ab252
+$status-running: $status-registered; // #2635b9
+$status-warning: $status-pending; // #dfb322
+$status-scheduled: $status-unknown; // #b2b4b4
+$status-canceling: $status-pending; // #dfb322
+$status-canceled: $status-unknown; // #b2b4b4
+$status-download: $status-registered; // #2635b9
+$status-downloaded: $status-in-sync; // #6ab252
+$status-retrieved: $status-in-sync; // #6ab252
+$status-cancel-rejected: $status-error; // #b92626
