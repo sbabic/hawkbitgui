@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import BlockIcon from '@/app/components/icons/block-icon';
 
 export type DistributionsTableProps = {
+  isLoading?: boolean;
   expanded?: boolean;
   onNameClick?: (distribution: Distribution) => void;
   distributions?: Distribution[];
@@ -27,6 +28,7 @@ export default function DistributionsTable({
   onInvalidateClick,
   onDeleteClick,
   onPinClick,
+  isLoading,
 }: DistributionsTableProps) {
   const columnHelper = createColumnHelper<Distribution>();
 
@@ -120,7 +122,7 @@ export default function DistributionsTable({
 
   return (
     <>
-      <Table columns={expanded ? fullColumns : shortColumns} data={distributions} draggable={true} selectable={true} />
+      <Table columns={expanded ? fullColumns : shortColumns} data={distributions} draggable={true} selectable={true} isLoading={isLoading} />
     </>
   );
 }

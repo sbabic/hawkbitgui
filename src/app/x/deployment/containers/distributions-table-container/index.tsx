@@ -12,6 +12,7 @@ import DistributionInfo from '@/app/x/deployment/components/distribution-info';
 
 export default function DistributionsTableContainer() {
   const filteredDistributions = useDistributionsTableStore((state) => state.filteredDistributions);
+  const isLoading = useDistributionsTableStore((state) => state.isLoading);
   const isExpanded = useDistributionsTableStore((state) => state.isExpanded);
   const fetchDistributions = useDistributionsTableStore((state) => state.fetchDistributions);
   const distributionsTableStore = useDistributionsTableStore();
@@ -51,6 +52,7 @@ export default function DistributionsTableContainer() {
           setIsDistributionInfoModalOpen(true);
         }}
         onDeleteClick={handleDeleteClick}
+        isLoading={isLoading}
       />
       <Modal isOpen={isDistributionInfoModalOpen} variant='unstyled' onClose={() => setIsDistributionInfoModalOpen(false)} size='fitContent'>
         <DistributionInfo />

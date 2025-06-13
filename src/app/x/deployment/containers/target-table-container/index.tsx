@@ -14,6 +14,7 @@ import { useTargetActionsTableStore } from '@/stores/target-action-table-store';
 
 export default function TargetTableContainer() {
   const filteredTargets = useTargetsTableStore((state) => state.filteredTargets);
+  const isLoading = useTargetsTableStore((state) => state.isLoading);
   const isExpanded = useTargetsTableStore((state) => state.isExpanded);
   const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
   const targetsTableStore = useTargetsTableStore();
@@ -58,6 +59,7 @@ export default function TargetTableContainer() {
         onDeleteClick={handleDeleteClick}
         onEditClick={handleEditClick}
         onRowClick={handleOnRowClick}
+        isLoading={isLoading}
       />
       <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' onClose={() => setIsTargetInfoModalOpen(false)} size={'fitContent'}>
         <TargetInfo />
