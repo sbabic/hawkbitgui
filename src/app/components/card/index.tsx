@@ -65,7 +65,7 @@ export default function Card({ defaultWidth = 'fit-content', children, expanded 
     <motion.div
       ref={cardRef}
       className={`${styles.card} ${expanded ? styles.expanded : ''}`}
-      initial={{ minWidth: 300, minHeight: 200 }}
+      initial={{ minWidth: 300, minHeight: 'fit-content', height: 'fit-content' }}
       animate={
         expanded
           ? {
