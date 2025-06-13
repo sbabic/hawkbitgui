@@ -67,6 +67,9 @@ export default function DeploymentDndLayoutContainer() {
     const draggedData = event.active.data.current?.dragData;
     setIsDragging(true);
 
+    console.log('isDistributionRecord', isDistributionRecord(draggedData), 'isTargetRecord', isTargetRecord(draggedData));
+    console.log('draggedData', draggedData);
+
     if (isTargetRecord(draggedData)) {
       draggedTargets.current = Object.values(draggedData);
       draggedDistributions.current = [];
@@ -81,6 +84,7 @@ export default function DeploymentDndLayoutContainer() {
   function handleDragEnd(event: DragEndEvent) {
     const dragged = event.active.data.current?.dragData;
     const over = event.over?.data.current?.dropData;
+
     if (!dragged || !over) {
       setIsDragging(false);
       return;

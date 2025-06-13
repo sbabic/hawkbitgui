@@ -33,27 +33,26 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
   const tableClassName = variant === 'unstyled' ? styles.unstyledTable : styles.defaultTable;
 
   const handleRowClick = (rowId: string, data: T, event: React.MouseEvent) => {
-    setSelectedRows((prev) => {
-      let updated: Record<string, T>;
+    let updated: Record<string, T>;
 
+    setSelectedRows((prev) => {
       if (selectable && (event.ctrlKey || event.metaKey)) {
         // Toggle selection
         if (prev[rowId] !== undefined) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { [rowId]: _, ...rest } = prev;
           updated = rest;
         } else {
           updated = { ...prev, [rowId]: data };
-          onRowSelect?.(rowId, data);
         }
       } else {
         updated = { [rowId]: data };
-        onRowSelect?.(rowId, data);
-        onRowClick?.(rowId, data, event);
       }
-
       return updated;
     });
+
+    onRowClick?.(rowId, data, event);
+
+    onRowSelect?.(rowId, data);
   };
 
   return (

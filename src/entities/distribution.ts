@@ -8,7 +8,7 @@ export interface Distribution {
   type: string;
   typeName: string;
   complete: boolean;
-  locked: boolean;
+  locked?: boolean;
   deleted: boolean;
   valid: boolean;
   requiredMigrationStep: boolean;
@@ -20,27 +20,40 @@ export interface Distribution {
 }
 
 export function isDistribution(obj: any): obj is Distribution {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    typeof obj.id === 'number' &&
-    typeof obj.name === 'string' &&
-    typeof obj.description === 'string' &&
-    typeof obj.version === 'string' &&
-    typeof obj.type === 'string' &&
-    typeof obj.typeName === 'string' &&
-    typeof obj.complete === 'boolean' &&
-    typeof obj.locked === 'boolean' &&
-    typeof obj.deleted === 'boolean' &&
-    typeof obj.valid === 'boolean' &&
-    typeof obj.requiredMigrationStep === 'boolean' &&
-    Array.isArray(obj.modules) &&
-    obj.modules.every((mod: any) => isSoftwareModule(mod)) &&
-    typeof obj.createdBy === 'string' &&
-    typeof obj.createdAt === 'number' &&
-    typeof obj.lastModifiedBy === 'string' &&
-    typeof obj.lastModifiedAt === 'number'
-  );
+  if (typeof obj !== 'object' || obj === null) {
+    console.warn('Invalid distribution: not an object');
+    return false;
+  }
+
+  const validations = [
+    ['id', typeof obj.id === 'number'],
+    ['name', typeof obj.name === 'string'],
+    ['description', typeof obj.description === 'string'],
+    ['version', typeof obj.version === 'string'],
+    ['type', typeof obj.type === 'string'],
+    ['typeName', typeof obj.typeName === 'string'],
+    ['complete', typeof obj.complete === 'boolean'],
+    ['locked', obj.locked === undefined || typeof obj.locked === 'boolean'],
+    ['deleted', typeof obj.deleted === 'boolean'],
+    ['valid', typeof obj.valid === 'boolean'],
+    ['requiredMigrationStep', typeof obj.requiredMigrationStep === 'boolean'],
+    ['modules', Array.isArray(obj.modules) && obj.modules.every((mod: any) => isSoftwareModule(mod))],
+    ['createdBy', typeof obj.createdBy === 'string'],
+    ['createdAt', typeof obj.createdAt === 'number'],
+    ['lastModifiedBy', typeof obj.lastModifiedBy === 'string'],
+    ['lastModifiedAt', typeof obj.lastModifiedAt === 'number'],
+  ];
+
+  const failed = validations.filter(([_, valid]) => !valid);
+  if (failed.length > 0) {
+    console.warn(
+      'Invalid distribution fields:',
+      failed.map(([key]) => key)
+    );
+    return false;
+  }
+
+  return true;
 }
 
 export function isDistributionRecord(value: unknown): value is Record<string, Distribution> {

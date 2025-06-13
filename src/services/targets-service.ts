@@ -143,6 +143,7 @@ export class TargetsService {
   static async fetchActions(controllerId: string): Promise<GetActionsOutput> {
     try {
       const response = await axiosInstance.get<GetActionsResponse>(`/targets/${controllerId}/actions`);
+      console.log('Fetched actions for target:', controllerId, response.data.content);
       return response.data.content;
     } catch (error) {
       console.error('Failed to fetch target actions', error);
