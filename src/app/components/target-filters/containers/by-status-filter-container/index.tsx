@@ -5,7 +5,7 @@ import { useTargetsFiltersStore } from '@/stores/targets-filters-store';
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { useTargetStatusStore } from '@/stores/targets-status-store';
 import { useFilterMultipleSelect } from '@/app/hooks';
-import { TargetStatus } from '@/entities';
+import { TargetStatus, TargetStatusColors } from '@/entities';
 import { useMemo } from 'react';
 
 export default function ByStatusFilterContainer() {
@@ -39,13 +39,13 @@ export default function ByStatusFilterContainer() {
         id: status,
         label: status,
         name: status,
-        colour: 'blue',
+        colour: TargetStatusColors[status],
       }))}
       options={targetStatusEnum.map((status) => ({
         id: status,
         label: status,
         name: status,
-        colour: 'blue',
+        colour: TargetStatusColors[status],
       }))}
       onChange={handleOnChange}
     />

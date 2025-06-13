@@ -6,7 +6,15 @@ export const TargetStatus = {
   UNKNOWN: 'unknown',
 };
 
-export type TargetStatus = keyof typeof TargetStatus;
+export type TargetStatus = (typeof TargetStatus)[keyof typeof TargetStatus];
+
+export const TargetStatusColors: Record<TargetStatus, string> = {
+  in_sync: '#6ab252',
+  pending: '#dfb322',
+  error: '#b92626',
+  registered: '#2635b9',
+  unknown: '#b2b4b4',
+};
 
 export interface Target {
   createdBy: string;
