@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { useReactTable, getCoreRowModel, flexRender, ColumnDef } from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel, ColumnDef, flexRender } from '@tanstack/react-table';
+import Skeleton from 'react-loading-skeleton';
 import styles from './styles.module.scss';
 import DraggableDroppableRow from '@/app/components/draggable-droppable-row';
-import Skeleton from 'react-loading-skeleton';
 
 export type TableProps<T> = {
   data: T[];
-  isLoading?: boolean;
   columns: ColumnDef<T, any>[];
+  isLoading?: boolean;
   variant?: 'default' | 'unstyled';
   draggable?: boolean;
   selectable?: boolean;
@@ -17,19 +17,29 @@ export type TableProps<T> = {
   onRowSelect?: (rowId: string, data: T) => void;
 };
 
-export default function Table<T>({ data, columns, variant = 'default', draggable, selectable = false, onRowClick, onRowSelect, isLoading }: TableProps<T>) {
+export default function Table<T>({
+  data,
+  columns,
+  isLoading = false,
+  variant = 'default',
+  draggable = false,
+  selectable = false,
+  onRowClick,
+  onRowSelect,
+}: TableProps<T>) {
+  const uuid = useMemo(() => `table-${Math.random().toString(36).substr(2, 9)}`, []);
+  const [selectedRows, setSelectedRows] = useState<Record<string, T>>({});
+  const [columnSizing, setColumnSizing] = useState({});
+
   const table = useReactTable({
     data,
     columns,
+    columnResizeMode: 'onChange',
+    enableColumnResizing: true,
     getCoreRowModel: getCoreRowModel(),
+    state: { columnSizing },
+    onColumnSizingChange: setColumnSizing,
   });
-
-  const uuid = useMemo(() => {
-    // Generate a unique ID for the table instance
-    return `table-${Math.random().toString(36).substr(2, 9)}`;
-  }, []);
-
-  const [selectedRows, setSelectedRows] = useState<Record<string, T>>({});
 
   const tableClassName = variant === 'unstyled' ? styles.unstyledTable : styles.defaultTable;
 
@@ -38,9 +48,7 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
 
     setSelectedRows((prev) => {
       if (selectable && (event.ctrlKey || event.metaKey)) {
-        // Toggle selection
         if (prev[rowId] !== undefined) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { [rowId]: _, ...rest } = prev;
           updated = rest;
         } else {
@@ -53,7 +61,6 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
     });
 
     onRowClick?.(rowId, data, event);
-
     onRowSelect?.(rowId, data);
   };
 
@@ -68,24 +75,37 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
                   className={styles.th}
                   key={header.id}
                   style={{
-                    flex: 1,
-                    width: header.getSize(),
+                    flexGrow: 1,
+                    flexBasis: 0,
                     minWidth: header.getSize(),
                   }}
                 >
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  {header.isPlaceholder ? null : (
+                    <>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.column.getCanResize() && (
+                        <div
+                          onMouseDown={header.getResizeHandler()}
+                          onTouchStart={header.getResizeHandler()}
+                          className={styles.resizer}
+                          style={{ cursor: 'col-resize' }}
+                        />
+                      )}
+                    </>
+                  )}
                 </div>
               ))}
             </div>
           ))}
         </div>
+
         <div className={styles.tbody}>
           {!isLoading ? (
             table.getRowModel().rows.map((row) => {
               const isSelected = !!selectedRows[row.id];
               return (
                 <DraggableDroppableRow
-                  className={`${styles.tr}`}
+                  className={styles.tr}
                   key={row.id}
                   id={`${uuid}-${row.id}`}
                   dragData={{ ...selectedRows, [row.id]: row.original }}
@@ -100,8 +120,8 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
                       className={styles.td}
                       key={cell.id}
                       style={{
-                        flex: 1,
-                        width: cell.column.getSize(),
+                        flexGrow: 1,
+                        flexBasis: 0,
                         minWidth: cell.column.getSize(),
                       }}
                     >

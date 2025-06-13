@@ -28,10 +28,36 @@
 
 .th,
 .td {
+  position: relative;
   padding: 8px 12px;
-  flex-shrink: 0;
+  flex-grow: 1;
+  flex-basis: 0;
   text-align: left;
   color: $text-disabled-color;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 5px;
+  z-index: 10;
+  touch-action: none;
+  background-color: transparent;
+  user-select: none;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
 }
 
 .selectedRow {
@@ -60,6 +86,7 @@
   .tbody {
     .tr {
       border-bottom: 2px solid #e6eafb;
+
       &:hover {
         background-color: #fafafa;
       }
