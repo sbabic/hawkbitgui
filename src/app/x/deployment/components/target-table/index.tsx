@@ -12,6 +12,7 @@ import TrashIcon from '@/app/components/icons/trash-icon';
 import dayjs from 'dayjs';
 
 export type TargetTableProps = {
+  isLoading?: boolean;
   expanded?: boolean;
   onTargetNameClick?: (target: Target) => void;
   targets?: Target[];
@@ -21,7 +22,16 @@ export type TargetTableProps = {
   onRowClick?: (target: Target) => void;
 };
 
-export default function TargetTable({ expanded, onTargetNameClick, targets = [], onEditClick, onDeleteClick, onPinClick, onRowClick }: TargetTableProps) {
+export default function TargetTable({
+  expanded,
+  onTargetNameClick,
+  targets = [],
+  onEditClick,
+  onDeleteClick,
+  onPinClick,
+  onRowClick,
+  isLoading,
+}: TargetTableProps) {
   const columnHelper = createColumnHelper<Target>();
 
   const statusAccessor = useMemo(() => {
@@ -132,6 +142,7 @@ export default function TargetTable({ expanded, onTargetNameClick, targets = [],
         draggable={true}
         selectable={true}
         onRowClick={(_, target) => onRowClick?.(target)}
+        isLoading={isLoading}
       />
     </>
   );

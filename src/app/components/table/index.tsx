@@ -4,10 +4,11 @@ import React, { useMemo, useState } from 'react';
 import { useReactTable, getCoreRowModel, flexRender, ColumnDef } from '@tanstack/react-table';
 import styles from './styles.module.scss';
 import DraggableDroppableRow from '@/app/components/draggable-droppable-row';
+import Skeleton from 'react-loading-skeleton';
 
 export type TableProps<T> = {
   data: T[];
-
+  isLoading?: boolean;
   columns: ColumnDef<T, any>[];
   variant?: 'default' | 'unstyled';
   draggable?: boolean;
@@ -16,7 +17,7 @@ export type TableProps<T> = {
   onRowSelect?: (rowId: string, data: T) => void;
 };
 
-export default function Table<T>({ data, columns, variant = 'default', draggable, selectable = false, onRowClick, onRowSelect }: TableProps<T>) {
+export default function Table<T>({ data, columns, variant = 'default', draggable, selectable = false, onRowClick, onRowSelect, isLoading }: TableProps<T>) {
   const table = useReactTable({
     data,
     columns,
@@ -79,36 +80,40 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
           ))}
         </div>
         <div className={styles.tbody}>
-          {table.getRowModel().rows.map((row) => {
-            const isSelected = !!selectedRows[row.id];
-            return (
-              <DraggableDroppableRow
-                className={`${styles.tr}`}
-                key={row.id}
-                id={`${uuid}-${row.id}`}
-                dragData={{ ...selectedRows, [row.id]: row.original }}
-                dropData={row.original}
-                draggable={draggable}
-                droppable={draggable}
-                isSelected={isSelected}
-                onClick={(event) => handleRowClick(row.id, row.original, event)}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <div
-                    className={styles.td}
-                    key={cell.id}
-                    style={{
-                      flex: 1,
-                      width: cell.column.getSize(),
-                      minWidth: cell.column.getSize(),
-                    }}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </div>
-                ))}
-              </DraggableDroppableRow>
-            );
-          })}
+          {!isLoading ? (
+            table.getRowModel().rows.map((row) => {
+              const isSelected = !!selectedRows[row.id];
+              return (
+                <DraggableDroppableRow
+                  className={`${styles.tr}`}
+                  key={row.id}
+                  id={`${uuid}-${row.id}`}
+                  dragData={{ ...selectedRows, [row.id]: row.original }}
+                  dropData={row.original}
+                  draggable={draggable}
+                  droppable={draggable}
+                  isSelected={isSelected}
+                  onClick={(event) => handleRowClick(row.id, row.original, event)}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <div
+                      className={styles.td}
+                      key={cell.id}
+                      style={{
+                        flex: 1,
+                        width: cell.column.getSize(),
+                        minWidth: cell.column.getSize(),
+                      }}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </div>
+                  ))}
+                </DraggableDroppableRow>
+              );
+            })
+          ) : (
+            <Skeleton width={'100%'} height={50} count={5} />
+          )}
         </div>
       </div>
     </div>

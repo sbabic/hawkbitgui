@@ -6,6 +6,7 @@ import { useTargetActionsTableStore } from '@/stores/target-action-table-store';
 
 export default function ActionHistoryTableContainer() {
   const targetActions = useTargetActionsTableStore((state) => state.actions);
+  const isLoading = useTargetActionsTableStore((state) => state.isLoading);
   const isExpanded = useTargetActionsTableStore((state) => state.isExpanded);
   const fetchTargetActions = useTargetActionsTableStore((state) => state.fetchActions);
   const selectedTargetId = useTargetActionsTableStore((state) => state.selectedTargetId);
@@ -19,7 +20,7 @@ export default function ActionHistoryTableContainer() {
 
   return (
     <>
-      <ActionHistoryTable targetActions={targetActions} expanded={isExpanded} />
+      <ActionHistoryTable targetActions={targetActions} expanded={isExpanded} isLoading={isLoading} />
     </>
   );
 }

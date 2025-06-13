@@ -11,6 +11,7 @@ import XIcon from '@/app/components/icons/x-icon';
 import ThunderCloudIcon from '@/app/components/icons/thunder-cloud-icon';
 
 export type ActionHistoryTableProps = {
+  isLoading?: boolean;
   expanded?: boolean;
   onRowClick?: (targetAction: TargetAction) => void;
   targetActions?: TargetAction[];
@@ -26,6 +27,7 @@ export default function ActionHistoryTable({
   onForceClick,
   onCancelClick,
   onForceQuitClick,
+  isLoading,
 }: ActionHistoryTableProps) {
   const columnHelper = createColumnHelper<TargetAction>();
 
@@ -134,6 +136,7 @@ export default function ActionHistoryTable({
         draggable={false}
         selectable={false}
         onRowClick={(_, data) => onRowClick?.(data)}
+        isLoading={isLoading}
       />
     </>
   );
