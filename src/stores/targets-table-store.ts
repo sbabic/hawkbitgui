@@ -17,6 +17,7 @@ interface TargetsTableState {
   setIsExpanded: (isExpanded: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
   fetchTargets: () => Promise<void>;
+  pollTargets: () => Promise<void>; // ✅ new method
 }
 
 export const useTargetsTableStore = create<TargetsTableState>((set) => ({
@@ -26,12 +27,13 @@ export const useTargetsTableStore = create<TargetsTableState>((set) => ({
   isLoading: false,
   selectedTarget: undefined,
   setSelectedTarget: (target) => set({ selectedTarget: target }),
-  setFilteredTargets: (filteredTargets: Target[]) => set({ filteredTargets }),
+  setFilteredTargets: (filteredTargets) => set({ filteredTargets }),
   resetSelectedTarget: () => set({ selectedTarget: undefined }),
   setTargets: (targets) => set({ targets, filteredTargets: targets }),
   resetTargets: () => set({ targets: [], filteredTargets: [] }),
   setIsExpanded: (isExpanded) => set({ isExpanded }),
   setIsLoading: (isLoading) => set({ isLoading }),
+
   fetchTargets: async () => {
     set({ isLoading: true });
     try {
@@ -42,6 +44,16 @@ export const useTargetsTableStore = create<TargetsTableState>((set) => ({
       console.error('Failed to fetch targets', error);
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  pollTargets: async () => {
+    try {
+      const filters = useTargetsFiltersStore.getState().filters;
+      const response = await TargetsService.fetchTargets({ filters: Object.values(filters) });
+      set({ targets: response, filteredTargets: response });
+    } catch (error) {
+      console.error('Failed to poll targets', error);
     }
   },
 }));
