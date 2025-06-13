@@ -54,10 +54,10 @@ export default function ActionHistoryTable({
         header: 'Action Id',
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('_links.distributionset.name', {
-        header: 'Distribution Set',
-        cell: (info) => info.getValue(),
-      }),
+      // columnHelper.accessor('_links.distributionset.name', {
+      //   header: 'Distribution Set',
+      //   cell: (info) => info.getValue(),
+      // }),
       columnHelper.display({
         id: 'actions',
         header: 'Actions',

@@ -44,6 +44,7 @@ export function isDistribution(obj: any): obj is Distribution {
     ['lastModifiedAt', typeof obj.lastModifiedAt === 'number'],
   ];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const failed = validations.filter(([_, valid]) => !valid);
   if (failed.length > 0) {
     console.warn(

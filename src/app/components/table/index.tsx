@@ -39,6 +39,7 @@ export default function Table<T>({ data, columns, variant = 'default', draggable
       if (selectable && (event.ctrlKey || event.metaKey)) {
         // Toggle selection
         if (prev[rowId] !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { [rowId]: _, ...rest } = prev;
           updated = rest;
         } else {
