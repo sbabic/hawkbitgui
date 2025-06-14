@@ -49,6 +49,7 @@ export default function Table<T>({
     setSelectedRows((prev) => {
       if (selectable && (event.ctrlKey || event.metaKey)) {
         if (prev[rowId] !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { [rowId]: _, ...rest } = prev;
           updated = rest;
         } else {
