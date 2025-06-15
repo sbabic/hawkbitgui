@@ -52,6 +52,16 @@ export class RolloutsService {
     }
   }
 
+  static async updateRollout(rolloutId: number, input: Pick<CreateRolloutInput, 'name' | 'description'>): Promise<Rollout> {
+    try {
+      const response = await axiosInstance.put(`/rollouts/${rolloutId}`, input);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to update rollout', error);
+      throw error;
+    }
+  }
+
   static async deleteRollout(rolloutId: number): Promise<void> {
     try {
       await axiosInstance.delete(`/rollouts/${rolloutId}`);

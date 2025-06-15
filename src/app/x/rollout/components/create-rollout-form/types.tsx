@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 const RolloutGroupSchema = z.object({
   name: z.string().min(1, { message: 'Group name is required' }),
-  targetFilterQuery: z.string().min(1, { message: 'Target filter query is required' }),
+  targetFilterQuery: z.string().optional(),
   targetPercentage: z.number().min(1, { message: 'Target percentage must be greater than 0' }),
   successCondition: z.object({
     condition: z.literal(Condition.THRESHOLD),
@@ -41,6 +41,7 @@ export const CreateRolloutFormSchema = z
       })
       .optional(),
     isErrorCount: z.boolean(),
+    groupsSettings: z.enum(['numberOfGroups', 'advancedDefinition']),
     groups: z.array(RolloutGroupSchema).optional(),
   })
   .refine((data) => !(data.type === RolloutTypes.TIME_FORCED && !data.forcetime), {

@@ -10,10 +10,11 @@ import { useGetTargets } from '@/app/x/deployment/hooks/use-get-targets';
 
 interface SelectTargetFilterContainerProps {
   targetFilters: TargetFilter[];
+  disabled?: boolean;
   onSelectedTargetsChange: (targetsCount: number) => void;
 }
 
-export function SelectTargetFilterContainer({ targetFilters, onSelectedTargetsChange }: SelectTargetFilterContainerProps) {
+export function SelectTargetFilterContainer({ targetFilters, disabled = false, onSelectedTargetsChange }: SelectTargetFilterContainerProps) {
   const [targetFilterQuery, setTargetFilterQuery] = useState<string | undefined>(undefined);
   const { data: selectedTargets } = useGetTargets({
     queryParams: { q: targetFilterQuery },
@@ -43,6 +44,8 @@ export function SelectTargetFilterContainer({ targetFilters, onSelectedTargetsCh
         control={control}
         render={({ field }) => (
           <Select
+            {...field}
+            disabled={disabled}
             onChange={(e) => {
               field.onChange(e.target.value);
               handleSelectTargetFilterQuery(e.target.value);
@@ -50,7 +53,7 @@ export function SelectTargetFilterContainer({ targetFilters, onSelectedTargetsCh
           >
             <option value=''>Choose a target filter</option>
             {targetFilters.map((targetFilter) => (
-              <option key={targetFilter.id} value={targetFilter.query}>
+              <option key={targetFilter.query} value={targetFilter.query}>
                 {targetFilter.name}
               </option>
             ))}

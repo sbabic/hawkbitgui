@@ -39,6 +39,7 @@ export default function RolloutNumberOfGroups() {
           render={({ field }) => (
             <Input
               id='successCondition'
+              value={field.value?.expression.toString()}
               placeholder='Enter trigger value (%)'
               type='number'
               onChange={(e) => {
@@ -57,6 +58,7 @@ export default function RolloutNumberOfGroups() {
             <FormControl id='errorCondition' label='Error threshold' errorMessage={errors.errorCondition?.expression?.message}>
               <Input
                 id='errorCondition'
+                value={field.value?.expression.toString()}
                 placeholder='Enter max errors'
                 type='number'
                 onChange={(e) => {

@@ -80,7 +80,7 @@ export default function RolloutGroupsTable() {
         header: 'Target filter query',
         size: 200,
         cell: (cell) => (
-          <FormControl id={`groups.${cell.row.index}.targetFilterQuery`} errorMessage={errors.groups?.[cell.row.index]?.targetFilterQuery?.message} required>
+          <FormControl id={`groups.${cell.row.index}.targetFilterQuery`} errorMessage={errors.groups?.[cell.row.index]?.targetFilterQuery?.message}>
             <Controller
               control={control}
               name={`groups.${cell.row.index}.targetFilterQuery`}

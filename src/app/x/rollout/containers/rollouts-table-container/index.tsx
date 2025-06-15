@@ -7,17 +7,25 @@ import { useConfirmDialog } from '@/app/hooks';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useDeleteRollout } from '../../hooks/use-delete-rollout';
 import { useRolloutsPageStore } from '@/stores/rollouts-page-store';
+import { Modal } from '@/app/components/modal';
+import { useState } from 'react';
+import EditRolloutFormContainer from '../edit-rollout-form-container';
+import CopyRolloutFormContainer from '../copy-rollout-form-container';
 
 export default function RolloutsTableContainer() {
   const { data: rollouts, refetch } = useGetRollouts();
+  const selectedRollout = useRolloutsPageStore((state) => state.selectedRollout);
   const setSelectedRollout = useRolloutsPageStore((state) => state.setSelectedRollout);
+  const setTableType = useRolloutsPageStore((state) => state.setTableType);
+  const [isEditRolloutFormOpen, setIsEditRolloutFormOpen] = useState(false);
+  const [isCopyRolloutFormOpen, setIsCopyRolloutFormOpen] = useState(false);
 
   const { deleteRollout } = useDeleteRollout();
 
   const confirmDialog = useConfirmDialog<Rollout>();
 
   const handleRolloutNameClick = (rollout: Rollout) => {
-    setSelectedRollout(rollout);
+    setTableType({ tableType: 'deploy-groups', selectedRollout: rollout });
   };
 
   const handlePlayClick = (rollout: Rollout) => {
@@ -33,11 +41,13 @@ export default function RolloutsTableContainer() {
   };
 
   const handleEditClick = (rollout: Rollout) => {
-    console.log('Edit clicked for rollout:', rollout.name);
+    setSelectedRollout(rollout);
+    setIsEditRolloutFormOpen(true);
   };
 
   const handleCopyClick = (rollout: Rollout) => {
-    console.log('Copy clicked for rollout:', rollout.name);
+    setSelectedRollout(rollout);
+    setIsCopyRolloutFormOpen(true);
   };
 
   const handleDeleteClick = (rollout: Rollout) => {
@@ -48,6 +58,16 @@ export default function RolloutsTableContainer() {
         refetch();
       }, 5000);
     });
+  };
+
+  const closeEditForm = () => {
+    setIsEditRolloutFormOpen(false);
+    setSelectedRollout(undefined);
+  };
+
+  const closeCopyForm = () => {
+    setIsCopyRolloutFormOpen(false);
+    setSelectedRollout(undefined);
   };
 
   const actions = {
@@ -63,6 +83,26 @@ export default function RolloutsTableContainer() {
   return (
     <>
       <RolloutsTable rollouts={rollouts ?? []} {...actions} />
+      {isEditRolloutFormOpen && (
+        <Modal size='xl' isOpen={isEditRolloutFormOpen} onClose={closeEditForm}>
+          <Modal.Header>Edit rollout</Modal.Header>
+          <Modal.Content>
+            <div style={{ maxHeight: '82vh', overflow: 'auto' }}>
+              <EditRolloutFormContainer onSubmitSuccess={closeEditForm} onCancel={closeEditForm} />
+            </div>
+          </Modal.Content>
+        </Modal>
+      )}
+      {isCopyRolloutFormOpen && selectedRollout && (
+        <Modal size='xl' isOpen={isCopyRolloutFormOpen} onClose={closeCopyForm}>
+          <Modal.Header>Copy rollout</Modal.Header>
+          <Modal.Content>
+            <div style={{ maxHeight: '82vh', overflow: 'auto' }}>
+              <CopyRolloutFormContainer rollout={selectedRollout} onSubmitSuccess={closeCopyForm} onCancel={closeCopyForm} />
+            </div>
+          </Modal.Content>
+        </Modal>
+      )}
       <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
         <ConfirmDeleteModal.Message>
           Are you sure you want to delete rollout <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?

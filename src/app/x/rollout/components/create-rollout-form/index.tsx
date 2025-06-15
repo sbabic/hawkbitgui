@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 import styles from './styles.module.scss';
 import Input from '@/app/components/input';
@@ -28,19 +28,22 @@ import { TargetFilter } from '@/entities/target-filter';
 import { SelectTargetFilterContainer } from './containers';
 
 type CreateRolloutFormProps = {
+  defaultValues?: CreateRolloutFormData;
+  type?: 'create' | 'edit';
   distributionSets: Distribution[];
   targetFilters: TargetFilter[];
   onSubmit: (data: CreateRolloutFormData) => void;
   onCancel: () => void;
 };
 
-export default function CreateRolloutForm({ distributionSets, targetFilters, onSubmit, onCancel }: CreateRolloutFormProps) {
-  const [activeTab, setActiveTab] = useState<'numberOfGroups' | 'advancedDefinition'>('numberOfGroups');
+export default function CreateRolloutForm({ defaultValues, type = 'create', distributionSets, targetFilters, onSubmit, onCancel }: CreateRolloutFormProps) {
   const formMethods = useForm<CreateRolloutFormData>({
     defaultValues: {
       type: RolloutTypes.FORCED,
       startType: StartType.MANUAL,
       isErrorCount: false,
+      groupsSettings: 'numberOfGroups',
+      ...defaultValues,
     },
     resolver: zodResolver(CreateRolloutFormSchema),
   });
@@ -50,11 +53,19 @@ export default function CreateRolloutForm({ distributionSets, targetFilters, onS
     control,
     formState: { errors },
     watch,
-    resetField,
     setValue,
     trigger,
+    reset,
   } = formMethods;
 
+  useEffect(() => {
+    if (defaultValues) {
+      reset({ ...defaultValues, groupsSettings: defaultValues.groups ? 'advancedDefinition' : 'numberOfGroups' });
+    }
+  }, [defaultValues, reset]);
+
+  const isEdit = type === 'edit';
+  const groupsSettings = watch('groupsSettings');
   const actionType = watch('type');
   const startType = watch('startType');
   const actionTypeOptions = [
@@ -84,7 +95,7 @@ export default function CreateRolloutForm({ distributionSets, targetFilters, onS
           </FormControl>
 
           <FormControl id='distributionSetId' label='Distribution set' errorMessage={errors.distributionSetId?.message} required>
-            <Select {...register('distributionSetId', { valueAsNumber: true })}>
+            <Select disabled={isEdit} {...register('distributionSetId', { valueAsNumber: true })}>
               <option value=''>Choose a distribution set</option>
               {distributionSets.map((distributionSet) => (
                 <option key={distributionSet.id} value={distributionSet.id}>
@@ -94,7 +105,7 @@ export default function CreateRolloutForm({ distributionSets, targetFilters, onS
             </Select>
           </FormControl>
 
-          <SelectTargetFilterContainer targetFilters={targetFilters} onSelectedTargetsChange={handleSelectedTargetsChange} />
+          <SelectTargetFilterContainer disabled={isEdit} targetFilters={targetFilters} onSelectedTargetsChange={handleSelectedTargetsChange} />
         </div>
 
         <FormControl id='description' label='Description' errorMessage={errors.description?.message}>
@@ -111,7 +122,7 @@ export default function CreateRolloutForm({ distributionSets, targetFilters, onS
           </FormControl>
           {actionType === RolloutTypes.TIME_FORCED && (
             <FormControl id='forcetime' errorMessage={errors.forcetime?.message}>
-              <Controller control={control} name='forcetime' render={({ field }) => <DateTimePicker {...field} />} />
+              <Controller control={control} name='forcetime' render={({ field }) => <DateTimePicker initialDate={field.value} onChange={field.onChange} />} />
             </FormControl>
           )}
         </div>
@@ -126,51 +137,51 @@ export default function CreateRolloutForm({ distributionSets, targetFilters, onS
           </FormControl>
           {startType === StartType.SCHEDULED && (
             <FormControl id='startAt' errorMessage={errors.startAt?.message}>
-              <Controller control={control} name='startAt' render={({ field }) => <DateTimePicker {...field} />} />
+              <Controller control={control} name='startAt' render={({ field }) => <DateTimePicker initialDate={field.value} onChange={field.onChange} />} />
             </FormControl>
           )}
         </div>
 
-        <div className={styles.tabGroup}>
-          <div className={styles.tabs}>
-            <button
-              type='button'
-              className={`${styles.tab} ${activeTab === 'numberOfGroups' ? styles.activeTab : ''}`}
-              onClick={() => {
-                setActiveTab('numberOfGroups');
-                resetField('groups');
-              }}
-            >
-              Number of groups
-            </button>
-            <button
-              type='button'
-              className={`${styles.tab} ${activeTab === 'advancedDefinition' ? styles.activeTab : ''}`}
-              onClick={() => {
-                setActiveTab('advancedDefinition');
-                resetField('amountGroups');
-              }}
-            >
-              Advanced group definition
-            </button>
-          </div>
+        {!isEdit && (
+          <div className={styles.tabGroup}>
+            <div className={styles.tabs}>
+              <button
+                type='button'
+                className={`${styles.tab} ${groupsSettings === 'numberOfGroups' ? styles.activeTab : ''}`}
+                onClick={() => {
+                  setValue('groupsSettings', 'numberOfGroups');
+                }}
+              >
+                Number of groups
+              </button>
+              <button
+                type='button'
+                className={`${styles.tab} ${groupsSettings === 'advancedDefinition' ? styles.activeTab : ''}`}
+                onClick={() => {
+                  setValue('groupsSettings', 'advancedDefinition');
+                }}
+              >
+                Advanced group definition
+              </button>
+            </div>
 
-          <div className={styles.tabContent}>
-            {activeTab === 'numberOfGroups' && (
-              <>
-                <p className={styles.tabDescription}>Generate the groups automatically with the specified thresholds.</p>
-                <RolloutNumberOfGroups />
-              </>
-            )}
+            <div className={styles.tabContent}>
+              {groupsSettings === 'numberOfGroups' && (
+                <>
+                  <p className={styles.tabDescription}>Generate the groups automatically with the specified thresholds.</p>
+                  <RolloutNumberOfGroups />
+                </>
+              )}
 
-            {activeTab === 'advancedDefinition' && (
-              <>
-                <p className={styles.tabDescription}>Define which groups the Rollout should have.</p>
-                <RolloutGroupsTable />
-              </>
-            )}
+              {groupsSettings === 'advancedDefinition' && (
+                <>
+                  <p className={styles.tabDescription}>Define which groups the Rollout should have.</p>
+                  <RolloutGroupsTable />
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className={styles.errorMessage}>Mandatory field*</div>
 

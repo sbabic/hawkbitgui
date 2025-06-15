@@ -9,12 +9,12 @@ import RolloutsTableContainer from '../../containers/rollouts-table-container';
 import PlusIcon from '@/app/components/icons/plus-icon';
 import { Modal } from '@/app/components/modal';
 import { useState } from 'react';
-import RolloutFormContainer from '../../containers/rollout-form-container';
 import { useRolloutsPageStore } from '@/stores/rollouts-page-store';
 import RolloutDetailsTableContainer from '../../containers/rollout-details-table-container';
 import { RolloutsDetailsCardHeader } from '../rollouts-details-card-header';
 import RolloutDeployGroupDetailsContainer from '../../containers/rollout-deploy-group-details-container';
 import { RolloutsDeployGroupTargetDetailsCardHeader } from '../rollout-deploy-group-target-details-header';
+import CreateRolloutFormContainer from '../../containers/create-rollout-form-container';
 
 export default function RolloutsCard() {
   const [isCreateRolloutFormOpen, setIsCreateRolloutFormOpen] = useState(false);
@@ -38,14 +38,14 @@ export default function RolloutsCard() {
           <Card.Title>
             {tableType === 'rollouts' && 'Rollouts'}
             {tableType === 'deploy-groups' && selectedRollout && (
-              <RolloutsDetailsCardHeader rolloutName={selectedRollout.name} onRolloutsClick={() => setTableType('rollouts')} />
+              <RolloutsDetailsCardHeader rolloutName={selectedRollout.name} onRolloutsClick={() => setTableType({ tableType: 'rollouts' })} />
             )}
             {tableType === 'deploy-group-targets' && selectedRollout && selectedDeployGroup && (
               <RolloutsDeployGroupTargetDetailsCardHeader
                 rolloutName={selectedRollout.name}
                 deployGroupName={selectedDeployGroup.name}
-                onRolloutsClick={() => setTableType('rollouts')}
-                onDeployGroupNameClick={() => setTableType('deploy-groups')}
+                onRolloutsClick={() => setTableType({ tableType: 'rollouts' })}
+                onDeployGroupNameClick={() => setTableType({ tableType: 'deploy-groups', selectedRollout: selectedRollout })}
               />
             )}
           </Card.Title>
@@ -71,7 +71,7 @@ export default function RolloutsCard() {
         <Modal.Header>Create new rollout</Modal.Header>
         <Modal.Content>
           <div style={{ maxHeight: '82vh', overflow: 'auto' }}>
-            <RolloutFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
+            <CreateRolloutFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
           </div>
         </Modal.Content>
       </Modal>
