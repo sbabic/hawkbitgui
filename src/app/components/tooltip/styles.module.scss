@@ -1,0 +1,89 @@
+@use 'src/app/styles/variables' as *;
+
+.tooltipTrigger {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip {
+  position: fixed;
+  background-color: $tooltip-background-color;
+  color: $text-color-inverse;
+  border-radius: 4px;
+  animation: tooltipFadeIn 0.05s ease-out;
+  pointer-events: none;
+
+  &Content {
+    padding: 4px 8px;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  &Arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  // Bottom position (arrow on top)
+  &--bottom {
+    .tooltipArrow {
+      top: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      border-bottom: 3px solid $tooltip-background-color;
+    }
+  }
+
+  // Top position (arrow on bottom)
+  &--top {
+    .tooltipArrow {
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      border-top: 3px solid $tooltip-background-color;
+    }
+  }
+
+  // Right position (arrow on left)
+  &--right {
+    .tooltipArrow {
+      left: -3px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      border-right: 3px solid $tooltip-background-color;
+    }
+  }
+
+  // Left position (arrow on right)
+  &--left {
+    .tooltipArrow {
+      right: -3px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      border-left: 3px solid $tooltip-background-color;
+    }
+  }
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

@@ -16,6 +16,7 @@ import PauseIcon from '@/app/components/icons/pause-icon';
 import { TotalTargetsPerStatusCell } from './components/total-targets-per-status-cell';
 import { RolloutStatusCell } from './components/rollout-status-cell';
 import Button from '@/app/components/button';
+import Tooltip from '@/app/components/tooltip';
 
 export type RolloutsTableProps = {
   rollouts: Rollout[];
@@ -77,27 +78,41 @@ export default function RolloutsTable({
         size: 310,
         cell: (info) => (
           <div className={styles.actionButtons}>
-            <IconButton height={'24px'} width={'24px'} onClick={() => onPlayClick(info.row.original)}>
-              <PlayIcon />
-            </IconButton>
-            <IconButton height={'24px'} width={'24px'} onClick={() => onPinClick(info.row.original)}>
-              <ThumbsUpIcon />
-            </IconButton>
-            <IconButton height={'24px'} width={'24px'} onClick={() => onDetailsClick(info.row.original)}>
-              <PauseIcon />
-            </IconButton>
-            <IconButton height={'24px'} width={'24px'} onClick={() => onDetailsClick(info.row.original)}>
-              <ForwardIcon />
-            </IconButton>
-            <IconButton height={'24px'} width={'24px'} onClick={() => onEditClick(info.row.original)}>
-              <EditIcon />
-            </IconButton>
-            <IconButton height={'24px'} width={'24px'} onClick={() => onCopyClick(info.row.original)}>
-              <CopyIcon />
-            </IconButton>
-            <IconButton height={'24px'} width={'24px'} onClick={() => onDeleteClick(info.row.original)}>
-              <TrashIcon />
-            </IconButton>
+            <Tooltip content='Run' place='bottom'>
+              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onPlayClick(info.row.original)}>
+                <PlayIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content='Approve' place='bottom'>
+              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onPinClick(info.row.original)}>
+                <ThumbsUpIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content='Pause' place='bottom'>
+              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onDetailsClick(info.row.original)}>
+                <PauseIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content='Trigger next group' place='bottom'>
+              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onDetailsClick(info.row.original)}>
+                <ForwardIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content='Edit' place='bottom'>
+              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onEditClick(info.row.original)}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content='Copy' place='bottom'>
+              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onCopyClick(info.row.original)}>
+                <CopyIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content='Delete' place='bottom'>
+              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onDeleteClick(info.row.original)}>
+                <TrashIcon />
+              </IconButton>
+            </Tooltip>
           </div>
         ),
       }),

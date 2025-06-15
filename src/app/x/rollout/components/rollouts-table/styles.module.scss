@@ -2,5 +2,9 @@
 
 .actionButtons {
   display: flex;
-  gap: 16px;
+  gap: 8px;
+
+  .actionButton {
+    padding: 4px
+  }
 }
