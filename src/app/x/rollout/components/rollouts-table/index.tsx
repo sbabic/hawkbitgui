@@ -9,7 +9,7 @@ import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import PlayIcon from '@/app/components/icons/play-icon';
 import CopyIcon from '@/app/components/icons/copy-icon';
-import { Rollout } from '@/entities/rollout';
+import { Rollout, RolloutActions, RolloutStatus } from '@/entities/rollout';
 import ThumbsUpIcon from '@/app/components/icons/thumbs-up-icon';
 import ForwardIcon from '@/app/components/icons/forward-icon';
 import PauseIcon from '@/app/components/icons/pause-icon';
@@ -40,6 +40,25 @@ export default function RolloutsTable({
   onDeleteClick,
 }: RolloutsTableProps) {
   const columnHelper = createColumnHelper<Rollout>();
+
+  const isActionEnabled = (action: RolloutActions, status: RolloutStatus) => {
+    const enabledActions: Record<RolloutStatus, RolloutActions[]> = {
+      [RolloutStatus.creating]: [],
+      [RolloutStatus.ready]: [RolloutActions.start, RolloutActions.edit, RolloutActions.copy, RolloutActions.delete],
+      [RolloutStatus.waiting_for_approval]: [],
+      [RolloutStatus.approval_denied]: [],
+      [RolloutStatus.running]: [RolloutActions.pause, RolloutActions.triggerNextGroup, RolloutActions.edit, RolloutActions.copy, RolloutActions.delete],
+      [RolloutStatus.finished]: [RolloutActions.copy, RolloutActions.edit, RolloutActions.delete],
+      [RolloutStatus.deleting]: [],
+      [RolloutStatus.paused]: [],
+      [RolloutStatus.starting]: [],
+      [RolloutStatus.stopped]: [],
+      [RolloutStatus.stopping]: [],
+      [RolloutStatus.deleted]: [],
+    };
+
+    return enabledActions[status].includes(action);
+  };
 
   const columns = useMemo(() => {
     return [
@@ -79,37 +98,79 @@ export default function RolloutsTable({
         cell: (info) => (
           <div className={styles.actionButtons}>
             <Tooltip content='Run' place='bottom'>
-              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onPlayClick(info.row.original)}>
+              <IconButton
+                height={'24px'}
+                width={'24px'}
+                className={styles.actionButton}
+                disabled={!isActionEnabled(RolloutActions.start, info.row.original.status)}
+                onClick={() => onPlayClick(info.row.original)}
+              >
                 <PlayIcon />
               </IconButton>
             </Tooltip>
             <Tooltip content='Approve' place='bottom'>
-              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onPinClick(info.row.original)}>
+              <IconButton
+                height={'24px'}
+                width={'24px'}
+                className={styles.actionButton}
+                disabled={!isActionEnabled(RolloutActions.approve, info.row.original.status)}
+                onClick={() => onPinClick(info.row.original)}
+              >
                 <ThumbsUpIcon />
               </IconButton>
             </Tooltip>
             <Tooltip content='Pause' place='bottom'>
-              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onDetailsClick(info.row.original)}>
+              <IconButton
+                height={'24px'}
+                width={'24px'}
+                className={styles.actionButton}
+                disabled={!isActionEnabled(RolloutActions.pause, info.row.original.status)}
+                onClick={() => onDetailsClick(info.row.original)}
+              >
                 <PauseIcon />
               </IconButton>
             </Tooltip>
             <Tooltip content='Trigger next group' place='bottom'>
-              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onDetailsClick(info.row.original)}>
+              <IconButton
+                height={'24px'}
+                width={'24px'}
+                className={styles.actionButton}
+                disabled={!isActionEnabled(RolloutActions.triggerNextGroup, info.row.original.status)}
+                onClick={() => onDetailsClick(info.row.original)}
+              >
                 <ForwardIcon />
               </IconButton>
             </Tooltip>
             <Tooltip content='Edit' place='bottom'>
-              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onEditClick(info.row.original)}>
+              <IconButton
+                height={'24px'}
+                width={'24px'}
+                className={styles.actionButton}
+                disabled={!isActionEnabled(RolloutActions.edit, info.row.original.status)}
+                onClick={() => onEditClick(info.row.original)}
+              >
                 <EditIcon />
               </IconButton>
             </Tooltip>
             <Tooltip content='Copy' place='bottom'>
-              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onCopyClick(info.row.original)}>
+              <IconButton
+                height={'24px'}
+                width={'24px'}
+                className={styles.actionButton}
+                disabled={!isActionEnabled(RolloutActions.copy, info.row.original.status)}
+                onClick={() => onCopyClick(info.row.original)}
+              >
                 <CopyIcon />
               </IconButton>
             </Tooltip>
             <Tooltip content='Delete' place='bottom'>
-              <IconButton height={'24px'} width={'24px'} className={styles.actionButton} onClick={() => onDeleteClick(info.row.original)}>
+              <IconButton
+                height={'24px'}
+                width={'24px'}
+                className={styles.actionButton}
+                disabled={!isActionEnabled(RolloutActions.delete, info.row.original.status)}
+                onClick={() => onDeleteClick(info.row.original)}
+              >
                 <TrashIcon />
               </IconButton>
             </Tooltip>

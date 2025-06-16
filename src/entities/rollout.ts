@@ -45,6 +45,17 @@ export const RolloutStatus = {
 } as const;
 export type RolloutStatus = (typeof RolloutStatus)[keyof typeof RolloutStatus];
 
+export const RolloutActions = {
+  start: 'start',
+  approve: 'approve',
+  pause: 'pause',
+  triggerNextGroup: 'triggerNextGroup',
+  copy: 'copy',
+  edit: 'edit',
+  delete: 'delete',
+} as const;
+export type RolloutActions = (typeof RolloutActions)[keyof typeof RolloutActions];
+
 export const TotalTargetCountStatus = {
   running: 'running',
   notstarted: 'notstarted',

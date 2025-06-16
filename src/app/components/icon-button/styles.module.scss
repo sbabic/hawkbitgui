@@ -8,10 +8,19 @@
     border-radius: 8px;
     height: 24px;
     width: 24px;
-    color: #898b90;
+    color: $icon-primary-color;
     cursor: pointer;
 
     &:hover {
         background: $secondary-color;
+    }
+
+    &.disabled {
+        cursor: default;
+        color: $icon-disabled-color;
+
+        &:hover {
+            background: transparent;
+        }
     }
 }
