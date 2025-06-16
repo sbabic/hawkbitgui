@@ -90,4 +90,13 @@ export class RolloutsService {
       throw error;
     }
   }
+
+  static async startRollout(rolloutId: number): Promise<void> {
+    try {
+      await axiosInstance.post(`/rollouts/${rolloutId}/start`);
+    } catch (error) {
+      console.error('Failed to start rollout', error);
+      throw error;
+    }
+  }
 }

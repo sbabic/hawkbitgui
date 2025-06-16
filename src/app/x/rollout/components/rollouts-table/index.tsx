@@ -41,8 +41,8 @@ export default function RolloutsTable({
 }: RolloutsTableProps) {
   const columnHelper = createColumnHelper<Rollout>();
 
-  const isActionEnabled = (action: RolloutActions, status: RolloutStatus) => {
-    const enabledActions: Record<RolloutStatus, RolloutActions[]> = {
+  const isActionAllowed = (action: RolloutActions, status: RolloutStatus) => {
+    const allowedActionByStatus: Record<RolloutStatus, RolloutActions[]> = {
       [RolloutStatus.creating]: [],
       [RolloutStatus.ready]: [RolloutActions.start, RolloutActions.edit, RolloutActions.copy, RolloutActions.delete],
       [RolloutStatus.waiting_for_approval]: [],
@@ -57,7 +57,7 @@ export default function RolloutsTable({
       [RolloutStatus.deleted]: [],
     };
 
-    return enabledActions[status].includes(action);
+    return allowedActionByStatus[status].includes(action);
   };
 
   const columns = useMemo(() => {
@@ -102,7 +102,7 @@ export default function RolloutsTable({
                 height={'24px'}
                 width={'24px'}
                 className={styles.actionButton}
-                disabled={!isActionEnabled(RolloutActions.start, info.row.original.status)}
+                disabled={!isActionAllowed(RolloutActions.start, info.row.original.status)}
                 onClick={() => onPlayClick(info.row.original)}
               >
                 <PlayIcon />
@@ -113,7 +113,7 @@ export default function RolloutsTable({
                 height={'24px'}
                 width={'24px'}
                 className={styles.actionButton}
-                disabled={!isActionEnabled(RolloutActions.approve, info.row.original.status)}
+                disabled={!isActionAllowed(RolloutActions.approve, info.row.original.status)}
                 onClick={() => onPinClick(info.row.original)}
               >
                 <ThumbsUpIcon />
@@ -124,7 +124,7 @@ export default function RolloutsTable({
                 height={'24px'}
                 width={'24px'}
                 className={styles.actionButton}
-                disabled={!isActionEnabled(RolloutActions.pause, info.row.original.status)}
+                disabled={!isActionAllowed(RolloutActions.pause, info.row.original.status)}
                 onClick={() => onDetailsClick(info.row.original)}
               >
                 <PauseIcon />
@@ -135,7 +135,7 @@ export default function RolloutsTable({
                 height={'24px'}
                 width={'24px'}
                 className={styles.actionButton}
-                disabled={!isActionEnabled(RolloutActions.triggerNextGroup, info.row.original.status)}
+                disabled={!isActionAllowed(RolloutActions.triggerNextGroup, info.row.original.status)}
                 onClick={() => onDetailsClick(info.row.original)}
               >
                 <ForwardIcon />
@@ -146,7 +146,7 @@ export default function RolloutsTable({
                 height={'24px'}
                 width={'24px'}
                 className={styles.actionButton}
-                disabled={!isActionEnabled(RolloutActions.edit, info.row.original.status)}
+                disabled={!isActionAllowed(RolloutActions.edit, info.row.original.status)}
                 onClick={() => onEditClick(info.row.original)}
               >
                 <EditIcon />
@@ -157,7 +157,7 @@ export default function RolloutsTable({
                 height={'24px'}
                 width={'24px'}
                 className={styles.actionButton}
-                disabled={!isActionEnabled(RolloutActions.copy, info.row.original.status)}
+                disabled={!isActionAllowed(RolloutActions.copy, info.row.original.status)}
                 onClick={() => onCopyClick(info.row.original)}
               >
                 <CopyIcon />
@@ -168,7 +168,7 @@ export default function RolloutsTable({
                 height={'24px'}
                 width={'24px'}
                 className={styles.actionButton}
-                disabled={!isActionEnabled(RolloutActions.delete, info.row.original.status)}
+                disabled={!isActionAllowed(RolloutActions.delete, info.row.original.status)}
                 onClick={() => onDeleteClick(info.row.original)}
               >
                 <TrashIcon />

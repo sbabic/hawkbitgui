@@ -1,6 +1,6 @@
 'use client';
 
-import { Rollout } from '@/entities/rollout';
+import { Rollout, RolloutStatus } from '@/entities/rollout';
 import RolloutsTable from '../../components/rollouts-table';
 import { useGetRollouts } from '../../hooks/use-get-rollouts';
 import { useConfirmDialog } from '@/app/hooks';
@@ -11,9 +11,22 @@ import { Modal } from '@/app/components/modal';
 import { useState } from 'react';
 import EditRolloutFormContainer from '../edit-rollout-form-container';
 import CopyRolloutFormContainer from '../copy-rollout-form-container';
+import { useStartRollout } from '../../hooks/use-start-rollout';
+import { Query } from '@tanstack/react-query';
+import { ApiError } from '@/types/hawkbit-api/error';
 
 export default function RolloutsTableContainer() {
-  const { data: rollouts, refetch } = useGetRollouts();
+  const { data: rollouts, refetch } = useGetRollouts({
+    queryOptions: {
+      refetchInterval: (query: Query<Rollout[], ApiError>) => {
+        const currentQueryData = query.state.data;
+        if (currentQueryData?.some((rollout) => rollout.status === RolloutStatus.running)) {
+          return 5000; // Poll every 5 seconds
+        }
+        return false;
+      },
+    },
+  });
   const selectedRollout = useRolloutsPageStore((state) => state.selectedRollout);
   const setSelectedRollout = useRolloutsPageStore((state) => state.setSelectedRollout);
   const setTableType = useRolloutsPageStore((state) => state.setTableType);
@@ -21,6 +34,7 @@ export default function RolloutsTableContainer() {
   const [isCopyRolloutFormOpen, setIsCopyRolloutFormOpen] = useState(false);
 
   const { deleteRollout } = useDeleteRollout();
+  const { startRollout } = useStartRollout();
 
   const confirmDialog = useConfirmDialog<Rollout>();
 
@@ -28,8 +42,9 @@ export default function RolloutsTableContainer() {
     setTableType({ tableType: 'deploy-groups', selectedRollout: rollout });
   };
 
-  const handlePlayClick = (rollout: Rollout) => {
-    console.log('Play clicked for rollout:', rollout.name);
+  const handlePlayClick = async (rollout: Rollout) => {
+    await startRollout(rollout.id);
+    refetch();
   };
 
   const handlePinClick = (rollout: Rollout) => {
@@ -54,9 +69,6 @@ export default function RolloutsTableContainer() {
     confirmDialog.open(rollout, async () => {
       await deleteRollout(rollout.id);
       refetch();
-      setTimeout(() => {
-        refetch();
-      }, 5000);
     });
   };
 
