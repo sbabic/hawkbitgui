@@ -37,9 +37,6 @@ export default function EditRolloutFormContainer({ onSubmitSuccess, onCancel }: 
     await updateRollout({ rolloutId: selectedRollout.id, name: input.name, description: input.description });
     onSubmitSuccess();
     refetch();
-    setTimeout(() => {
-      refetch();
-    }, 5000);
   };
 
   return (

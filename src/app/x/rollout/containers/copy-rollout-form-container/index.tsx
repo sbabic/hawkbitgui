@@ -31,9 +31,6 @@ export default function CopyRolloutFormContainer({ rollout, onSubmitSuccess, onC
     await createRollout(input);
     onSubmitSuccess();
     refetch();
-    setTimeout(() => {
-      refetch();
-    }, 5000);
   };
 
   return (

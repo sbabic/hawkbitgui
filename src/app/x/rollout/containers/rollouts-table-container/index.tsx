@@ -20,7 +20,16 @@ export default function RolloutsTableContainer() {
     queryOptions: {
       refetchInterval: (query: Query<Rollout[], ApiError>) => {
         const currentQueryData = query.state.data;
-        if (currentQueryData?.some((rollout) => rollout.status === RolloutStatus.running)) {
+        if (
+          currentQueryData?.some(
+            (rollout) =>
+              rollout.status === RolloutStatus.running ||
+              rollout.status === RolloutStatus.creating ||
+              rollout.status === RolloutStatus.starting ||
+              rollout.status === RolloutStatus.deleting ||
+              rollout.status === RolloutStatus.stopping
+          )
+        ) {
           return 5000; // Poll every 5 seconds
         }
         return false;
