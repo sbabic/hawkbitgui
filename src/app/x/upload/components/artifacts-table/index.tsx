@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import IconButton from '@/app/components/icon-button';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import DownloadIcon from '@/app/components/icons/download-icon';
+import Tooltip from '@/app/components/tooltip';
 
 interface ArtifactsTableProps {
   artifacts: SoftwareModuleArtifact[];
@@ -34,12 +35,16 @@ export default function ArtifactsTable({ artifacts, onDownloadClick, onDeleteCli
         header: 'Actions',
         cell: (cell) => (
           <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 8 }}>
-            <IconButton onClick={() => onDownloadClick(cell.row.original)}>
-              <DownloadIcon />
-            </IconButton>
-            <IconButton onClick={() => onDeleteClick(cell.row.original)}>
-              <TrashIcon />
-            </IconButton>
+            <Tooltip content='Download'>
+              <IconButton onClick={() => onDownloadClick(cell.row.original)} style={{ padding: '4px' }}>
+                <DownloadIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content='Delete'>
+              <IconButton onClick={() => onDeleteClick(cell.row.original)} style={{ padding: '4px' }}>
+                <TrashIcon />
+              </IconButton>
+            </Tooltip>
           </div>
         ),
       }),

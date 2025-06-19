@@ -11,11 +11,12 @@ export type PanelCardRootProps = {
   defaultWidth?: 'fit-content' | '100%';
   children: ReactNode;
   expanded?: boolean;
+  style?: React.CSSProperties;
 };
 
-export default function PanelCard({ defaultWidth, children, expanded }: PanelCardRootProps) {
+export default function PanelCard({ defaultWidth, children, expanded, style }: PanelCardRootProps) {
   return (
-    <Card defaultWidth={defaultWidth} expanded={expanded}>
+    <Card defaultWidth={defaultWidth} expanded={expanded} style={style}>
       <div className={styles.cardBody}>{children}</div>
     </Card>
   );

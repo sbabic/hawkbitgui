@@ -8,11 +8,12 @@ import TrashIcon from '@/app/components/icons/trash-icon';
 
 interface SoftwareModuleTableProps {
   modules: SoftwareModule[];
+  onRowClick?: (softwareModule: SoftwareModule) => void;
   onNameClick: (softwareModule: SoftwareModule) => void;
   onDeleteClick: (softwareModule: SoftwareModule) => void;
 }
 
-export default function SoftwareModuleTable({ modules, onNameClick, onDeleteClick }: SoftwareModuleTableProps) {
+export default function SoftwareModuleTable({ modules, onRowClick, onNameClick, onDeleteClick }: SoftwareModuleTableProps) {
   const columnHelper = createColumnHelper<SoftwareModule>();
 
   const fullColumns = useMemo(
@@ -43,9 +44,5 @@ export default function SoftwareModuleTable({ modules, onNameClick, onDeleteClic
     [columnHelper, onNameClick, onDeleteClick]
   );
 
-  return (
-    <>
-      <Table columns={fullColumns} data={modules} />
-    </>
-  );
+  return <Table columns={fullColumns} data={modules} onRowClick={(_, data) => onRowClick?.(data)} />;
 }

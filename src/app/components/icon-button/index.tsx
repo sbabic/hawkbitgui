@@ -7,6 +7,7 @@ export default function IconButton({
   width,
   height,
   disabled = false,
+  style,
   onClick,
 }: {
   children?: ReactNode;
@@ -14,6 +15,7 @@ export default function IconButton({
   width?: string;
   height?: string;
   disabled?: boolean;
+  style?: React.CSSProperties;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }) {
   return (
@@ -25,6 +27,7 @@ export default function IconButton({
       style={{
         width,
         height,
+        ...style,
       }}
     >
       {children}

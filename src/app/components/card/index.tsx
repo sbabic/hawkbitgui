@@ -24,9 +24,10 @@ interface CardProps {
   defaultWidth?: 'fit-content' | '100%';
   expanded?: boolean;
   children: React.ReactNode;
+  style?: React.CSSProperties;
 }
 
-export default function Card({ defaultWidth = 'fit-content', children, expanded = false }: CardProps) {
+export default function Card({ defaultWidth = 'fit-content', children, expanded = false, style }: CardProps) {
   const [parentWidth, setParentWidth] = useState(300); // Default width
   const [parentHeight, setParentHeight] = useState(200); // Default height
   const cardRef = useRef<HTMLDivElement | null>(null);
@@ -77,6 +78,7 @@ export default function Card({ defaultWidth = 'fit-content', children, expanded 
             }
       }
       transition={{ duration: 0.4, ease: 'easeInOut' }}
+      style={style}
     >
       <div className={styles.container}>{children}</div>
     </motion.div>
