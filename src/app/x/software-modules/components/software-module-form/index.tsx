@@ -11,24 +11,28 @@ import { CreateSoftwareModuleFormData, CreateSoftwareModuleSchema } from './type
 import Select from '@/app/components/select';
 
 interface SoftwareModuleFormProps {
+  defaultValues?: Partial<CreateSoftwareModuleFormData>;
   softwareModuleTypes: SoftwareModuleType[];
   onSubmit: (data: CreateSoftwareModuleFormData) => void;
   onCancel: () => void;
 }
 
-export default function SoftwareModuleFormContainer({ softwareModuleTypes, onSubmit, onCancel }: SoftwareModuleFormProps) {
+export default function SoftwareModuleFormContainer({ defaultValues, softwareModuleTypes, onSubmit, onCancel }: SoftwareModuleFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<CreateSoftwareModuleFormData>({
+    defaultValues: { ...defaultValues },
     resolver: zodResolver(CreateSoftwareModuleSchema),
   });
+
+  const isEditMode = !!defaultValues;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormControl id='type' label='Type' required errorMessage={errors.type?.message}>
-        <Select id='type' {...register('type')}>
+        <Select id='type' {...register('type')} disabled={isEditMode}>
           {softwareModuleTypes.map((type) => (
             <option key={type.key} value={type.key}>
               {type.name}
@@ -37,10 +41,10 @@ export default function SoftwareModuleFormContainer({ softwareModuleTypes, onSub
         </Select>
       </FormControl>
       <FormControl id='name' label='Name' required errorMessage={errors.name?.message}>
-        <Input id='name' type='text' placeholder='Enter the name of the module' {...register('name')} />
+        <Input id='name' type='text' placeholder='Enter the name of the module' {...register('name')} disabled={isEditMode} />
       </FormControl>
       <FormControl id='version' label='Version' required errorMessage={errors.version?.message}>
-        <Input id='version' type='text' placeholder='Enter the version' {...register('version')} />
+        <Input id='version' type='text' placeholder='Enter the version' {...register('version')} disabled={isEditMode} />
       </FormControl>
       <FormControl id='description' label='Description'>
         <TextArea id='description' placeholder='Enter the description' {...register('description')} />
@@ -49,7 +53,7 @@ export default function SoftwareModuleFormContainer({ softwareModuleTypes, onSub
         <Input id='vendor' type='text' placeholder='Enter the vendor' {...register('vendor')} />
       </FormControl>
       <FormControl id='encrypted'>
-        <Checkbox id='encrypted' description='Encrypted' {...register('encrypted')} />
+        <Checkbox id='encrypted' description='Encrypted' {...register('encrypted')} disabled={isEditMode} />
       </FormControl>
       <ActionButtons>
         <ActionButtons.Primary type='submit'>{isSubmitting ? 'Creating...' : 'Create'}</ActionButtons.Primary>

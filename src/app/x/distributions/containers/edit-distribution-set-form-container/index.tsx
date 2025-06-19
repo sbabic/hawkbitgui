@@ -1,23 +1,25 @@
 import { CreateDistributionSetInput } from '@/services/distribution-sets-services.types';
 import DistributionSetForm from '../../components/distribution-set-form';
-import { useCreateDistributionSet } from '../../hooks/use-create-distribution-set';
 import { useGetDistributionSets } from '../../hooks/use-get-distribution-sets';
 import { useGetDistributionSetTypes } from '@/app/x/distribution-set-types/hooks/use-get-distribution-set-types';
+import { Distribution } from '@/entities';
+import { useUpdateDistributionSet } from '../../hooks/use-update-distribution-set';
 
-export interface DistributionSetFormContainerProps {
+export interface EditDistributionSetFormContainerProps {
+  distributionSet: Distribution;
   onSubmitSuccess: () => void;
   onCancel: () => void;
 }
 
-export default function DistributionSetFormContainer({ onSubmitSuccess, onCancel }: DistributionSetFormContainerProps) {
+export default function EditDistributionSetFormContainer({ distributionSet, onSubmitSuccess, onCancel }: EditDistributionSetFormContainerProps) {
   const { refetch } = useGetDistributionSets({ queryOptions: { enabled: false } });
   const { data: distributionSetTypes } = useGetDistributionSetTypes();
-  const { createDistributionSet } = useCreateDistributionSet();
+  const { updateDistributionSet } = useUpdateDistributionSet();
 
   const handleSubmit = async (data: CreateDistributionSetInput) => {
-    await createDistributionSet([data]);
+    await updateDistributionSet({ distributionSetId: distributionSet.id, ...data });
     onSubmitSuccess();
     refetch();
   };
-  return <DistributionSetForm distributionSetTypes={distributionSetTypes ?? []} onSubmit={handleSubmit} onCancel={onCancel} />;
+  return <DistributionSetForm defaultValues={distributionSet} distributionSetTypes={distributionSetTypes ?? []} onSubmit={handleSubmit} onCancel={onCancel} />;
 }

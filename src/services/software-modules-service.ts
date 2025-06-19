@@ -14,6 +14,11 @@ export class SoftwareModulesService {
     return response.data;
   }
 
+  static async updateSoftwareModule(softwareModuleId: number, data: Partial<CreateSoftwareModuleInput>): Promise<SoftwareModule[]> {
+    const response = await axiosInstance.put<CreateSoftwareModuleResponse>(`/softwaremodules/${softwareModuleId}`, data);
+    return response.data;
+  }
+
   static async deleteSoftwareModule(softwareModuleId: number): Promise<void> {
     await axiosInstance.delete(`/softwaremodules/${softwareModuleId}`);
   }

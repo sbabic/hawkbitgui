@@ -13,14 +13,13 @@ import Select from '@/app/components/select';
 import Form from '@/app/components/form';
 
 export interface DistributionSetFormProps {
-  distributionSetTypes: DistributionSetType[];
   defaultValues?: Partial<CreateDistributionSetInput>;
-  mode?: 'create' | 'edit';
+  distributionSetTypes: DistributionSetType[];
   onSubmit: (data: CreateDistributionSetInput) => void;
   onCancel: () => void;
 }
 
-export default function DistributionSetForm({ distributionSetTypes, onSubmit, onCancel, defaultValues }: DistributionSetFormProps) {
+export default function DistributionSetForm({ defaultValues, distributionSetTypes, onSubmit, onCancel }: DistributionSetFormProps) {
   const {
     register,
     handleSubmit,
@@ -34,6 +33,8 @@ export default function DistributionSetForm({ distributionSetTypes, onSubmit, on
       ...defaultValues,
     },
   });
+
+  const isEditMode = !!defaultValues;
 
   useEffect(() => {
     if (defaultValues) {
@@ -58,7 +59,7 @@ export default function DistributionSetForm({ distributionSetTypes, onSubmit, on
       </FormControl>
 
       <FormControl id='type' label='Type'>
-        <Select id='type' {...register('type')}>
+        <Select id='type' {...register('type')} disabled={isEditMode}>
           {typeOptions.map((option) => (
             <option key={option.id} value={option.id}>
               {option.label}

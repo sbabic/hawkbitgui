@@ -8,11 +8,14 @@ import { useSoftwareModulesStore } from '@/stores/software-modules-store';
 import { Modal } from '@/app/components/modal';
 import { useState } from 'react';
 import SoftwareModuleInfo from '../../components/software-module-info';
+import EditSoftwareModuleFormContainer from '../edit-software-module-form-container';
 
 export default function SoftwareModuleTableContainer() {
   const { data: softwareModules, refetch } = useGetSoftwareModules();
   const setSelectedSoftwareModule = useSoftwareModulesStore((state) => state.setSelectedSoftwareModule);
+  const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
   const [isSoftwareModuleInfoModalOpen, setIsSoftwareModuleInfoModalOpen] = useState(false);
+  const [isEditSoftwareModuleFormOpen, setIsEditSoftwareModuleFormOpen] = useState(false);
 
   const { deleteSoftwareModule } = useDeleteSoftwareModule();
 
@@ -25,6 +28,11 @@ export default function SoftwareModuleTableContainer() {
   const handleNameClick = (softwareModule: SoftwareModule) => {
     setSelectedSoftwareModule(softwareModule);
     setIsSoftwareModuleInfoModalOpen(true);
+  };
+
+  const handleEditSoftwareModule = (softwareModule: SoftwareModule) => {
+    setSelectedSoftwareModule(softwareModule);
+    setIsEditSoftwareModuleFormOpen(true);
   };
 
   const handleDeleteSoftwareModule = (softwareModule: SoftwareModule) => {
@@ -46,17 +54,31 @@ export default function SoftwareModuleTableContainer() {
     setSelectedSoftwareModule(undefined);
   };
 
+  const closeEditForm = () => {
+    setIsEditSoftwareModuleFormOpen(false);
+    setSelectedSoftwareModule(undefined);
+  };
+
   return (
     <>
       <SoftwareModuleTable
         modules={softwareModules ?? []}
         onNameClick={handleNameClick}
+        onEditClick={handleEditSoftwareModule}
         onDeleteClick={handleDeleteSoftwareModule}
         onRowClick={handleRowClick}
       />
       <Modal isOpen={isSoftwareModuleInfoModalOpen} variant='unstyled' onClose={closeInfoModal} size={'fitContent'}>
         <SoftwareModuleInfo />
       </Modal>
+      {isEditSoftwareModuleFormOpen && selectedSoftwareModule && (
+        <Modal isOpen={isEditSoftwareModuleFormOpen} onClose={closeEditForm}>
+          <Modal.Header>Edit software module</Modal.Header>
+          <Modal.Content>
+            <EditSoftwareModuleFormContainer softwareModule={selectedSoftwareModule} onSubmitSuccess={closeEditForm} onCancel={closeEditForm} />
+          </Modal.Content>
+        </Modal>
+      )}
       <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
         <ConfirmDeleteModal.Message>
           Are you sure you want to delete the software module <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?

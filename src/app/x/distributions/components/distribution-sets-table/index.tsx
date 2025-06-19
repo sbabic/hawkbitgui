@@ -5,16 +5,18 @@ import { createColumnHelper } from '@tanstack/react-table';
 import Table from '@/app/components/table';
 import { Distribution } from '@/entities';
 import Button from '@/app/components/button';
-import IconButton from '@/app/components/icon-button';
 import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
+import TooltipIconButton from '@/app/components/edit-icon-button';
 
 export type DistributionSetsTableProps = {
   distributionSets: Distribution[];
   onNameClick: (distributionSet: Distribution) => void;
+  onEditClick: (distributionSet: Distribution) => void;
+  onDeleteClick: (distributionSet: Distribution) => void;
 };
 
-export default function DistributionSetsTable({ distributionSets, onNameClick }: DistributionSetsTableProps) {
+export default function DistributionSetsTable({ distributionSets, onNameClick, onEditClick, onDeleteClick }: DistributionSetsTableProps) {
   const columnHelper = createColumnHelper<Distribution>();
 
   const fullColumns = useMemo(() => {
@@ -34,19 +36,15 @@ export default function DistributionSetsTable({ distributionSets, onNameClick }:
       columnHelper.display({
         id: 'actions',
         header: 'Actions',
-        cell: () => (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
-            <IconButton height={'30px'} width={'30px'} onClick={() => {}}>
-              <EditIcon />
-            </IconButton>
-            <IconButton height={'30px'} width={'30px'} onClick={() => {}}>
-              <TrashIcon />
-            </IconButton>
+        cell: (cell) => (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '4px' }}>
+            <TooltipIconButton icon={<EditIcon />} tooltipContent='Edit' onClick={() => onEditClick(cell.row.original)} />
+            <TooltipIconButton icon={<TrashIcon />} tooltipContent='Delete' onClick={() => onDeleteClick(cell.row.original)} />
           </div>
         ),
       }),
     ];
-  }, [columnHelper, onNameClick]);
+  }, [columnHelper, onNameClick, onEditClick, onDeleteClick]);
 
   return <Table columns={fullColumns} data={distributionSets} />;
 }

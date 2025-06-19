@@ -35,6 +35,16 @@ export class DistributionSetsService {
     }
   }
 
+  static async updateDistributionSet(distributionSetId: number, data: Partial<CreateDistributionSetInput>): Promise<Distribution> {
+    try {
+      const response = await axiosInstance.put<CreateDistributionSetResponse>(`/distributionsets/${distributionSetId}`, data);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to create distribution set', error);
+      throw error;
+    }
+  }
+
   static async deleteDistributionSet(id: number | string): Promise<void> {
     try {
       const response = await axiosInstance.delete(`/distributionsets/${id}`);
