@@ -99,4 +99,40 @@ export class RolloutsService {
       throw error;
     }
   }
+
+  static async resumeRollout(rolloutId: number): Promise<void> {
+    try {
+      await axiosInstance.post(`/rollouts/${rolloutId}/resume`);
+    } catch (error) {
+      console.error('Failed to resume rollout', error);
+      throw error;
+    }
+  }
+
+  static async pauseRollout(rolloutId: number): Promise<void> {
+    try {
+      await axiosInstance.post(`/rollouts/${rolloutId}/pause`);
+    } catch (error) {
+      console.error('Failed to resume rollout', error);
+      throw error;
+    }
+  }
+
+  static async approveRollout(rolloutId: number): Promise<void> {
+    try {
+      await axiosInstance.post(`/rollouts/${rolloutId}/approve`);
+    } catch (error) {
+      console.error('Failed to approve rollout', error);
+      throw error;
+    }
+  }
+
+  static async forceTriggerNextGroup(rolloutId: number): Promise<void> {
+    try {
+      await axiosInstance.post(`/rollouts/${rolloutId}/triggerNextGroup`);
+    } catch (error) {
+      console.error('Failed to force trigger next group', error);
+      throw error;
+    }
+  }
 }

@@ -30,24 +30,24 @@ export default function Tooltip({ content, children, place = 'bottom', delay = 2
       switch (place) {
         case 'top':
           x = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
-          y = triggerRect.top - tooltipRect.height - 8;
+          y = triggerRect.top - tooltipRect.height - 3;
           break;
         case 'bottom':
           x = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
-          y = triggerRect.bottom + 8;
+          y = triggerRect.bottom + 3;
           break;
         case 'left':
-          x = triggerRect.left - tooltipRect.width - 8;
+          x = triggerRect.left - tooltipRect.width - 3;
           y = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2;
           break;
         case 'right':
-          x = triggerRect.right + 8;
+          x = triggerRect.right + 3;
           y = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2;
           break;
       }
 
       // Keep tooltip within viewport
-      const padding = 8;
+      const padding = 3;
       x = Math.max(padding, Math.min(x, window.innerWidth - tooltipRect.width - padding));
       y = Math.max(padding, Math.min(y, window.innerHeight - tooltipRect.height - padding));
 

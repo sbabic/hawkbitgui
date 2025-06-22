@@ -41,7 +41,5 @@ export function mapRolloutToFormData(rollout?: Rollout, groups?: RolloutDeployGr
     formData.groupsSettings = 'advancedDefinition';
   }
 
-  console.log({ formData });
-
   return formData;
 }

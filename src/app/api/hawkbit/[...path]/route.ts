@@ -120,7 +120,9 @@ export async function POST(request: NextRequest, context: { params: Promise<{ pa
       const formData = await request.formData();
       body = formData;
     } else {
-      body = await request.json();
+      // Check if request has a body before parsing
+      const text = await request.text();
+      body = text ? JSON.parse(text) : {};
       headers['Content-Type'] = 'application/json';
     }
 

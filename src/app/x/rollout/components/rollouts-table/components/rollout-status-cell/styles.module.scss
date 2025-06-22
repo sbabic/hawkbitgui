@@ -7,15 +7,16 @@
   width: 100%;
 }
 
-.running {
-  color: $status-in-sync;
-}
-
+.running,
 .finished {
   color: $status-in-sync;
 }
 
 .ready {
   color: $light-primary-text-color;
+}
+
+.paused {
+  color: $icon-disabled-color;
 }
 

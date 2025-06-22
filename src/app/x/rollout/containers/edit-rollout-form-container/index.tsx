@@ -8,6 +8,7 @@ import { useGetRollout } from '../../hooks/use-get-rollout';
 import { useRolloutsPageStore } from '@/stores/rollouts-page-store';
 import { useUpdateRollout } from '../../hooks/use-update-rollout';
 import { mapRolloutToFormData } from '../../utils/map-rollout-to-form-data';
+import { useMemo } from 'react';
 
 export interface EditRolloutFormContainerProps {
   onSubmitSuccess: () => void;
@@ -24,7 +25,9 @@ export default function EditRolloutFormContainer({ onSubmitSuccess, onCancel }: 
     rolloutId: selectedRollout?.id ?? 0,
     queryOptions: { enabled: !!selectedRollout?.id },
   });
-  const defaultValues = mapRolloutToFormData(rollout);
+  const defaultValues = useMemo(() => {
+    return mapRolloutToFormData(rollout);
+  }, [rollout]);
 
   const { updateRollout } = useUpdateRollout();
 

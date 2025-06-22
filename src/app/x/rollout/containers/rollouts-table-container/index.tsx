@@ -14,6 +14,9 @@ import CopyRolloutFormContainer from '../copy-rollout-form-container';
 import { useStartRollout } from '../../hooks/use-start-rollout';
 import { Query } from '@tanstack/react-query';
 import { ApiError } from '@/types/hawkbit-api/error';
+import { usePauseRollout } from '../../hooks/use-pause-rollout';
+import { useTriggerNextGroup } from '../../hooks/use-trigger-next-group';
+import { useApproveRollout } from '../../hooks/use-approve-rollout';
 
 export default function RolloutsTableContainer() {
   const { data: rollouts, refetch } = useGetRollouts({
@@ -23,7 +26,6 @@ export default function RolloutsTableContainer() {
         if (
           currentQueryData?.some(
             (rollout) =>
-              rollout.status === RolloutStatus.running ||
               rollout.status === RolloutStatus.creating ||
               rollout.status === RolloutStatus.starting ||
               rollout.status === RolloutStatus.deleting ||
@@ -31,6 +33,9 @@ export default function RolloutsTableContainer() {
           )
         ) {
           return 5000; // Poll every 5 seconds
+        }
+        if (currentQueryData?.some((rollout) => rollout.status === RolloutStatus.running)) {
+          return 60000; // Poll every minute
         }
         return false;
       },
@@ -44,6 +49,9 @@ export default function RolloutsTableContainer() {
 
   const { deleteRollout } = useDeleteRollout();
   const { startRollout } = useStartRollout();
+  const { pauseRollout } = usePauseRollout();
+  const { approveRollout } = useApproveRollout();
+  const { triggerNextGroup } = useTriggerNextGroup();
 
   const confirmDialog = useConfirmDialog<Rollout>();
 
@@ -52,16 +60,23 @@ export default function RolloutsTableContainer() {
   };
 
   const handlePlayClick = async (rollout: Rollout) => {
-    await startRollout(rollout.id);
+    await startRollout({ rolloutId: rollout.id, status: rollout.status });
     refetch();
   };
 
-  const handlePinClick = (rollout: Rollout) => {
-    console.log('Pin clicked for rollout:', rollout.name);
+  const handlePauseClick = async (rollout: Rollout) => {
+    await pauseRollout(rollout.id);
+    refetch();
   };
 
-  const handleDetailsClick = (rollout: Rollout) => {
-    console.log('Details clicked for rollout:', rollout.name);
+  const handleApproveClick = async (rollout: Rollout) => {
+    await approveRollout(rollout.id);
+    refetch();
+  };
+
+  const handleTriggerNextGroupClick = async (rollout: Rollout) => {
+    await triggerNextGroup(rollout.id);
+    refetch();
   };
 
   const handleEditClick = (rollout: Rollout) => {
@@ -94,11 +109,30 @@ export default function RolloutsTableContainer() {
   const actions = {
     onRolloutNameClick: handleRolloutNameClick,
     onPlayClick: handlePlayClick,
-    onPinClick: handlePinClick,
-    onDetailsClick: handleDetailsClick,
+    onPauseClick: handlePauseClick,
+    onApproveClick: handleApproveClick,
+    onTriggerNextGroupClick: handleTriggerNextGroupClick,
     onEditClick: handleEditClick,
     onCopyClick: handleCopyClick,
     onDeleteClick: handleDeleteClick,
+  };
+
+  const deleteDialogMessage = (targetsPerStatus: Rollout['totalTargetsPerStatus']) => {
+    if (!targetsPerStatus) {
+      return null;
+    }
+
+    const { running = 0, scheduled = 0 } = targetsPerStatus;
+    if (scheduled === 0 && running === 0) {
+      return null;
+    }
+    if (scheduled === 0 && running > 0) {
+      return `There are ${running} running updates that will continue.`;
+    }
+    if (scheduled > 0 && running === 0) {
+      return `There are ${scheduled} scheduled updates that will terminate.`;
+    }
+    return `There are ${running} running updates that will continue and ${scheduled} scheduled updates that will terminate.`;
   };
 
   return (
@@ -127,6 +161,12 @@ export default function RolloutsTableContainer() {
       <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
         <ConfirmDeleteModal.Message>
           Are you sure you want to delete rollout <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?
+          {!!deleteDialogMessage(confirmDialog.data?.totalTargetsPerStatus) && (
+            <>
+              <br />
+              {deleteDialogMessage(confirmDialog.data?.totalTargetsPerStatus)}
+            </>
+          )}
         </ConfirmDeleteModal.Message>
       </ConfirmDeleteModal>
     </>

@@ -43,6 +43,15 @@ export default function CreateRolloutForm({ defaultValues, type = 'create', dist
       startType: StartType.MANUAL,
       isErrorCount: false,
       groupsSettings: 'numberOfGroups',
+      amountGroups: 1,
+      errorCondition: {
+        condition: 'THRESHOLD',
+        expression: 50,
+      },
+      successCondition: {
+        condition: 'THRESHOLD',
+        expression: 50,
+      },
       ...defaultValues,
     },
     resolver: zodResolver(CreateRolloutFormSchema),
@@ -99,7 +108,7 @@ export default function CreateRolloutForm({ defaultValues, type = 'create', dist
               <option value=''>Choose a distribution set</option>
               {distributionSets.map((distributionSet) => (
                 <option key={distributionSet.id} value={distributionSet.id}>
-                  {distributionSet.name}
+                  {distributionSet.name}: {distributionSet.version}
                 </option>
               ))}
             </Select>

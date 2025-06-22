@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import Table from '@/app/components/table';
 import EditIcon from '@/app/components/icons/edit-icon';
@@ -21,8 +21,9 @@ export type RolloutsTableProps = {
   rollouts: Rollout[];
   onRolloutNameClick: (rollout: Rollout) => void;
   onPlayClick: (rollout: Rollout) => void;
-  onPinClick: (rollout: Rollout) => void;
-  onDetailsClick: (rollout: Rollout) => void;
+  onPauseClick: (rollout: Rollout) => void;
+  onApproveClick: (rollout: Rollout) => void;
+  onTriggerNextGroupClick: (rollout: Rollout) => void;
   onEditClick: (rollout: Rollout) => void;
   onCopyClick: (rollout: Rollout) => void;
   onDeleteClick: (rollout: Rollout) => void;
@@ -32,24 +33,25 @@ export default function RolloutsTable({
   rollouts = [],
   onRolloutNameClick,
   onPlayClick,
-  onPinClick,
-  onDetailsClick,
+  onPauseClick,
+  onApproveClick,
+  onTriggerNextGroupClick,
   onEditClick,
   onCopyClick,
   onDeleteClick,
 }: RolloutsTableProps) {
   const columnHelper = createColumnHelper<Rollout>();
 
-  const isActionAllowed = (action: RolloutActions, status: RolloutStatus) => {
+  const isActionAllowed = useCallback((action: RolloutActions, status: RolloutStatus) => {
     const allowedActionByStatus: Record<RolloutStatus, RolloutActions[]> = {
       [RolloutStatus.creating]: [],
       [RolloutStatus.ready]: [RolloutActions.start, RolloutActions.edit, RolloutActions.copy, RolloutActions.delete],
-      [RolloutStatus.waiting_for_approval]: [],
-      [RolloutStatus.approval_denied]: [],
+      [RolloutStatus.waiting_for_approval]: [RolloutActions.approve, RolloutActions.edit, RolloutActions.copy, RolloutActions.delete],
+      [RolloutStatus.approval_denied]: [RolloutActions.edit, RolloutActions.copy, RolloutActions.delete],
       [RolloutStatus.running]: [RolloutActions.pause, RolloutActions.triggerNextGroup, RolloutActions.edit, RolloutActions.copy, RolloutActions.delete],
-      [RolloutStatus.finished]: [RolloutActions.copy, RolloutActions.edit, RolloutActions.delete],
+      [RolloutStatus.finished]: [RolloutActions.copy, RolloutActions.delete],
+      [RolloutStatus.paused]: [RolloutActions.start, RolloutActions.edit, RolloutActions.copy, RolloutActions.delete],
       [RolloutStatus.deleting]: [],
-      [RolloutStatus.paused]: [],
       [RolloutStatus.starting]: [],
       [RolloutStatus.stopped]: [],
       [RolloutStatus.stopping]: [],
@@ -57,7 +59,20 @@ export default function RolloutsTable({
     };
 
     return allowedActionByStatus[status].includes(action);
-  };
+  }, []);
+
+  const isTriggerNextGroupAllowed = useCallback(
+    (rollout: Rollout) => {
+      if (!rollout.totalTargetsPerStatus) {
+        return false;
+      }
+      if (!isActionAllowed(RolloutActions.triggerNextGroup, rollout.status)) {
+        return false;
+      }
+      return rollout.totalTargetsPerStatus.scheduled > 0;
+    },
+    [isActionAllowed]
+  );
 
   const columns = useMemo(() => {
     return [
@@ -94,69 +109,81 @@ export default function RolloutsTable({
         id: 'actions',
         header: 'Actions',
         size: 310,
-        cell: (info) => (
+        cell: (cell) => (
           <ActionIconButtons>
             <TooltipIconButton
               icon={<PlayIcon />}
               tooltipContent='Run'
               iconButtonProps={{
-                onClick: () => onPlayClick(info.row.original),
-                disabled: !isActionAllowed(RolloutActions.start, info.row.original.status),
+                onClick: () => onPlayClick(cell.row.original),
+                disabled: !isActionAllowed(RolloutActions.start, cell.row.original.status),
               }}
             />
             <TooltipIconButton
               icon={<ThumbsUpIcon />}
               tooltipContent='Approve'
               iconButtonProps={{
-                onClick: () => onPinClick(info.row.original),
-                disabled: !isActionAllowed(RolloutActions.approve, info.row.original.status),
+                onClick: () => onApproveClick(cell.row.original),
+                disabled: !isActionAllowed(RolloutActions.approve, cell.row.original.status),
               }}
             />
             <TooltipIconButton
               icon={<PauseIcon />}
               tooltipContent='Pause'
               iconButtonProps={{
-                onClick: () => onDetailsClick(info.row.original),
-                disabled: !isActionAllowed(RolloutActions.pause, info.row.original.status),
+                onClick: () => onPauseClick(cell.row.original),
+                disabled: !isActionAllowed(RolloutActions.pause, cell.row.original.status),
               }}
             />
             <TooltipIconButton
               icon={<ForwardIcon />}
               tooltipContent='Trigger next group'
               iconButtonProps={{
-                onClick: () => onDetailsClick(info.row.original),
-                disabled: !isActionAllowed(RolloutActions.triggerNextGroup, info.row.original.status),
+                onClick: () => onTriggerNextGroupClick(cell.row.original),
+                disabled: !isTriggerNextGroupAllowed(cell.row.original),
               }}
             />
             <TooltipIconButton
               icon={<EditIcon />}
               tooltipContent='Edit'
               iconButtonProps={{
-                onClick: () => onEditClick(info.row.original),
-                disabled: !isActionAllowed(RolloutActions.edit, info.row.original.status),
+                onClick: () => onEditClick(cell.row.original),
+                disabled: !isActionAllowed(RolloutActions.edit, cell.row.original.status),
               }}
             />
             <TooltipIconButton
               icon={<CopyIcon />}
               tooltipContent='Copy'
               iconButtonProps={{
-                onClick: () => onCopyClick(info.row.original),
-                disabled: !isActionAllowed(RolloutActions.copy, info.row.original.status),
+                onClick: () => onCopyClick(cell.row.original),
+                disabled: !isActionAllowed(RolloutActions.copy, cell.row.original.status),
               }}
             />
             <TooltipIconButton
               icon={<TrashIcon />}
               tooltipContent='Delete'
               iconButtonProps={{
-                onClick: () => onDeleteClick(info.row.original),
-                disabled: !isActionAllowed(RolloutActions.delete, info.row.original.status),
+                onClick: () => onDeleteClick(cell.row.original),
+                disabled: !isActionAllowed(RolloutActions.delete, cell.row.original.status),
               }}
             />
           </ActionIconButtons>
         ),
       }),
     ];
-  }, [columnHelper, onRolloutNameClick, onPlayClick, onPinClick, onDetailsClick, onEditClick, onCopyClick, onDeleteClick]);
+  }, [
+    columnHelper,
+    onRolloutNameClick,
+    onPlayClick,
+    onPauseClick,
+    onApproveClick,
+    onTriggerNextGroupClick,
+    onEditClick,
+    onCopyClick,
+    onDeleteClick,
+    isTriggerNextGroupAllowed,
+    isActionAllowed,
+  ]);
 
   return <Table columns={columns} data={rollouts} />;
 }
