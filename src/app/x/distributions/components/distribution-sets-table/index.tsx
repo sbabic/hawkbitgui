@@ -7,7 +7,8 @@ import { Distribution } from '@/entities';
 import Button from '@/app/components/button';
 import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
-import TooltipIconButton from '@/app/components/edit-icon-button';
+import TooltipIconButton from '@/app/components/tooltip-icon-button';
+import ActionIconButtons from '@/app/components/action-icon-buttons';
 
 export type DistributionSetsTableProps = {
   distributionSets: Distribution[];
@@ -37,10 +38,10 @@ export default function DistributionSetsTable({ distributionSets, onNameClick, o
         id: 'actions',
         header: 'Actions',
         cell: (cell) => (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '4px' }}>
-            <TooltipIconButton icon={<EditIcon />} tooltipContent='Edit' onClick={() => onEditClick(cell.row.original)} />
-            <TooltipIconButton icon={<TrashIcon />} tooltipContent='Delete' onClick={() => onDeleteClick(cell.row.original)} />
-          </div>
+          <ActionIconButtons>
+            <TooltipIconButton icon={<EditIcon />} tooltipContent='Edit' iconButtonProps={{ onClick: () => onEditClick(cell.row.original) }} />
+            <TooltipIconButton icon={<TrashIcon />} tooltipContent='Delete' iconButtonProps={{ onClick: () => onDeleteClick(cell.row.original) }} />
+          </ActionIconButtons>
         ),
       }),
     ];

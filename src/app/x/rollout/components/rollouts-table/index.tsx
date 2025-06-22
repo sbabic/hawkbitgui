@@ -2,9 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
-import styles from './styles.module.scss';
 import Table from '@/app/components/table';
-import IconButton from '@/app/components/icon-button';
 import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import PlayIcon from '@/app/components/icons/play-icon';
@@ -16,7 +14,8 @@ import PauseIcon from '@/app/components/icons/pause-icon';
 import { TotalTargetsPerStatusCell } from './components/total-targets-per-status-cell';
 import { RolloutStatusCell } from './components/rollout-status-cell';
 import Button from '@/app/components/button';
-import Tooltip from '@/app/components/tooltip';
+import TooltipIconButton from '@/app/components/tooltip-icon-button';
+import ActionIconButtons from '@/app/components/action-icon-buttons';
 
 export type RolloutsTableProps = {
   rollouts: Rollout[];
@@ -96,85 +95,64 @@ export default function RolloutsTable({
         header: 'Actions',
         size: 310,
         cell: (info) => (
-          <div className={styles.actionButtons}>
-            <Tooltip content='Run' place='bottom'>
-              <IconButton
-                height={'24px'}
-                width={'24px'}
-                className={styles.actionButton}
-                disabled={!isActionAllowed(RolloutActions.start, info.row.original.status)}
-                onClick={() => onPlayClick(info.row.original)}
-              >
-                <PlayIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip content='Approve' place='bottom'>
-              <IconButton
-                height={'24px'}
-                width={'24px'}
-                className={styles.actionButton}
-                disabled={!isActionAllowed(RolloutActions.approve, info.row.original.status)}
-                onClick={() => onPinClick(info.row.original)}
-              >
-                <ThumbsUpIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip content='Pause' place='bottom'>
-              <IconButton
-                height={'24px'}
-                width={'24px'}
-                className={styles.actionButton}
-                disabled={!isActionAllowed(RolloutActions.pause, info.row.original.status)}
-                onClick={() => onDetailsClick(info.row.original)}
-              >
-                <PauseIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip content='Trigger next group' place='bottom'>
-              <IconButton
-                height={'24px'}
-                width={'24px'}
-                className={styles.actionButton}
-                disabled={!isActionAllowed(RolloutActions.triggerNextGroup, info.row.original.status)}
-                onClick={() => onDetailsClick(info.row.original)}
-              >
-                <ForwardIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip content='Edit' place='bottom'>
-              <IconButton
-                height={'24px'}
-                width={'24px'}
-                className={styles.actionButton}
-                disabled={!isActionAllowed(RolloutActions.edit, info.row.original.status)}
-                onClick={() => onEditClick(info.row.original)}
-              >
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip content='Copy' place='bottom'>
-              <IconButton
-                height={'24px'}
-                width={'24px'}
-                className={styles.actionButton}
-                disabled={!isActionAllowed(RolloutActions.copy, info.row.original.status)}
-                onClick={() => onCopyClick(info.row.original)}
-              >
-                <CopyIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip content='Delete' place='bottom'>
-              <IconButton
-                height={'24px'}
-                width={'24px'}
-                className={styles.actionButton}
-                disabled={!isActionAllowed(RolloutActions.delete, info.row.original.status)}
-                onClick={() => onDeleteClick(info.row.original)}
-              >
-                <TrashIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
+          <ActionIconButtons>
+            <TooltipIconButton
+              icon={<PlayIcon />}
+              tooltipContent='Run'
+              iconButtonProps={{
+                onClick: () => onPlayClick(info.row.original),
+                disabled: !isActionAllowed(RolloutActions.start, info.row.original.status),
+              }}
+            />
+            <TooltipIconButton
+              icon={<ThumbsUpIcon />}
+              tooltipContent='Approve'
+              iconButtonProps={{
+                onClick: () => onPinClick(info.row.original),
+                disabled: !isActionAllowed(RolloutActions.approve, info.row.original.status),
+              }}
+            />
+            <TooltipIconButton
+              icon={<PauseIcon />}
+              tooltipContent='Pause'
+              iconButtonProps={{
+                onClick: () => onDetailsClick(info.row.original),
+                disabled: !isActionAllowed(RolloutActions.pause, info.row.original.status),
+              }}
+            />
+            <TooltipIconButton
+              icon={<ForwardIcon />}
+              tooltipContent='Trigger next group'
+              iconButtonProps={{
+                onClick: () => onDetailsClick(info.row.original),
+                disabled: !isActionAllowed(RolloutActions.triggerNextGroup, info.row.original.status),
+              }}
+            />
+            <TooltipIconButton
+              icon={<EditIcon />}
+              tooltipContent='Edit'
+              iconButtonProps={{
+                onClick: () => onEditClick(info.row.original),
+                disabled: !isActionAllowed(RolloutActions.edit, info.row.original.status),
+              }}
+            />
+            <TooltipIconButton
+              icon={<CopyIcon />}
+              tooltipContent='Copy'
+              iconButtonProps={{
+                onClick: () => onCopyClick(info.row.original),
+                disabled: !isActionAllowed(RolloutActions.copy, info.row.original.status),
+              }}
+            />
+            <TooltipIconButton
+              icon={<TrashIcon />}
+              tooltipContent='Delete'
+              iconButtonProps={{
+                onClick: () => onDeleteClick(info.row.original),
+                disabled: !isActionAllowed(RolloutActions.delete, info.row.original.status),
+              }}
+            />
+          </ActionIconButtons>
         ),
       }),
     ];

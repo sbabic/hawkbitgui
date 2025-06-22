@@ -4,13 +4,14 @@ import Table from '@/app/components/table';
 import Button from '@/app/components/button';
 import { TargetFilter } from '@/entities/target-filter';
 import TrashIcon from '@/app/components/icons/trash-icon';
-import IconButton from '@/app/components/icon-button';
 import dayjs from 'dayjs';
 import { RolloutType, RolloutTypes } from '@/entities/rollout';
 import CloudIcon from '@/app/components/icons/cloud-icon';
 import ThunderCloudIcon from '@/app/components/icons/thunder-cloud-icon';
 import DownloadIcon from '@/app/components/icons/download-icon';
 import ClockCloudIcon from '@/app/components/icons/clock-cloud-icon';
+import ActionIconButtons from '@/app/components/action-icon-buttons';
+import TooltipIconButton from '@/app/components/tooltip-icon-button';
 
 interface TargetFiltersTableProps {
   modules: TargetFilter[];
@@ -82,9 +83,9 @@ export default function TargetFiltersTable({ modules, onNameClick, onDelete, onA
       columnHelper.display({
         header: 'Actions',
         cell: (cell) => (
-          <IconButton onClick={() => onDelete(cell.row.original)}>
-            <TrashIcon />
-          </IconButton>
+          <ActionIconButtons>
+            <TooltipIconButton icon={<TrashIcon />} tooltipContent='Delete' iconButtonProps={{ onClick: () => onDelete(cell.row.original) }} />
+          </ActionIconButtons>
         ),
       }),
     ],

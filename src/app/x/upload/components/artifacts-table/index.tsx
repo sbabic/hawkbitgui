@@ -3,10 +3,10 @@ import { createColumnHelper } from '@tanstack/react-table';
 import Table from '@/app/components/table';
 import { SoftwareModuleArtifact } from '@/entities/software-module-artifact';
 import dayjs from 'dayjs';
-import IconButton from '@/app/components/icon-button';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import DownloadIcon from '@/app/components/icons/download-icon';
-import Tooltip from '@/app/components/tooltip';
+import ActionIconButtons from '@/app/components/action-icon-buttons';
+import TooltipIconButton from '@/app/components/tooltip-icon-button';
 
 interface ArtifactsTableProps {
   artifacts: SoftwareModuleArtifact[];
@@ -34,18 +34,10 @@ export default function ArtifactsTable({ artifacts, onDownloadClick, onDeleteCli
       columnHelper.display({
         header: 'Actions',
         cell: (cell) => (
-          <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 8 }}>
-            <Tooltip content='Download'>
-              <IconButton onClick={() => onDownloadClick(cell.row.original)} style={{ padding: '4px' }}>
-                <DownloadIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip content='Delete'>
-              <IconButton onClick={() => onDeleteClick(cell.row.original)} style={{ padding: '4px' }}>
-                <TrashIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
+          <ActionIconButtons>
+            <TooltipIconButton icon={<DownloadIcon />} tooltipContent='Download' iconButtonProps={{ onClick: () => onDownloadClick(cell.row.original) }} />
+            <TooltipIconButton icon={<TrashIcon />} tooltipContent='Delete' iconButtonProps={{ onClick: () => onDeleteClick(cell.row.original) }} />
+          </ActionIconButtons>
         ),
       }),
     ],
