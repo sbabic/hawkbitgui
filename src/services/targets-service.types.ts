@@ -1,6 +1,7 @@
 import { Distribution, FilterFiql, Metadata, Target } from '@/entities';
 import { ApiResponse } from '@/services/types';
 import { TargetAction } from '@/entities/target-action';
+import { ActionLog } from '@/entities/action-log';
 
 export interface FetchTargetsInput {
   filters: FilterFiql[];
@@ -68,3 +69,7 @@ export type AssignDistributionsToTargetInput = {
 export type GetActionsResponse = ApiResponse<TargetAction[]>;
 
 export type GetActionsOutput = TargetAction[];
+
+export type GetActionLogResponse = ApiResponse<ActionLog[]>;
+
+export type GetActionLogOutput = ActionLog[];

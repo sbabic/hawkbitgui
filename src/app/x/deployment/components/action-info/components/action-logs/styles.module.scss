@@ -1,0 +1,45 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    color: $accent-color;
+  }
+
+  .logsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    padding: 20px 0px;
+
+    .collapsableItem {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      align-items: center;
+
+      p {
+        padding: 0;
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+
+    .logMessageContainers {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      .logMessage {
+      }
+    }
+  }
+}

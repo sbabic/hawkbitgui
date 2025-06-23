@@ -1,0 +1,22 @@
+@use '../../styles/variables' as *;
+
+.chip {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background-color: $secondary-color;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+
+  .colorIndicator {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+}

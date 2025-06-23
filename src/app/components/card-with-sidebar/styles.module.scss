@@ -1,58 +1,58 @@
 @use 'src/app/styles/variables' as *;
 
 .container {
+  display: flex;
+  flex-direction: row;
+  border-radius: 16px;
+  max-height: 500px;
+  min-height: 600px;
+
+  .sidebar {
     display: flex;
-    flex-direction: row;
-    border-radius: 16px;
-    max-width: 750px;
-    max-height: 500px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    padding: 54px 20px;
+    background-color: $secondary-color;
+    border-radius: 16px 0 0 16px;
 
-    .sidebar {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-width: 200px;
-        padding: 54px 20px;
-        background-color: $secondary-color;
-        border-radius: 16px 0 0 16px;
+    .menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      height: 100%;
+      width: 100%;
 
-        .menu {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: start;
-            height: 100%;
-            width: 100%;
+      .menuItem {
+        width: 100%;
+        padding: 20px 16px;
+        cursor: pointer;
+        text-align: left;
+        margin-top: 2px;
 
-            .menuItem {
-                width: 100%;
-                padding: 20px 16px;
-                cursor: pointer;
-                text-align: left;
-                margin-top: 2px;
-
-                &:first-child {
-                    margin-top: 0;
-                }
-
-                &.active,
-                &:hover {
-                    border-radius: 16px;
-                    color: white;
-                    background-color: $accent-color;
-                }
-            }
+        &:first-child {
+          margin-top: 0;
         }
-    }
 
-    .content {
-        display: flex;
-        flex-direction: column;
-        padding: 32px 20px;
-        width: 600px;
-        flex-grow: 1;
-        overflow: scroll;
-        border-radius: 0 16px 16px 0;
+        &.active,
+        &:hover {
+          border-radius: 16px;
+          color: white;
+          background-color: $accent-color;
+        }
+      }
     }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 20px;
+    width: 100%;
+    flex-grow: 1;
+    overflow: scroll;
+    border-radius: 0 16px 16px 0;
+  }
 }

@@ -4,6 +4,8 @@ import {
   AssignDistributionsToTargetInput,
   CreateTargetInput,
   FetchTargetsInput,
+  GetActionLogOutput,
+  GetActionLogResponse,
   GetActionsOutput,
   GetActionsResponse,
   GetAssignedDistributionOutput,
@@ -142,8 +144,19 @@ export class TargetsService {
 
   static async fetchActions(controllerId: string): Promise<GetActionsOutput> {
     try {
-      const response = await axiosInstance.get<GetActionsResponse>(`/targets/${controllerId}/actions`);
+      const response = await axiosInstance.get<GetActionsResponse>(`/targets/${controllerId}/actions?representation=full`);
       console.log('Fetched actions for target:', controllerId, response.data.content);
+      return response.data.content;
+    } catch (error) {
+      console.error('Failed to fetch target actions', error);
+      throw error;
+    }
+  }
+
+  static async getActionLog(controllerId: string | number, actionId: string | number): Promise<GetActionLogOutput> {
+    try {
+      const response = await axiosInstance.get<GetActionLogResponse>(`/targets/${controllerId}/actions/${actionId}/status`);
+      console.log('Fetched actions logs for target:', controllerId, response.data.content);
       return response.data.content;
     } catch (error) {
       console.error('Failed to fetch target actions', error);

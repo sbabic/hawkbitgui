@@ -18,6 +18,7 @@ export type ActionHistoryTableProps = {
   onForceQuitClick?: (targetAction: TargetAction) => void;
   onCancelClick?: (targetAction: TargetAction) => void;
   onForceClick?: (targetAction: TargetAction) => void;
+  onActionIdClick?: (targetAction: TargetAction) => void;
 };
 
 export default function ActionHistoryTable({
@@ -28,6 +29,7 @@ export default function ActionHistoryTable({
   onCancelClick,
   onForceQuitClick,
   isLoading,
+  onActionIdClick,
 }: ActionHistoryTableProps) {
   const columnHelper = createColumnHelper<TargetAction>();
 
@@ -54,7 +56,11 @@ export default function ActionHistoryTable({
       columnHelper.accessor('status', statusAccessor),
       columnHelper.accessor('id', {
         header: 'Action Id',
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <button className={styles.linkButton} onClick={() => onActionIdClick?.(info.row.original)}>
+            {info.getValue()}
+          </button>
+        ),
       }),
       // columnHelper.accessor('_links.distributionset.name', {
       //   header: 'Distribution Set',
@@ -78,14 +84,18 @@ export default function ActionHistoryTable({
         ),
       }),
     ];
-  }, [columnHelper, onCancelClick, onForceClick, onForceQuitClick, statusAccessor]);
+  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick, onForceQuitClick, statusAccessor]);
 
   const fullColumns = useMemo(() => {
     return [
       columnHelper.accessor('status', statusAccessor),
       columnHelper.accessor('id', {
         header: 'Action Id',
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <button className={styles.linkButton} onClick={() => onActionIdClick?.(info.row.original)}>
+            {info.getValue()}
+          </button>
+        ),
       }),
       columnHelper.accessor('_links.distributionset.name', {
         header: 'Distribution Set',
@@ -126,7 +136,7 @@ export default function ActionHistoryTable({
         ),
       }),
     ];
-  }, [columnHelper, onCancelClick, onForceClick, onForceQuitClick, statusAccessor]);
+  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick, onForceQuitClick, statusAccessor]);
 
   return (
     <>
