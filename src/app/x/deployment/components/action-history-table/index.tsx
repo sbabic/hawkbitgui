@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { createColumnHelper, CellContext } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table';
 import styles from './styles.module.scss';
 import Table from '@/app/components/table';
 import IconButton from '@/app/components/icon-button';
@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { TargetAction } from '@/entities/target-action';
 import XIcon from '@/app/components/icons/x-icon';
 import ThunderCloudIcon from '@/app/components/icons/thunder-cloud-icon';
+import { Chip } from '@/app/components/chip';
 
 export type ActionHistoryTableProps = {
   isLoading?: boolean;
@@ -33,27 +34,16 @@ export default function ActionHistoryTable({
 }: ActionHistoryTableProps) {
   const columnHelper = createColumnHelper<TargetAction>();
 
-  const statusAccessor = useMemo(() => {
-    return {
-      header: 'Status',
-      cell: (info: CellContext<TargetAction, string>) => {
-        const status = info.getValue();
-
-        return (
-          <div className={styles.statusCell}>
-            <div className={styles.status}>
-              <span className={`${styles.statusIndicator} ${status.toLowerCase()}`} />
-              {status}
-            </div>
-          </div>
-        );
-      },
-    };
-  }, []);
-
   const shortColumns = useMemo(() => {
     return [
-      columnHelper.accessor('status', statusAccessor),
+      columnHelper.accessor('detailStatus', {
+        header: 'Detail Status',
+        cell: (info) => (
+          <div className={styles.statusCell}>
+            <Chip value={info.getValue()} colorClassName={info.getValue()} />
+          </div>
+        ),
+      }),
       columnHelper.accessor('id', {
         header: 'Action Id',
         cell: (info) => (
@@ -84,11 +74,18 @@ export default function ActionHistoryTable({
         ),
       }),
     ];
-  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick, onForceQuitClick, statusAccessor]);
+  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick, onForceQuitClick]);
 
   const fullColumns = useMemo(() => {
     return [
-      columnHelper.accessor('status', statusAccessor),
+      columnHelper.accessor('detailStatus', {
+        header: 'Detail Status',
+        cell: (info) => (
+          <div className={styles.statusCell}>
+            <Chip value={info.getValue()} colorClassName={info.getValue()} />
+          </div>
+        ),
+      }),
       columnHelper.accessor('id', {
         header: 'Action Id',
         cell: (info) => (
@@ -101,7 +98,14 @@ export default function ActionHistoryTable({
         header: 'Distribution Set',
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('detailStatus', statusAccessor),
+      columnHelper.accessor('status', {
+        header: 'Status',
+        cell: (info) => (
+          <div className={styles.statusCell}>
+            <Chip value={info.getValue()} colorClassName={info.getValue()} />
+          </div>
+        ),
+      }),
       columnHelper.accessor('createdAt', {
         header: 'Created Date',
         cell: (info) => dayjs(info.getValue()).format('YYYY-MM-DD HH:mm:ss'),
@@ -136,7 +140,7 @@ export default function ActionHistoryTable({
         ),
       }),
     ];
-  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick, onForceQuitClick, statusAccessor]);
+  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick, onForceQuitClick]);
 
   return (
     <>
