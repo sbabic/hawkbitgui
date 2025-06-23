@@ -6,7 +6,6 @@ import styles from './styles.module.scss';
 import Table from '@/app/components/table';
 import { Distribution } from '@/entities';
 import IconButton from '@/app/components/icon-button';
-import PinIcon from '@/app/components/icons/pin-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import dayjs from 'dayjs';
 import BlockIcon from '@/app/components/icons/block-icon';
@@ -27,7 +26,7 @@ export default function DistributionsTable({
   distributions = [],
   onInvalidateClick,
   onDeleteClick,
-  onPinClick,
+  // onPinClick,
   isLoading,
 }: DistributionsTableProps) {
   const columnHelper = createColumnHelper<Distribution>();
@@ -51,9 +50,9 @@ export default function DistributionsTable({
         header: 'Actions',
         cell: (info) => (
           <div className={styles.actionButtons}>
-            <IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>
-              <PinIcon />
-            </IconButton>
+            {/*<IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>*/}
+            {/*  <PinIcon />*/}
+            {/*</IconButton>*/}
             <IconButton height={'30px'} width={'30px'} onClick={() => onInvalidateClick?.(info.row.original)}>
               <BlockIcon width={20} height={20} />
             </IconButton>
@@ -64,7 +63,7 @@ export default function DistributionsTable({
         ),
       }),
     ];
-  }, [columnHelper, onDeleteClick, onInvalidateClick, onNameClick, onPinClick]);
+  }, [columnHelper, onDeleteClick, onInvalidateClick, onNameClick]);
 
   const fullColumns = useMemo(() => {
     return [
@@ -105,9 +104,9 @@ export default function DistributionsTable({
         header: 'Actions',
         cell: (info) => (
           <div className={styles.actionButtons}>
-            <IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>
-              <PinIcon />
-            </IconButton>
+            {/*<IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>*/}
+            {/*  <PinIcon />*/}
+            {/*</IconButton>*/}
             <IconButton height={'30px'} width={'30px'} onClick={() => onInvalidateClick?.(info.row.original)}>
               <BlockIcon width={20} height={20} />
             </IconButton>
@@ -118,7 +117,7 @@ export default function DistributionsTable({
         ),
       }),
     ];
-  }, [columnHelper, onDeleteClick, onInvalidateClick, onNameClick, onPinClick]);
+  }, [columnHelper, onDeleteClick, onInvalidateClick, onNameClick]);
 
   return (
     <>

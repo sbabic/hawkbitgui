@@ -6,7 +6,6 @@ import styles from './styles.module.scss';
 import Table from '@/app/components/table';
 import { Target } from '@/entities';
 import IconButton from '@/app/components/icon-button';
-import PinIcon from '@/app/components/icons/pin-icon';
 import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import dayjs from 'dayjs';
@@ -28,7 +27,7 @@ export default function TargetTable({
   targets = [],
   onEditClick,
   onDeleteClick,
-  onPinClick,
+  // onPinClick,
   onRowClick,
   isLoading,
 }: TargetTableProps) {
@@ -68,9 +67,9 @@ export default function TargetTable({
         header: 'Actions',
         cell: (info) => (
           <div className={styles.actionButtons}>
-            <IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>
-              <PinIcon />
-            </IconButton>
+            {/*<IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>*/}
+            {/*  <PinIcon />*/}
+            {/*</IconButton>*/}
             <IconButton height={'30px'} width={'30px'} onClick={() => onEditClick?.(info.row.original)}>
               <EditIcon />
             </IconButton>
@@ -81,7 +80,7 @@ export default function TargetTable({
         ),
       }),
     ];
-  }, [columnHelper, onDeleteClick, onEditClick, onPinClick, onTargetNameClick, statusAccessor]);
+  }, [columnHelper, onDeleteClick, onEditClick, onTargetNameClick, statusAccessor]);
 
   const fullColumns = useMemo(() => {
     return [
@@ -119,9 +118,9 @@ export default function TargetTable({
         header: 'Actions',
         cell: (info) => (
           <div className={styles.actionButtons}>
-            <IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>
-              <PinIcon />
-            </IconButton>
+            {/*<IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>*/}
+            {/*  <PinIcon />*/}
+            {/*</IconButton>*/}
             <IconButton height={'30px'} width={'30px'} onClick={() => onEditClick?.(info.row.original)}>
               <EditIcon />
             </IconButton>
@@ -132,7 +131,7 @@ export default function TargetTable({
         ),
       }),
     ];
-  }, [columnHelper, onDeleteClick, onEditClick, onPinClick, onTargetNameClick, statusAccessor]);
+  }, [columnHelper, onDeleteClick, onEditClick, onTargetNameClick, statusAccessor]);
 
   return (
     <>
