@@ -147,7 +147,7 @@ export interface RolloutDeployGroup {
   targetFilterQuery: string;
   targetPercentage: number;
   confirmationRequired: boolean;
-  status: RolloutStatus;
+  status: TotalTargetCountStatus;
   totalTargets: number;
   totalTargetsPerStatus: Record<TotalTargetCountStatus, number>;
 }

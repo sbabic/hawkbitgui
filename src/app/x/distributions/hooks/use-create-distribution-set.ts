@@ -1,13 +1,13 @@
 import { DistributionSetsService } from '@/services/distribution-sets-service';
-import { CreateDistributionSetInput } from '@/services/distribution-sets-services.types';
 import { useMutation } from '@tanstack/react-query';
+import { CreateDistributionSetFormData } from '../components/distribution-set-form/types';
 
 export const useCreateDistributionSet = () => {
-    const { mutateAsync: createDistributionSet, isPending } = useMutation({
-        mutationFn: async (data: CreateDistributionSetInput[]) => {
-            return DistributionSetsService.createDistributionSet(data);
-        },
-    });
+  const { mutateAsync: createDistributionSet, isPending } = useMutation({
+    mutationFn: async (data: CreateDistributionSetFormData[]) => {
+      return DistributionSetsService.createDistributionSet(data);
+    },
+  });
 
-    return { createDistributionSet, isPending };
+  return { createDistributionSet, isPending };
 };

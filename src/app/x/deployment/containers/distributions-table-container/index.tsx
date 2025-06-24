@@ -18,7 +18,6 @@ export default function DistributionsTableContainer() {
   const distributionsTableStore = useDistributionsTableStore();
 
   const [isDistributionInfoModalOpen, setIsDistributionInfoModalOpen] = useState(false);
-  // const [isEditDistributionModalOpen, setIsEditDistributionModalOpen] = useState(false);
 
   const confirmDialog = useConfirmDialog<Distribution>();
 
@@ -29,11 +28,6 @@ export default function DistributionsTableContainer() {
       distributionsTableStore.resetSelectedDistribution();
     });
   };
-
-  // const handleEditClick = (distribution: Distribution) => {
-  //     distributionsTableStore.setSelectedDistribution(distribution);
-  //     setIsEditDistributionModalOpen(true);
-  // };
 
   useEffect(() => {
     fetchDistributions().catch(console.error);
@@ -54,15 +48,9 @@ export default function DistributionsTableContainer() {
         onDeleteClick={handleDeleteClick}
         isLoading={isLoading}
       />
-      <Modal isOpen={isDistributionInfoModalOpen} variant='unstyled' onClose={() => setIsDistributionInfoModalOpen(false)} size='fitContent'>
+      <Modal isOpen={isDistributionInfoModalOpen} variant='unstyled' size='lg' onClose={() => setIsDistributionInfoModalOpen(false)}>
         <DistributionInfo />
       </Modal>
-      {/*<Modal isOpen={isEditDistributionModalOpen} onClose={() => setIsEditDistributionModalOpen(false)} size='fitContent'>*/}
-      {/*    <EditDistributionFormContainer*/}
-      {/*        onCancel={() => setIsEditDistributionModalOpen(false)}*/}
-      {/*        onSubmitSuccess={() => setIsEditDistributionModalOpen(false)}*/}
-      {/*    />*/}
-      {/*</Modal>*/}
       <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
         <ConfirmDeleteModal.Message>
           Are you sure you want to delete distribution <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?

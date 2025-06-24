@@ -8,25 +8,25 @@ import TargetMetadataContainer from '@/app/components/target-info-modal/containe
 import TargetTags from '@/app/components/target-info-modal/components/target-tags';
 
 export default function TargetInfo() {
-    return (
-        <CardWithSidebar
-            content={[
-                { title: 'Details', component: <TargetDetailsContainer /> },
-                {
-                    title: 'Attributes',
-                    component: <TargetAttributesContainer />,
-                },
-                {
-                    title: 'Assigned',
-                    component: <TargetAssignedDistributionContainer />,
-                },
-                {
-                    title: 'Installed',
-                    component: <TargetInstalledDistributionContainer />,
-                },
-                { title: 'Tags', component: <TargetTags /> },
-                { title: 'Metadata', component: <TargetMetadataContainer /> },
-            ]}
-        />
-    );
+  return (
+    <CardWithSidebar
+      content={[
+        { title: 'Details', component: <TargetDetailsContainer /> },
+        {
+          title: 'Attributes',
+          component: <TargetAttributesContainer />,
+        },
+        {
+          title: 'Assigned',
+          component: <TargetAssignedDistributionContainer />,
+        },
+        {
+          title: 'Installed',
+          component: <TargetInstalledDistributionContainer />,
+        },
+        { title: 'Tags', component: <TargetTags /> },
+        { title: 'Metadata', component: <TargetMetadataContainer /> },
+      ]}
+    />
+  );
 }

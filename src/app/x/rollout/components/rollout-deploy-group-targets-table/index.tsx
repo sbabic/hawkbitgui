@@ -5,6 +5,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { DeployGroupTarget } from '@/entities/rollout';
 import Table from '@/app/components/table';
 import dayjs from 'dayjs';
+import TargetStatusCell from '@/app/components/target-status-cell';
 
 export type RolloutDeployGroupTargetsTableProps = {
   deployGroupTargets: DeployGroupTarget[];
@@ -29,7 +30,7 @@ export default function RolloutDeployGroupTargetsTable({ deployGroupTargets }: R
       }),
       columnHelper.accessor('updateStatus', {
         header: 'Status',
-        cell: (cell) => cell.getValue(),
+        cell: (cell) => <TargetStatusCell status={cell.getValue()} />,
       }),
       columnHelper.accessor('createdBy', {
         header: 'Created by',

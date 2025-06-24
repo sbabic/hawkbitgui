@@ -7,6 +7,5 @@ export const usePauseRollout = () => {
       return RolloutsService.pauseRollout(rolloutId);
     },
   });
-
   return { pauseRollout, isPending };
 };

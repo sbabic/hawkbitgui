@@ -38,7 +38,7 @@ export default function ActionHistoryTableContainer() {
   return (
     <>
       <ActionHistoryTable targetActions={targetActions} expanded={isExpanded} isLoading={isLoading} onActionIdClick={handleActionIdClick} />
-      <Modal isOpen={isOpen} variant='unstyled' onClose={close} size='lg'>
+      <Modal isOpen={isOpen} variant='unstyled' size='lg' onClose={close}>
         <ActionInfo />
       </Modal>
     </>

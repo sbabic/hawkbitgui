@@ -13,7 +13,7 @@ type UseDeleteSoftwareModuleParams = {
 export const useDeleteSoftwareModule = (params?: UseDeleteSoftwareModuleParams) => {
   const { mutationOptions } = params ?? {};
 
-  const { mutate: deleteSoftwareModule, isPending } = useMutation<void, ApiError, DeleteSoftwareModuleParams>({
+  const { mutateAsync: deleteSoftwareModule, isPending } = useMutation<void, ApiError, DeleteSoftwareModuleParams>({
     mutationFn: ({ softwareModuleId }) => SoftwareModulesService.deleteSoftwareModule(softwareModuleId),
     ...mutationOptions,
   });

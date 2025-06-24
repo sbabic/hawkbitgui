@@ -71,7 +71,7 @@ export default function DistributionSetsTableContainer() {
           Are you sure you want to delete rollout <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?
         </ConfirmDeleteModal.Message>
       </ConfirmDeleteModal>
-      <Modal isOpen={isDistributionSetInfoModalOpen} variant='unstyled' onClose={closeInfoModal} size={'fitContent'}>
+      <Modal isOpen={isDistributionSetInfoModalOpen} variant='unstyled' size='lg' onClose={closeInfoModal}>
         <DistributionSetInfo />
       </Modal>
     </>

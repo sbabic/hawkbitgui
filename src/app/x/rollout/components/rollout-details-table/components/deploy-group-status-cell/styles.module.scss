@@ -1,0 +1,19 @@
+@use 'src/app/styles/variables' as *;
+
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.running, .finished {
+  color: $status-in-sync
+}
+
+.notstarted, .scheduled {
+  color: $light-primary-text-color;
+}
+
+.cancelled, .error {
+  color: $error-dark-color;
+}

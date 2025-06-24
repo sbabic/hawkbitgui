@@ -9,6 +9,7 @@ import IconButton from '@/app/components/icon-button';
 import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import dayjs from 'dayjs';
+import TargetStatusCell from '@/app/components/target-status-cell';
 
 export type TargetTableProps = {
   isLoading?: boolean;
@@ -38,15 +39,7 @@ export default function TargetTable({
       header: 'Status',
       cell: (info: CellContext<Target, string>) => {
         const status = info.getValue();
-
-        return (
-          <div className={styles.statusCell}>
-            <div className={styles.status}>
-              <span className={`${styles.statusIndicator} ${status.toLowerCase()}`} />
-              {status}
-            </div>
-          </div>
-        );
+        return <TargetStatusCell status={status} />;
       },
     };
   }, []);

@@ -3,10 +3,10 @@ import { Distribution, FilterFiql, SoftwareModule } from '@/entities';
 
 export type CreateDistributionSetInput = {
   name: string;
-  description: string;
+  description?: string;
   version: string;
-  locked: boolean;
-  requiredMigrationStep: boolean;
+  locked?: boolean;
+  requiredMigrationStep?: boolean;
   modules: { id: number }[];
   type: string;
 };

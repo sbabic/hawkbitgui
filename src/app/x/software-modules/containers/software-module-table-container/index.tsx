@@ -38,14 +38,8 @@ export default function SoftwareModuleTableContainer() {
   const handleDeleteSoftwareModule = (softwareModule: SoftwareModule) => {
     confirmDialog.open(softwareModule, async () => {
       if (!softwareModule) return;
-      deleteSoftwareModule(
-        { softwareModuleId: softwareModule.id },
-        {
-          onSuccess: () => {
-            refetch();
-          },
-        }
-      );
+      await deleteSoftwareModule({ softwareModuleId: softwareModule.id });
+      refetch();
     });
   };
 
@@ -68,7 +62,7 @@ export default function SoftwareModuleTableContainer() {
         onDeleteClick={handleDeleteSoftwareModule}
         onRowClick={handleRowClick}
       />
-      <Modal isOpen={isSoftwareModuleInfoModalOpen} variant='unstyled' onClose={closeInfoModal} size={'fitContent'}>
+      <Modal isOpen={isSoftwareModuleInfoModalOpen} variant='unstyled' size='lg' onClose={closeInfoModal}>
         <SoftwareModuleInfo />
       </Modal>
       {isEditSoftwareModuleFormOpen && selectedSoftwareModule && (

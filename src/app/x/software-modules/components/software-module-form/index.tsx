@@ -33,6 +33,7 @@ export default function SoftwareModuleFormContainer({ defaultValues, softwareMod
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormControl id='type' label='Type' required errorMessage={errors.type?.message}>
         <Select id='type' {...register('type')} disabled={isEditMode}>
+          <option value=''>Select a type</option>
           {softwareModuleTypes.map((type) => (
             <option key={type.key} value={type.key}>
               {type.name}

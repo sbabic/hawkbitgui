@@ -73,7 +73,9 @@ export class RolloutsService {
 
   static async fetchRolloutDeployGroups({ rolloutId }: { rolloutId: number }): Promise<RolloutDeployGroup[]> {
     try {
-      const response = await axiosInstance.get<GetRolloutDeployGroupsResponse>(`/rollouts/${rolloutId}/deploygroups`);
+      const response = await axiosInstance.get<GetRolloutDeployGroupsResponse>(`/rollouts/${rolloutId}/deploygroups`, {
+        params: { representation: Representation.FULL },
+      });
       return response.data.content;
     } catch (error) {
       console.error('Failed to fetch rollout deploy groups', error);

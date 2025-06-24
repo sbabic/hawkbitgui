@@ -61,7 +61,7 @@ export default function TargetTableContainer() {
         onRowClick={handleOnRowClick}
         isLoading={isLoading}
       />
-      <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' onClose={() => setIsTargetInfoModalOpen(false)} size={'fitContent'}>
+      <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' size='lg' onClose={() => setIsTargetInfoModalOpen(false)}>
         <TargetInfo />
       </Modal>
       <Modal isOpen={isEditTargetModalOpen} onClose={() => setIsEditTargetModalOpen(false)} size={'md'}>

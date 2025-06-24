@@ -11,11 +11,13 @@ import { ActionButtons } from '@/app/components/action-buttons';
 import { DistributionSetType } from '@/entities/distribution-set-type';
 import Select from '@/app/components/select';
 import Form from '@/app/components/form';
+import { CreateDistributionSetFormData, CreateDistributionSetSchema } from './types';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export interface DistributionSetFormProps {
   defaultValues?: Partial<CreateDistributionSetInput>;
   distributionSetTypes: DistributionSetType[];
-  onSubmit: (data: CreateDistributionSetInput) => void;
+  onSubmit: (data: CreateDistributionSetFormData) => void;
   onCancel: () => void;
 }
 
@@ -25,13 +27,14 @@ export default function DistributionSetForm({ defaultValues, distributionSetType
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<CreateDistributionSetInput>({
+  } = useForm<CreateDistributionSetFormData>({
     defaultValues: {
       locked: false,
       requiredMigrationStep: false,
       modules: [],
       ...defaultValues,
     },
+    resolver: zodResolver(CreateDistributionSetSchema),
   });
 
   const isEditMode = !!defaultValues;
@@ -54,12 +57,13 @@ export default function DistributionSetForm({ defaultValues, distributionSetType
         <TextArea id='description' placeholder='Enter the description of the entity' {...register('description')} />
       </FormControl>
 
-      <FormControl id='version' label='Version'>
+      <FormControl id='version' label='Version' required errorMessage={errors.version?.message}>
         <Input id='version' type='text' placeholder='Enter package version' {...register('version')} />
       </FormControl>
 
-      <FormControl id='type' label='Type'>
+      <FormControl id='type' label='Type' required errorMessage={errors.type?.message}>
         <Select id='type' {...register('type')} disabled={isEditMode}>
+          <option value=''>Select a type</option>
           {typeOptions.map((option) => (
             <option key={option.id} value={option.id}>
               {option.label}

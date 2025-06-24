@@ -1,9 +1,6 @@
 import { TotalTargetCountStatus } from '@/entities/rollout';
 import styles from './styles.module.scss';
-import NotStartedIcon from '@/app/components/icons/not-started-icon';
-import CircleDotIcon from '@/app/components/icons/circle-dot-icon';
-import CircleErrorIcon from '@/app/components/icons/circle-error-icon';
-import CircleCheckMarkIcon from '@/app/components/icons/circle-check-mark-icon';
+import { getTotalTargetStatusIcon, getTotalTargetStatusLabel } from '@/app/x/rollout/utils/utils';
 
 interface TotalTargetsPerStatusProps {
   status: TotalTargetCountStatus;
@@ -11,29 +8,14 @@ interface TotalTargetsPerStatusProps {
 }
 
 function TotalTargetsPerStatus({ status, count }: TotalTargetsPerStatusProps) {
-  const statusIconMapper: Record<TotalTargetCountStatus, React.ReactElement | null> = {
-    running: <CircleDotIcon />,
-    notstarted: <NotStartedIcon />,
-    scheduled: <div className={styles.scheduledDot}></div>,
-    cancelled: <div className={styles.cancelledDot}></div>,
-    finished: <CircleCheckMarkIcon />,
-    error: <CircleErrorIcon />,
-  };
-
-  const statusTextMapper: Record<TotalTargetCountStatus, string> = {
-    running: 'Running',
-    notstarted: 'Not Started',
-    scheduled: 'Scheduled',
-    cancelled: 'Cancelled',
-    finished: 'Finished',
-    error: 'Error',
-  };
+  const statusIcon = getTotalTargetStatusIcon(status);
+  const statusLabel = getTotalTargetStatusLabel(status);
 
   return (
     <div className={`${styles.container} ${styles[status]}`}>
-      {statusIconMapper[status]}
+      {statusIcon}
       <p>
-        {count} {statusTextMapper[status]}
+        {count} {statusLabel}
       </p>
     </div>
   );

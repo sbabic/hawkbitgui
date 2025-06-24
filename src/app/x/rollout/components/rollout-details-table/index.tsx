@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { RolloutStatusCell } from '../rollouts-table/components/rollout-status-cell';
-import { TotalTargetsPerStatusCell } from '../rollouts-table/components/total-targets-per-status-cell';
 import dayjs from 'dayjs';
-import { RolloutDeployGroup } from '@/entities/rollout';
+import { RolloutDeployGroup, TotalTargetCountStatus } from '@/entities/rollout';
 import Table from '@/app/components/table';
 import Button from '@/app/components/button';
+import { DeployGroupStatusCell } from './components/deploy-group-status-cell';
+import { TotalTargetsPerStatusCell } from '../rollouts-table/components/total-targets-per-status-cell';
 
 export type RolloutDetailsTableProps = {
   deployGroups: RolloutDeployGroup[];
@@ -21,6 +21,17 @@ export default function RolloutDetailsTable({ deployGroups, onNameClick }: Rollo
     return `${Math.round(percentage)}%`;
   };
 
+  const calculateFinishedPercentage = useCallback((totalTargetsPerStatus: Record<TotalTargetCountStatus, number> | undefined) => {
+    if (!totalTargetsPerStatus) {
+      return formatPercentage(0);
+    }
+
+    const totalTargets = Object.values(totalTargetsPerStatus).reduce((acc, curr) => acc + curr, 0);
+    const finishedTargets = totalTargetsPerStatus.finished ?? 0;
+    const finishedPercentage = Math.round((finishedTargets / totalTargets) * 100);
+    return formatPercentage(finishedPercentage);
+  }, []);
+
   const columns = useMemo(() => {
     return [
       columnHelper.accessor('name', {
@@ -33,7 +44,7 @@ export default function RolloutDetailsTable({ deployGroups, onNameClick }: Rollo
       }),
       columnHelper.accessor('status', {
         header: 'Status',
-        cell: (cell) => <RolloutStatusCell status={cell.getValue()} />,
+        cell: (cell) => <DeployGroupStatusCell status={cell.getValue()} />,
       }),
       columnHelper.accessor('totalTargetsPerStatus', {
         header: 'Detail status',
@@ -47,7 +58,7 @@ export default function RolloutDetailsTable({ deployGroups, onNameClick }: Rollo
       columnHelper.display({
         id: 'finished',
         header: 'Finished',
-        cell: () => formatPercentage(0),
+        cell: (cell) => calculateFinishedPercentage(cell.row.original.totalTargetsPerStatus),
       }),
       columnHelper.accessor('errorCondition', {
         header: 'Error threshold',
@@ -66,7 +77,7 @@ export default function RolloutDetailsTable({ deployGroups, onNameClick }: Rollo
         cell: (cell) => dayjs(cell.getValue()).format('ddd MMM DD HH:mm:ss YYYY'),
       }),
     ];
-  }, [columnHelper, onNameClick]);
+  }, [columnHelper, onNameClick, calculateFinishedPercentage]);
 
   return <Table columns={columns} data={deployGroups} />;
 }

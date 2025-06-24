@@ -5,8 +5,8 @@ import { Distribution, SoftwareModule } from '@/entities';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import styles from './styles.module.scss';
-import IconButton from '@/app/components/icon-button';
 import TrashIcon from '@/app/components/icons/trash-icon';
+import TooltipIconButton from '@/app/components/tooltip-icon-button';
 
 type DistributionSetModulesProps = {
   distributionSet: Distribution;
@@ -21,22 +21,19 @@ export default function DistributionSetModules({ distributionSet, onModuleDelete
     return [
       columnHelper.accessor('typeName', {
         header: 'Type',
-        size: 70,
+        size: 100,
       }),
       columnHelper.accessor('version', {
         header: 'Software Module',
+        size: 220,
         cell: (cell) => `${cell.row.original.name}:${cell.row.original.version}`,
       }),
       columnHelper.display({
         id: 'actions',
-        size: 30,
+        size: 60,
         cell: (cell) => {
           if (modules.length > 1) {
-            return (
-              <IconButton onClick={() => onModuleDelete(cell.row.original)}>
-                <TrashIcon />
-              </IconButton>
-            );
+            return <TooltipIconButton icon={<TrashIcon />} tooltipContent='Delete' iconButtonProps={{ onClick: () => onModuleDelete(cell.row.original) }} />;
           }
         },
       }),
