@@ -6,6 +6,7 @@ import Table from '@/app/components/table';
 import { Target } from '@/entities';
 import dayjs from 'dayjs';
 import Button from '@/app/components/button';
+import TargetStatusCell from '@/app/components/target-status-cell';
 
 export type TargetFilterTargetsTableProps = {
   targets: Target[];
@@ -36,7 +37,7 @@ export default function TargetFilterTargetsTable({ targets, isLoading = false, o
       }),
       columnHelper.accessor('updateStatus', {
         header: 'Status',
-        cell: (cell) => cell.getValue(),
+        cell: (cell) => <TargetStatusCell status={cell.getValue()} />,
       }),
       columnHelper.accessor('createdBy', {
         header: 'Created by',
@@ -44,6 +45,7 @@ export default function TargetFilterTargetsTable({ targets, isLoading = false, o
       }),
       columnHelper.accessor('createdAt', {
         header: 'Created Date',
+        size: 250,
         cell: (info) => dayjs(info.getValue()).format('ddd MMM DD HH:mm:ss YYYY'),
       }),
       columnHelper.accessor('lastModifiedBy', {
@@ -52,6 +54,7 @@ export default function TargetFilterTargetsTable({ targets, isLoading = false, o
       }),
       columnHelper.accessor('lastModifiedAt', {
         header: 'Modified Date',
+        size: 250,
         cell: (info) => dayjs(info.getValue()).format('ddd MMM DD HH:mm:ss YYYY'),
       }),
     ];

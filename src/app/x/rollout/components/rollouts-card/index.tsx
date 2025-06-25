@@ -15,6 +15,7 @@ import { RolloutsDetailsCardHeader } from '../rollouts-details-card-header';
 import RolloutDeployGroupDetailsContainer from '../../containers/rollout-deploy-group-details-container';
 import { RolloutsDeployGroupTargetDetailsCardHeader } from '../rollout-deploy-group-target-details-header';
 import CreateRolloutFormContainer from '../../containers/create-rollout-form-container';
+import StaticCard from '@/app/components/static-card';
 
 export default function RolloutsCard() {
   const [isCreateRolloutFormOpen, setIsCreateRolloutFormOpen] = useState(false);
@@ -32,10 +33,10 @@ export default function RolloutsCard() {
   };
 
   return (
-    <div>
-      <Card expanded={true}>
-        <Card.Header>
-          <Card.Title>
+    <>
+      <StaticCard>
+        <StaticCard.Header>
+          <StaticCard.Title>
             {tableType === 'rollouts' && 'Rollouts'}
             {tableType === 'deploy-groups' && selectedRollout && (
               <RolloutsDetailsCardHeader rolloutName={selectedRollout.name} onRolloutsClick={() => setTableType({ tableType: 'rollouts' })} />
@@ -48,8 +49,8 @@ export default function RolloutsCard() {
                 onDeployGroupNameClick={() => setTableType({ tableType: 'deploy-groups', selectedRollout: selectedRollout })}
               />
             )}
-          </Card.Title>
-          <Card.Actions>
+          </StaticCard.Title>
+          <StaticCard.Actions>
             <IconButton width='30px' height='30px'>
               <SearchIcon />
             </IconButton>
@@ -59,14 +60,14 @@ export default function RolloutsCard() {
             <Button variant='ghost' rightIcon={<ChevronDownIcon width={18} height={18} />}>
               Manage columns
             </Button>
-          </Card.Actions>
-        </Card.Header>
+          </StaticCard.Actions>
+        </StaticCard.Header>
         <Card.Body>
           {tableType === 'rollouts' && <RolloutsTableContainer />}
           {tableType === 'deploy-groups' && selectedRollout && <RolloutDetailsTableContainer />}
           {tableType === 'deploy-group-targets' && selectedRollout && selectedDeployGroup && <RolloutDeployGroupDetailsContainer />}
         </Card.Body>
-      </Card>
+      </StaticCard>
       <Modal size='xl' isOpen={isCreateRolloutFormOpen} onClose={closeForm}>
         <Modal.Header>Create new rollout</Modal.Header>
         <Modal.Content>
@@ -75,6 +76,6 @@ export default function RolloutsCard() {
           </div>
         </Modal.Content>
       </Modal>
-    </div>
+    </>
   );
 }

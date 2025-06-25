@@ -1,7 +1,7 @@
-import PanelCard from '@/app/components/panel-card';
 import ArtifactsTableContainer from '../../containers/artifacts-table-container';
 import { useSoftwareModulesStore } from '@/stores/software-modules-store';
 import { useMemo } from 'react';
+import StaticCard from '@/app/components/static-card';
 
 export default function ArtifactsCard() {
   const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
@@ -11,11 +11,14 @@ export default function ArtifactsCard() {
   }, [selectedSoftwareModule]);
 
   return (
-    <PanelCard defaultWidth='100%'>
-      <PanelCard.Header title={cardTitle} onToggleExpand={() => {}} isExpanded={true} />
-      <PanelCard.Content>
+    <StaticCard>
+      <StaticCard.Header>
+        <StaticCard.Title>{cardTitle}</StaticCard.Title>
+      </StaticCard.Header>
+      <StaticCard.Divider />
+      <StaticCard.Body>
         <ArtifactsTableContainer />
-      </PanelCard.Content>
-    </PanelCard>
+      </StaticCard.Body>
+    </StaticCard>
   );
 }
