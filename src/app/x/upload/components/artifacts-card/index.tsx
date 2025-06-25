@@ -7,7 +7,7 @@ export default function ArtifactsCard() {
   const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
 
   const cardTitle = useMemo(() => {
-    return selectedSoftwareModule ? `Artifacts Details: ${selectedSoftwareModule.name}` : 'Artifacts';
+    return selectedSoftwareModule ? `Artifacts Details: ${selectedSoftwareModule.name}:${selectedSoftwareModule.version}` : 'Artifacts';
   }, [selectedSoftwareModule]);
 
   return (

@@ -7,21 +7,16 @@ import SoftwareModuleFormContainer from '../../containers/software-module-form-c
 import PanelCard from '@/app/components/panel-card';
 import ExpandableSearchBarContainer from '@/app/x/deployment/containers/expandable-search-bar-container';
 import FilterIcon from '@/app/components/icons/filter-icon';
+import { useModal } from '@/app/hooks';
+import SoftwareModuleFilters from '../software-module-filters';
 
 export default function SoftwareModulesCard() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const formModal = useModal();
+  const filtersModal = useModal();
 
   const handleExpand = () => {
     setIsExpanded((prev) => !prev);
-  };
-
-  const openForm = () => {
-    setIsFormOpen(true);
-  };
-
-  const closeForm = () => {
-    setIsFormOpen(false);
   };
 
   return (
@@ -32,8 +27,8 @@ export default function SoftwareModulesCard() {
         </PanelCard.Header>
 
         <PanelCard.Actions>
-          <Button onClick={openForm}>+ New Software Module</Button>
-          <IconButton onClick={() => {}}>
+          <Button onClick={formModal.open}>+ New Software Module</Button>
+          <IconButton onClick={filtersModal.open} style={{ padding: '4px' }}>
             <FilterIcon />
           </IconButton>
         </PanelCard.Actions>
@@ -42,12 +37,19 @@ export default function SoftwareModulesCard() {
           <SoftwareModuleTableContainer />
         </PanelCard.Content>
       </PanelCard>
-      <Modal isOpen={isFormOpen} onClose={closeForm}>
-        <Modal.Header>Create new software module</Modal.Header>
-        <Modal.Content>
-          <SoftwareModuleFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
-        </Modal.Content>
-      </Modal>
+      {formModal.isOpen && (
+        <Modal isOpen={formModal.isOpen} onClose={formModal.close}>
+          <Modal.Header>Create new software module</Modal.Header>
+          <Modal.Content>
+            <SoftwareModuleFormContainer onSubmitSuccess={formModal.close} onCancel={formModal.close} />
+          </Modal.Content>
+        </Modal>
+      )}
+      {filtersModal.isOpen && (
+        <Modal isOpen={filtersModal.isOpen} onClose={filtersModal.close} size={'fitContent'}>
+          <SoftwareModuleFilters />
+        </Modal>
+      )}
     </>
   );
 }

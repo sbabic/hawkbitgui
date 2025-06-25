@@ -3,11 +3,11 @@ import { CreateSoftwareModuleInput } from '@/services/software-modules-service.t
 import { useMutation } from '@tanstack/react-query';
 
 export const useCreateSoftwareModule = () => {
-    const { mutateAsync: createSoftwareModule, isPending } = useMutation({
-        mutationFn: async (data: CreateSoftwareModuleInput[]) => {
-            return SoftwareModulesService.createSoftwareModule(data);
-        },
-    });
+  const { mutateAsync: createSoftwareModule, isPending } = useMutation({
+    mutationFn: async (data: CreateSoftwareModuleInput[]) => {
+      return SoftwareModulesService.createSoftwareModule(data);
+    },
+  });
 
-    return { createSoftwareModule, isPending };
+  return { createSoftwareModule, isPending };
 };

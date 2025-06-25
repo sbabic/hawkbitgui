@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { Fragment, ReactNode, useState } from 'react';
 import styles from './styles.module.scss';
 
 export interface TabItem {
@@ -21,7 +21,7 @@ export default function TabbedPanel({ items, defaultTitle = items[0]?.title ?? '
     <div className={`${styles.container} ${className}`}>
       <div className={styles.tabs}>
         {items.map((item, index) => (
-          <>
+          <Fragment key={item.title}>
             <button
               key={item.title}
               className={`${styles.tab} ${selectedTitle === item.title ? styles.active : ''}`}
@@ -30,7 +30,7 @@ export default function TabbedPanel({ items, defaultTitle = items[0]?.title ?? '
               {item.title}
             </button>
             {index !== items.length - 1 && <div key={`${item.title}-${index}`} className={styles.divider}></div>}
-          </>
+          </Fragment>
         ))}
       </div>
       <div className={styles.content}>{items.find((item) => item.title === selectedTitle)?.component}</div>

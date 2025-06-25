@@ -1,6 +1,6 @@
 import SoftwareModuleTable from '../../components/software-module-table';
 import { useGetSoftwareModules } from '../../hooks/use-get-software-modules';
-import { SoftwareModule } from '@/entities';
+import { FilterFiql, SoftwareModule } from '@/entities';
 import { useDeleteSoftwareModule } from '../../hooks/use-delete-software-module';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useConfirmDialog } from '@/app/hooks';
@@ -9,9 +9,14 @@ import { Modal } from '@/app/components/modal';
 import { useState } from 'react';
 import SoftwareModuleInfo from '../../components/software-module-info';
 import EditSoftwareModuleFormContainer from '../edit-software-module-form-container';
+import { useSoftwareModuleFiltersStore } from '@/stores/software-module-filters-store';
 
 export default function SoftwareModuleTableContainer() {
-  const { data: softwareModules, refetch, isLoading } = useGetSoftwareModules();
+  const filters = useSoftwareModuleFiltersStore((state) => state.filters);
+  const fiqlQueryParam = FilterFiql.parseFiltersToFeedItemQueryLanguage(Object.values(filters) ?? []);
+  const query = fiqlQueryParam !== '' ? fiqlQueryParam : undefined;
+  const { data: softwareModules, refetch, isLoading } = useGetSoftwareModules({ queryParams: { q: query } });
+
   const setSelectedSoftwareModule = useSoftwareModulesStore((state) => state.setSelectedSoftwareModule);
   const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
   const [isSoftwareModuleInfoModalOpen, setIsSoftwareModuleInfoModalOpen] = useState(false);

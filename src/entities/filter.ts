@@ -29,7 +29,7 @@ export class FilterFiql {
     return values.join(this.joinerOperator);
   }
 
-  static parseFiltersToFeedItemQueryLanguage(filters: FilterFiql[], joinerOperator: JoinerOperator): string {
+  static parseFiltersToFeedItemQueryLanguage(filters: FilterFiql[], joinerOperator: JoinerOperator = ';'): string {
     if (filters.length === 0) {
       return '';
     }

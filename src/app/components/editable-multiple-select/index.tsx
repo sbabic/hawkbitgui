@@ -25,9 +25,18 @@ export interface EditableMultipleSelectProps<T extends BaseOption> {
   selectedOptions?: T[];
   onChange?: (selected: T[]) => void;
   isLoading?: boolean;
+  onDataEdit?: (data: T) => void;
+  onDataDelete?: (data: T) => void;
 }
 
-export default function EditableMultipleSelect<T extends BaseOption>({ isLoading, options, selectedOptions, onChange }: EditableMultipleSelectProps<T>) {
+export default function EditableMultipleSelect<T extends BaseOption>({
+  isLoading,
+  options,
+  selectedOptions,
+  onChange,
+  onDataEdit,
+  onDataDelete,
+}: EditableMultipleSelectProps<T>) {
   const handleChange = (selected: readonly T[]) => {
     onChange?.([...selected]);
   };
@@ -42,48 +51,57 @@ export default function EditableMultipleSelect<T extends BaseOption>({ isLoading
     []
   );
 
-  const EditableOption = useCallback((props: OptionProps<T, true>) => {
-    const { data, innerRef, innerProps } = props;
+  const EditableOption = useCallback(
+    (props: OptionProps<T, true>) => {
+      const { data, innerRef, innerProps } = props;
 
-    return (
-      <div
-        ref={innerRef}
-        {...innerProps}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '16px 20px',
-          backgroundColor: props.isFocused ? '#f5f5f5' : 'white',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <ColourDot color={data.colour} />
-          {data.name}
+      return (
+        <div
+          ref={innerRef}
+          {...innerProps}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '16px 20px',
+            backgroundColor: props.isFocused ? '#f5f5f5' : 'white',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ColourDot color={data.colour} />
+            {data.name}
+          </div>
+          <div style={{ display: 'flex', gap: 24 }}>
+            <IconButton
+              width={'24px'}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onDataEdit) {
+                  return onDataEdit(data);
+                }
+                data.onEdit?.(data);
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              width={'24px'}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onDataDelete) {
+                  return onDataDelete(data);
+                }
+                data.onDelete?.(data);
+              }}
+            >
+              <TrashIcon />
+            </IconButton>
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: 24 }}>
-          <IconButton
-            width={'24px'}
-            onClick={(e) => {
-              e.stopPropagation();
-              data.onEdit?.(data);
-            }}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            width={'24px'}
-            onClick={(e) => {
-              e.stopPropagation();
-              data.onDelete?.(data);
-            }}
-          >
-            <TrashIcon />
-          </IconButton>
-        </div>
-      </div>
-    );
-  }, []);
+      );
+    },
+    [onDataEdit, onDataDelete]
+  );
 
   return (
     <Select<T, true>

@@ -1,11 +1,17 @@
 import axiosInstance from '@/lib/axios';
 import { SoftwareModule } from '@/entities/software-module';
-import { CreateSoftwareModuleInput, CreateSoftwareModuleResponse, GetSoftwareModulesResponse } from './software-modules-service.types';
+import {
+  CreateSoftwareModuleInput,
+  CreateSoftwareModuleResponse,
+  FetchSoftwareModulesInput,
+  GetSoftwareModulesResponse,
+} from './software-modules-service.types';
 import { GetMetadataOutput, GetMetadataResponse } from './targets-service.types';
 
 export class SoftwareModulesService {
-  static async fetchSoftwareModules(): Promise<SoftwareModule[]> {
-    const response = await axiosInstance.get<GetSoftwareModulesResponse>(`/softwaremodules`);
+  static async fetchSoftwareModules(input?: FetchSoftwareModulesInput): Promise<SoftwareModule[]> {
+    const { queryParams } = input ?? {};
+    const response = await axiosInstance.get<GetSoftwareModulesResponse>(`/softwaremodules`, { params: queryParams });
     return response.data.content;
   }
 

@@ -4,18 +4,19 @@ import { ApiError } from '@/types/hawkbit-api/error';
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
 type UseGetSoftwareModulesParams = {
-    queryOptions?: Omit<UseQueryOptions<SoftwareModule[], ApiError, SoftwareModule[]>, 'queryKey' | 'queryFn'>;
+  queryParams?: { q?: string };
+  queryOptions?: Omit<UseQueryOptions<SoftwareModule[], ApiError, SoftwareModule[]>, 'queryKey' | 'queryFn'>;
 };
 
 export const useGetSoftwareModules = (params?: UseGetSoftwareModulesParams) => {
-    const { queryOptions } = params ?? {};
-    const queryKey = ['software-modules'];
+  const { queryParams = {}, queryOptions } = params ?? {};
+  const queryKey = ['software-modules', queryParams.q];
 
-    const { data, isLoading, error, refetch } = useQuery<SoftwareModule[], ApiError>({
-        queryKey,
-        queryFn: () => SoftwareModulesService.fetchSoftwareModules(),
-        ...queryOptions,
-    });
+  const { data, isLoading, error, refetch } = useQuery<SoftwareModule[], ApiError>({
+    queryKey,
+    queryFn: () => SoftwareModulesService.fetchSoftwareModules({ queryParams }),
+    ...queryOptions,
+  });
 
-    return { data, isLoading, error, refetch };
+  return { data, isLoading, error, refetch };
 };
