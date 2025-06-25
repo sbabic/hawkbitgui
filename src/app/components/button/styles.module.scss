@@ -14,6 +14,11 @@
     align-items: center;
     justify-content: center;
 
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
     &.default {
         background: $accent-color;
         color: $bright-text-color;

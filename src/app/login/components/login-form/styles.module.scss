@@ -9,14 +9,11 @@
     padding: 20px;
 }
 
-.card {
-    text-align: center;
-}
-
 .title {
     color: $primary-text-color;
     font-size: 32px;
     font-weight: 700;
+    text-align: center;
 }
 
 .subtitle {
@@ -24,59 +21,6 @@
     font-size: 18px;
     font-weight: 600;
     margin: 0;
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-}
-
-.input-group {
-    text-align: left;
-
-    label {
-        display: block;
-        font-size: 16px;
-        font-weight: 600;
-        color: $primary-text-color;
-        margin-bottom: 14px;
-    }
-
-    input {
-        width: 100%;
-        padding: 14px 16px;
-        border: 1px solid #ddd;
-        border-radius: 16px;
-        background-color: $secondary-color;
-        color: $secondary-text-color;
-        font-size: 16px;
-        transition: border 0.2s;
-
-        &:focus {
-            border-color: #6d28d9;
-            outline: none;
-        }
-    }
-
-    .error {
-        color: #dc2626;
-        font-size: 0.8rem;
-        margin-top: 0.3rem;
-    }
-}
-
-.button {
-    width: 100%;
-    background-color: #581c87;
-    color: white;
-    font-size: 16px;
-    padding: 14px 16px;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-
-    &:hover {
-        background-color: #4c1d95;
-    }
+    text-align: center;
+    margin-bottom: 40px;
 }
