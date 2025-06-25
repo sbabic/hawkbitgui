@@ -12,12 +12,13 @@ import ActionIconButtons from '@/app/components/action-icon-buttons';
 
 export type DistributionSetsTableProps = {
   distributionSets: Distribution[];
+  isLoading?: boolean;
   onNameClick: (distributionSet: Distribution) => void;
   onEditClick: (distributionSet: Distribution) => void;
   onDeleteClick: (distributionSet: Distribution) => void;
 };
 
-export default function DistributionSetsTable({ distributionSets, onNameClick, onEditClick, onDeleteClick }: DistributionSetsTableProps) {
+export default function DistributionSetsTable({ distributionSets, isLoading = false, onNameClick, onEditClick, onDeleteClick }: DistributionSetsTableProps) {
   const columnHelper = createColumnHelper<Distribution>();
 
   const fullColumns = useMemo(() => {
@@ -47,5 +48,5 @@ export default function DistributionSetsTable({ distributionSets, onNameClick, o
     ];
   }, [columnHelper, onNameClick, onEditClick, onDeleteClick]);
 
-  return <Table columns={fullColumns} data={distributionSets} />;
+  return <Table columns={fullColumns} data={distributionSets} isLoading={isLoading} />;
 }

@@ -12,7 +12,7 @@ import { Modal } from '@/app/components/modal';
 import AutoAssignDistributionFormContainer from '../auto-assign-distribution-form-container';
 
 export default function TargetFiltersTableContainer() {
-  const { data: targetFilters, refetch } = useGetTargetFilters();
+  const { data: targetFilters, refetch, isLoading } = useGetTargetFilters();
   const setSelectedTargetFilter = useTargetFiltersPageStore((state) => state.setSelectedTargetFilter);
   const setAutoAssign = useTargetFiltersPageStore((state) => state.setAutoAssign);
 
@@ -47,6 +47,7 @@ export default function TargetFiltersTableContainer() {
     <>
       <TargetFiltersTable
         modules={targetFilters ?? []}
+        isLoading={isLoading}
         onNameClick={setSelectedTargetFilter}
         onDelete={handleDelete}
         onAutoAssignDistributionClick={openAutoAssignDistribution}

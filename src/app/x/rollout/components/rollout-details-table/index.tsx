@@ -11,10 +11,11 @@ import { TotalTargetsPerStatusCell } from '../rollouts-table/components/total-ta
 
 export type RolloutDetailsTableProps = {
   deployGroups: RolloutDeployGroup[];
+  isLoading?: boolean;
   onNameClick: (rolloutDeployGroup: RolloutDeployGroup) => void;
 };
 
-export default function RolloutDetailsTable({ deployGroups, onNameClick }: RolloutDetailsTableProps) {
+export default function RolloutDetailsTable({ deployGroups, isLoading = false, onNameClick }: RolloutDetailsTableProps) {
   const columnHelper = createColumnHelper<RolloutDeployGroup>();
 
   const formatPercentage = (percentage: number) => {
@@ -79,5 +80,5 @@ export default function RolloutDetailsTable({ deployGroups, onNameClick }: Rollo
     ];
   }, [columnHelper, onNameClick, calculateFinishedPercentage]);
 
-  return <Table columns={columns} data={deployGroups} />;
+  return <Table columns={columns} data={deployGroups} isLoading={isLoading} />;
 }

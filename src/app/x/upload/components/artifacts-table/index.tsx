@@ -10,11 +10,12 @@ import TooltipIconButton from '@/app/components/tooltip-icon-button';
 
 interface ArtifactsTableProps {
   artifacts: SoftwareModuleArtifact[];
+  isLoading?: boolean;
   onDownloadClick: (artifact: SoftwareModuleArtifact) => void;
   onDeleteClick: (artifact: SoftwareModuleArtifact) => void;
 }
 
-export default function ArtifactsTable({ artifacts, onDownloadClick, onDeleteClick }: ArtifactsTableProps) {
+export default function ArtifactsTable({ artifacts, isLoading = false, onDownloadClick, onDeleteClick }: ArtifactsTableProps) {
   const columnHelper = createColumnHelper<SoftwareModuleArtifact>();
 
   const fullColumns = useMemo(
@@ -46,7 +47,7 @@ export default function ArtifactsTable({ artifacts, onDownloadClick, onDeleteCli
 
   return (
     <>
-      <Table columns={fullColumns} data={artifacts} />
+      <Table columns={fullColumns} data={artifacts} isLoading={isLoading} />
     </>
   );
 }

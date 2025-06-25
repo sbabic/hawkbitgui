@@ -19,6 +19,7 @@ import ActionIconButtons from '@/app/components/action-icon-buttons';
 
 export type RolloutsTableProps = {
   rollouts: Rollout[];
+  isLoading?: boolean;
   onRolloutNameClick: (rollout: Rollout) => void;
   onPlayClick: (rollout: Rollout) => void;
   onPauseClick: (rollout: Rollout) => void;
@@ -31,6 +32,7 @@ export type RolloutsTableProps = {
 
 export default function RolloutsTable({
   rollouts = [],
+  isLoading = false,
   onRolloutNameClick,
   onPlayClick,
   onPauseClick,
@@ -185,5 +187,5 @@ export default function RolloutsTable({
     isActionAllowed,
   ]);
 
-  return <Table columns={columns} data={rollouts} />;
+  return <Table columns={columns} data={rollouts} isLoading={isLoading} />;
 }

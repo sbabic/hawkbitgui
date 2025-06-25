@@ -11,7 +11,7 @@ import SoftwareModuleInfo from '../../components/software-module-info';
 import EditSoftwareModuleFormContainer from '../edit-software-module-form-container';
 
 export default function SoftwareModuleTableContainer() {
-  const { data: softwareModules, refetch } = useGetSoftwareModules();
+  const { data: softwareModules, refetch, isLoading } = useGetSoftwareModules();
   const setSelectedSoftwareModule = useSoftwareModulesStore((state) => state.setSelectedSoftwareModule);
   const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
   const [isSoftwareModuleInfoModalOpen, setIsSoftwareModuleInfoModalOpen] = useState(false);
@@ -57,6 +57,7 @@ export default function SoftwareModuleTableContainer() {
     <>
       <SoftwareModuleTable
         modules={softwareModules ?? []}
+        isLoading={isLoading}
         onNameClick={handleNameClick}
         onEditClick={handleEditSoftwareModule}
         onDeleteClick={handleDeleteSoftwareModule}

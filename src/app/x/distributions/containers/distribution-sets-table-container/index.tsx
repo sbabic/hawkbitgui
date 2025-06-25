@@ -13,7 +13,7 @@ import { useDeleteDistributionSet } from '../../hooks/use-delete-distribution-se
 import EditDistributionSetFormContainer from '../edit-distribution-set-form-container';
 
 export default function DistributionSetsTableContainer() {
-  const { data: distributionSets, refetch } = useGetDistributionSets();
+  const { data: distributionSets, refetch, isLoading } = useGetDistributionSets();
   const setSelectedDistribution = useDistributionsSetsTableStore((state) => state.setSelectedDistribution);
   const selectedDistribution = useDistributionsSetsTableStore((state) => state.selectedDistribution);
 
@@ -54,6 +54,7 @@ export default function DistributionSetsTableContainer() {
     <>
       <DistributionSetsTable
         distributionSets={distributionSets ?? []}
+        isLoading={isLoading}
         onNameClick={handleNameClick}
         onEditClick={handleEditClick}
         onDeleteClick={handleDeleteClick}

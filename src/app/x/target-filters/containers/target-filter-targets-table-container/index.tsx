@@ -5,10 +5,10 @@ import TargetFilterTargetsTable from '../../components/target-filter-targets-tab
 export default function TargetFilterTargetsTableContainer() {
   const currentQuery = useTargetFiltersPageStore((state) => state.currentQuery);
 
-  const { data: selectedTargets } = useGetTargets({
+  const { data: selectedTargets, isLoading } = useGetTargets({
     queryParams: { q: currentQuery },
     queryOptions: { enabled: !!currentQuery },
   });
 
-  return <TargetFilterTargetsTable targets={selectedTargets ?? []} onControllerIdClick={() => {}} />;
+  return <TargetFilterTargetsTable targets={selectedTargets ?? []} isLoading={isLoading} onControllerIdClick={() => {}} />;
 }

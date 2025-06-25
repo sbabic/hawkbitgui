@@ -16,7 +16,11 @@ export default function SoftwareModuleMetadataTableContainer() {
   const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
   const [selectedMetadata, setSelectedMetadata] = useState<Metadata | undefined>();
 
-  const { data: metadata, refetch: refetchMetadata } = useGetSoftwareModuleMetadata(selectedSoftwareModule?.id ?? 0, {
+  const {
+    data: metadata,
+    refetch: refetchMetadata,
+    isLoading,
+  } = useGetSoftwareModuleMetadata(selectedSoftwareModule?.id ?? 0, {
     queryOptions: { enabled: !!selectedSoftwareModule?.id },
   });
   const { updateSoftwareModuleMetadata } = useUpdateSoftwareModuleMetadata();
@@ -56,7 +60,7 @@ export default function SoftwareModuleMetadataTableContainer() {
 
   return (
     <>
-      <MetadataTable metadata={metadata ?? []} onDeleteClick={handleDeleteClick} onEditClick={handleEditClick} />
+      <MetadataTable metadata={metadata ?? []} isLoading={isLoading} onDeleteClick={handleDeleteClick} onEditClick={handleEditClick} />
       <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
         <ConfirmDeleteModal.Message>
           Are you sure you want to delete metadata <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.key}</span>?

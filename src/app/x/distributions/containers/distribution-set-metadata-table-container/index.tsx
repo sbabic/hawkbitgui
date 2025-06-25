@@ -16,7 +16,11 @@ export default function DistributionSetMetadataTableContainer() {
   const selectedDistribution = useDistributionsSetsTableStore((state) => state.selectedDistribution);
   const [selectedMetadata, setSelectedMetadata] = useState<Metadata | undefined>();
 
-  const { data: metadata, refetch: refetchMetadata } = useGetDistributionSetMetadata(selectedDistribution?.id ?? 0, {
+  const {
+    data: metadata,
+    refetch: refetchMetadata,
+    isLoading,
+  } = useGetDistributionSetMetadata(selectedDistribution?.id ?? 0, {
     queryOptions: { enabled: !!selectedDistribution?.id },
   });
   const { updateDistributionSetMetadata } = useUpdateDistributionSetMetadata();
@@ -56,7 +60,7 @@ export default function DistributionSetMetadataTableContainer() {
 
   return (
     <>
-      <MetadataTable metadata={metadata ?? []} onDeleteClick={handleDeleteClick} onEditClick={handleEditClick} />
+      <MetadataTable metadata={metadata ?? []} isLoading={isLoading} onDeleteClick={handleDeleteClick} onEditClick={handleEditClick} />
       <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
         <ConfirmDeleteModal.Message>
           Are you sure you want to delete metadata <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.key}</span>?

@@ -10,13 +10,14 @@ import ActionIconButtons from '@/app/components/action-icon-buttons';
 
 interface SoftwareModuleTableProps {
   modules: SoftwareModule[];
+  isLoading?: boolean;
   onRowClick?: (softwareModule: SoftwareModule) => void;
   onNameClick: (softwareModule: SoftwareModule) => void;
   onEditClick: (softwareModule: SoftwareModule) => void;
   onDeleteClick: (softwareModule: SoftwareModule) => void;
 }
 
-export default function SoftwareModuleTable({ modules, onRowClick, onNameClick, onEditClick, onDeleteClick }: SoftwareModuleTableProps) {
+export default function SoftwareModuleTable({ modules, isLoading = false, onRowClick, onNameClick, onEditClick, onDeleteClick }: SoftwareModuleTableProps) {
   const columnHelper = createColumnHelper<SoftwareModule>();
 
   const fullColumns = useMemo(
@@ -48,5 +49,5 @@ export default function SoftwareModuleTable({ modules, onRowClick, onNameClick, 
     [columnHelper, onNameClick, onEditClick, onDeleteClick]
   );
 
-  return <Table columns={fullColumns} data={modules} onRowClick={(_, data) => onRowClick?.(data)} />;
+  return <Table columns={fullColumns} data={modules} onRowClick={(_, data) => onRowClick?.(data)} isLoading={isLoading} />;
 }

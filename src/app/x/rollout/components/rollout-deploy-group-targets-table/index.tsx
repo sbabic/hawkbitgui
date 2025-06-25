@@ -9,9 +9,10 @@ import TargetStatusCell from '@/app/components/target-status-cell';
 
 export type RolloutDeployGroupTargetsTableProps = {
   deployGroupTargets: DeployGroupTarget[];
+  isLoading?: boolean;
 };
 
-export default function RolloutDeployGroupTargetsTable({ deployGroupTargets }: RolloutDeployGroupTargetsTableProps) {
+export default function RolloutDeployGroupTargetsTable({ deployGroupTargets, isLoading = false }: RolloutDeployGroupTargetsTableProps) {
   const columnHelper = createColumnHelper<DeployGroupTarget>();
 
   const columns = useMemo(() => {
@@ -51,5 +52,5 @@ export default function RolloutDeployGroupTargetsTable({ deployGroupTargets }: R
     ];
   }, [columnHelper]);
 
-  return <Table columns={columns} data={deployGroupTargets} />;
+  return <Table columns={columns} data={deployGroupTargets} isLoading={isLoading} />;
 }

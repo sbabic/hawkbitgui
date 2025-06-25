@@ -10,7 +10,7 @@ export default function RolloutDetailsTableContainer() {
 
   const setTableType = useRolloutsPageStore((state) => state.setTableType);
 
-  const { data: rolloutDeployGroups } = useGetRolloutDeployGroups({
+  const { data: rolloutDeployGroups, isLoading } = useGetRolloutDeployGroups({
     rolloutId: selectedRollout?.id ?? 0,
     queryOptions: {
       enabled: !!selectedRollout,
@@ -21,5 +21,5 @@ export default function RolloutDetailsTableContainer() {
     setTableType({ tableType: 'deploy-group-targets', selectedDeployGroup: rolloutDeployGroup });
   };
 
-  return <RolloutDetailsTable deployGroups={rolloutDeployGroups ?? []} onNameClick={handleNameClick} />;
+  return <RolloutDetailsTable deployGroups={rolloutDeployGroups ?? []} isLoading={isLoading} onNameClick={handleNameClick} />;
 }

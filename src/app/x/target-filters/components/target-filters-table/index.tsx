@@ -15,12 +15,13 @@ import TooltipIconButton from '@/app/components/tooltip-icon-button';
 
 interface TargetFiltersTableProps {
   modules: TargetFilter[];
+  isLoading?: boolean;
   onNameClick: (targetFilter: TargetFilter) => void;
   onDelete: (targetFilter: TargetFilter) => void;
   onAutoAssignDistributionClick: (targetFilter: TargetFilter) => void;
 }
 
-export default function TargetFiltersTable({ modules, onNameClick, onDelete, onAutoAssignDistributionClick }: TargetFiltersTableProps) {
+export default function TargetFiltersTable({ modules, isLoading = false, onNameClick, onDelete, onAutoAssignDistributionClick }: TargetFiltersTableProps) {
   const columnHelper = createColumnHelper<TargetFilter>();
 
   const fullColumns = useMemo(
@@ -92,5 +93,5 @@ export default function TargetFiltersTable({ modules, onNameClick, onDelete, onA
     [columnHelper, onDelete, onNameClick, onAutoAssignDistributionClick]
   );
 
-  return <Table columns={fullColumns} data={modules} />;
+  return <Table columns={fullColumns} data={modules} isLoading={isLoading} />;
 }

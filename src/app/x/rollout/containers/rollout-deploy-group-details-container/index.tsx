@@ -8,7 +8,7 @@ export default function RolloutDeployGroupDetailsContainer() {
   const selectedRollout = useRolloutsPageStore((state) => state.selectedRollout);
   const selectedDeployGroup = useRolloutsPageStore((state) => state.selectedDeployGroup);
 
-  const { data: deployGroupTargets } = useGetDeployGroupTargets({
+  const { data: deployGroupTargets, isLoading } = useGetDeployGroupTargets({
     rolloutId: selectedRollout?.id ?? 0,
     deployGroupId: selectedDeployGroup?.id ?? 0,
     queryOptions: {
@@ -16,5 +16,5 @@ export default function RolloutDeployGroupDetailsContainer() {
     },
   });
 
-  return <RolloutDeployGroupTargetsTable deployGroupTargets={deployGroupTargets ?? []} />;
+  return <RolloutDeployGroupTargetsTable deployGroupTargets={deployGroupTargets ?? []} isLoading={isLoading} />;
 }

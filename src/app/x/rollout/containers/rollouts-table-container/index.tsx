@@ -19,7 +19,11 @@ import { useTriggerNextGroup } from '../../hooks/use-trigger-next-group';
 import { useApproveRollout } from '../../hooks/use-approve-rollout';
 
 export default function RolloutsTableContainer() {
-  const { data: rollouts, refetch } = useGetRollouts({
+  const {
+    data: rollouts,
+    refetch,
+    isLoading,
+  } = useGetRollouts({
     queryOptions: {
       refetchInterval: (query: Query<Rollout[], ApiError>) => {
         const currentQueryData = query.state.data;
@@ -137,7 +141,7 @@ export default function RolloutsTableContainer() {
 
   return (
     <>
-      <RolloutsTable rollouts={rollouts ?? []} {...actions} />
+      <RolloutsTable rollouts={rollouts ?? []} isLoading={isLoading} {...actions} />
       {isEditRolloutFormOpen && (
         <Modal size='xl' isOpen={isEditRolloutFormOpen} onClose={closeEditForm}>
           <Modal.Header>Edit rollout</Modal.Header>

@@ -11,11 +11,12 @@ import { Metadata } from '@/entities';
 
 export type MetadataTableProps = {
   metadata: Metadata[];
+  isLoading?: boolean;
   onEditClick: (metadata: Metadata) => void;
   onDeleteClick: (metadata: Metadata) => void;
 };
 
-export default function MetadataTable({ metadata = [], onEditClick, onDeleteClick }: MetadataTableProps) {
+export default function MetadataTable({ metadata = [], isLoading = false, onEditClick, onDeleteClick }: MetadataTableProps) {
   const columnHelper = createColumnHelper<{
     key: string;
     value: string;
@@ -48,5 +49,5 @@ export default function MetadataTable({ metadata = [], onEditClick, onDeleteClic
     ];
   }, [columnHelper, onDeleteClick, onEditClick]);
 
-  return <Table columns={columns} data={metadata} />;
+  return <Table columns={columns} data={metadata} isLoading={isLoading} />;
 }

@@ -9,10 +9,11 @@ import Button from '@/app/components/button';
 
 export type TargetFilterTargetsTableProps = {
   targets: Target[];
+  isLoading?: boolean;
   onControllerIdClick: (controllerId: string) => void;
 };
 
-export default function TargetFilterTargetsTable({ targets = [], onControllerIdClick }: TargetFilterTargetsTableProps) {
+export default function TargetFilterTargetsTable({ targets, isLoading = false, onControllerIdClick }: TargetFilterTargetsTableProps) {
   const columnHelper = createColumnHelper<Target>();
 
   const columns = useMemo(() => {
@@ -56,5 +57,5 @@ export default function TargetFilterTargetsTable({ targets = [], onControllerIdC
     ];
   }, [columnHelper, onControllerIdClick]);
 
-  return <Table columns={columns} data={targets} />;
+  return <Table columns={columns} data={targets} isLoading={isLoading} />;
 }

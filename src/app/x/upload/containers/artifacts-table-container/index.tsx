@@ -8,7 +8,11 @@ import { useDeleteArtifact } from '../../hooks/use-delete-artifact';
 export default function ArtifactsTableContainer() {
   const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
 
-  const { data: artifacts, refetch: refetchArtifacts } = useGetArtifacts({
+  const {
+    data: artifacts,
+    refetch: refetchArtifacts,
+    isLoading,
+  } = useGetArtifacts({
     softwareModuleId: selectedSoftwareModule?.id ?? 0,
     queryOptions: { enabled: !!selectedSoftwareModule },
   });
@@ -46,5 +50,5 @@ export default function ArtifactsTableContainer() {
     }
   };
 
-  return <ArtifactsTable artifacts={artifacts ?? []} onDownloadClick={handleDownloadArtifact} onDeleteClick={handleDeleteArtifact} />;
+  return <ArtifactsTable artifacts={artifacts ?? []} isLoading={isLoading} onDownloadClick={handleDownloadArtifact} onDeleteClick={handleDeleteArtifact} />;
 }
