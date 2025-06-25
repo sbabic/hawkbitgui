@@ -30,8 +30,7 @@
 .td {
   position: relative;
   padding: 8px 12px;
-  flex-grow: 1;
-  flex-basis: 0;
+  flex: 0 0 auto;
   text-align: left;
   color: $text-disabled-color;
   min-width: 0;

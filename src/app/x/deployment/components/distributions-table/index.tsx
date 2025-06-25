@@ -47,6 +47,7 @@ export default function DistributionsTable({
       }),
       columnHelper.display({
         id: 'actions',
+        size: 100,
         header: 'Actions',
         cell: (info) => (
           <div className={styles.actionButtons}>
@@ -101,6 +102,7 @@ export default function DistributionsTable({
       }),
       columnHelper.display({
         id: 'actions',
+        size: 100,
         header: 'Actions',
         cell: (info) => (
           <div className={styles.actionButtons}>

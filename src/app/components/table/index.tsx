@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useReactTable, getCoreRowModel, ColumnDef, flexRender } from '@tanstack/react-table';
 import Skeleton from 'react-loading-skeleton';
 import styles from './styles.module.scss';
@@ -76,9 +76,9 @@ export default function Table<T>({
                   className={styles.th}
                   key={header.id}
                   style={{
-                    flexGrow: 1,
-                    flexBasis: 0,
-                    minWidth: header.getSize(),
+                    width: header.getSize(),
+                    minWidth: header.column.columnDef.minSize,
+                    maxWidth: header.column.columnDef.maxSize,
                   }}
                 >
                   {header.isPlaceholder ? null : (
@@ -121,9 +121,9 @@ export default function Table<T>({
                       className={styles.td}
                       key={cell.id}
                       style={{
-                        flexGrow: 1,
-                        flexBasis: 0,
-                        minWidth: cell.column.getSize(),
+                        width: cell.column.getSize(),
+                        minWidth: cell.column.columnDef.minSize,
+                        maxWidth: cell.column.columnDef.maxSize,
                       }}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

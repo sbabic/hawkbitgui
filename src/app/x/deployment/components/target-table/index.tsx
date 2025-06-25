@@ -58,6 +58,7 @@ export default function TargetTable({
       columnHelper.display({
         id: 'actions',
         header: 'Actions',
+        size: 100,
         cell: (info) => (
           <div className={styles.actionButtons}>
             {/*<IconButton height={'30px'} width={'30px'} onClick={() => onPinClick?.(info.row.original)}>*/}
@@ -108,6 +109,7 @@ export default function TargetTable({
       columnHelper.accessor('updateStatus', statusAccessor),
       columnHelper.display({
         id: 'actions',
+        size: 100,
         header: 'Actions',
         cell: (info) => (
           <div className={styles.actionButtons}>

@@ -46,11 +46,16 @@ export default function ActionHistoryTable({
       }),
       columnHelper.accessor('id', {
         header: 'Action Id',
+        size: 100,
         cell: (info) => (
           <button className={styles.linkButton} onClick={() => onActionIdClick?.(info.row.original)}>
             {info.getValue()}
           </button>
         ),
+      }),
+      columnHelper.accessor('forceType', {
+        header: 'Type',
+        cell: (info) => info.getValue(),
       }),
       // columnHelper.accessor('_links.distributionset.name', {
       //   header: 'Distribution Set',
@@ -88,11 +93,16 @@ export default function ActionHistoryTable({
       }),
       columnHelper.accessor('id', {
         header: 'Action Id',
+        size: 100,
         cell: (info) => (
           <button className={styles.linkButton} onClick={() => onActionIdClick?.(info.row.original)}>
             {info.getValue()}
           </button>
         ),
+      }),
+      columnHelper.accessor('forceType', {
+        header: 'Type',
+        cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('_links.distributionset.name', {
         header: 'Distribution Set',
