@@ -1,7 +1,7 @@
 'use client';
 
 import { Distribution } from '@/entities';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useConfirmDialog } from '@/app/hooks';
 import DistributionsTable from '@/app/x/deployment/components/distributions-table';
@@ -9,6 +9,7 @@ import { useDistributionsTableStore } from '@/stores/distributions-table-store';
 import { DistributionSetsService } from '@/services/distribution-sets-service';
 import { Modal } from '@/app/components/modal';
 import DistributionInfo from '@/app/x/deployment/components/distribution-info';
+import { useDistributionsPolling } from '@/app/hooks/use-distributions-polling';
 
 export default function DistributionsTableContainer() {
   const filteredDistributions = useDistributionsTableStore((state) => state.filteredDistributions);
@@ -29,9 +30,7 @@ export default function DistributionsTableContainer() {
     });
   };
 
-  useEffect(() => {
-    fetchDistributions().catch(console.error);
-  }, [fetchDistributions]);
+  useDistributionsPolling();
 
   return (
     <>

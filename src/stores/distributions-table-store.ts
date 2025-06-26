@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { Distribution } from '@/entities';
 import { DistributionSetsService } from '@/services/distribution-sets-service';
 import { useDistributionsFiltersStore } from '@/stores/distributions-filters-store';
+import { useTargetsFiltersStore } from '@/stores/targets-filters-store';
+import { TargetsService } from '@/services/targets-service';
 
 interface DistributionsTableState {
   distributions: Distribution[];
@@ -17,6 +19,7 @@ interface DistributionsTableState {
   setIsExpanded: (isExpanded: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
   fetchDistributions: () => Promise<void>;
+  pollDistributions: () => Promise<void>;
 }
 
 export const useDistributionsTableStore = create<DistributionsTableState>((set) => ({
@@ -42,6 +45,15 @@ export const useDistributionsTableStore = create<DistributionsTableState>((set) 
       console.error('Failed to fetch distributions', error);
     } finally {
       set({ isLoading: false });
+    }
+  },
+  pollDistributions: async () => {
+    try {
+      const filters = useDistributionsFiltersStore.getState().filters;
+      const response = await DistributionSetsService.fetchDistributionSets({ filters: Object.values(filters) });
+      set({ distributions: response, filteredDistributions: response });
+    } catch (error) {
+      console.error('Failed to poll targets', error);
     }
   },
 }));
