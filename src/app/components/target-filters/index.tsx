@@ -3,6 +3,7 @@ import ByStatusFilterContainer from '@/app/components/target-filters/containers/
 import TagFilterManager from '@/app/components/target-filters/components/tag-filter-manager';
 import TypeFilterManager from '@/app/components/target-filters/components/type-filter-manager';
 import TabbedPanel from '@/app/components/tabbed-panel';
+import ByCustomFilterContainer from '@/app/components/target-filters/containers/by-custom-filter-container';
 
 export default function TargetFilters() {
   const content: {
@@ -23,7 +24,7 @@ export default function TargetFilters() {
     },
     {
       title: 'Custom Filter',
-      component: <div></div>,
+      component: <ByCustomFilterContainer />,
     },
   ];
 

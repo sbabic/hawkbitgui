@@ -53,6 +53,10 @@ export default function ActionHistoryTable({
           </button>
         ),
       }),
+      columnHelper.accessor('rolloutName', {
+        header: 'Rollout Name',
+        cell: (info) => info.getValue(),
+      }),
       columnHelper.accessor('forceType', {
         header: 'Type',
         cell: (info) => info.getValue(),
@@ -99,6 +103,10 @@ export default function ActionHistoryTable({
             {info.getValue()}
           </button>
         ),
+      }),
+      columnHelper.accessor('rolloutName', {
+        header: 'Rollout Name',
+        cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('forceType', {
         header: 'Type',

@@ -1,4 +1,4 @@
-type FiqlOperator = ',' | ';' | '==' | '!=' | '<' | '<=' | '>' | '>=' | 'in' | 'not in';
+type FiqlOperator = ',' | ';' | '==' | '!=' | '<' | '<=' | '>' | '>=' | 'in' | 'not in' | '';
 type JoinerOperator = ',' | ';';
 
 export class FilterFiql {
@@ -25,7 +25,12 @@ export class FilterFiql {
   }
 
   parseToFiql(): string {
-    const values = this.values.map(([operator, value]) => `${this.property}${operator}"${value}"`);
+    const values = this.values.map(([operator, value]) => {
+      if (this.property === '') {
+        return `${value}`;
+      }
+      return `${this.property}${operator}"${value}"`;
+    });
     return values.join(this.joinerOperator);
   }
 

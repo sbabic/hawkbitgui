@@ -51,7 +51,7 @@ export default function MultipleSelect<T extends BaseOption>({ isLoading, option
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <ColourDot color={data.colour} />
+          <ColourDot color={data.colour ?? ''} />
           {data.name}
         </div>
       </div>

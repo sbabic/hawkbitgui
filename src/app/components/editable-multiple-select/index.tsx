@@ -68,7 +68,7 @@ export default function EditableMultipleSelect<T extends BaseOption>({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <ColourDot color={data.colour} />
+            <ColourDot color={data.colour ?? ''} />
             {data.name}
           </div>
           <div style={{ display: 'flex', gap: 24 }}>

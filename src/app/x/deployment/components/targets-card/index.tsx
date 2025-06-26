@@ -2,7 +2,6 @@
 
 import styles from './styles.module.scss';
 import Button from '@/app/components/button';
-import FolderIcon from '@/app/components/icons/folder-icon';
 import IconButton from '@/app/components/icon-button';
 import { Modal } from '@/app/components/modal';
 import FilterIcon from '@/app/components/icons/filter-icon';
@@ -43,10 +42,10 @@ export default function TargetsCard({
         <PanelCard.Actions>
           <div className={styles.mainActions}>
             <Button onClick={onOpenCreateTargetForm}>+ New target</Button>
-            <Button variant='outline' className={styles.bulkUploadButton}>
-              <FolderIcon />
-              Bulk Upload Targets
-            </Button>
+            {/*<Button variant='outline' className={styles.bulkUploadButton}>*/}
+            {/*  <FolderIcon />*/}
+            {/*  Bulk Upload Targets*/}
+            {/*</Button>*/}
           </div>
           <IconButton className={styles.filterButton} onClick={onOpenTargetFiltersModal}>
             <FilterIcon />

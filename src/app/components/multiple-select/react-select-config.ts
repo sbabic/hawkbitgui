@@ -3,7 +3,7 @@ import { StylesConfig } from 'react-select';
 export interface BaseOption {
   id: number | string;
   name: string;
-  colour: string;
+  colour?: string;
 }
 
 export function createCustomStyles<T extends BaseOption>(): StylesConfig<T, true> {

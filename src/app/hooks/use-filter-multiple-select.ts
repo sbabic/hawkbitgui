@@ -39,7 +39,9 @@ export function useFilterMultipleSelect<T>({
   useEffect(() => {
     console.log('Selected options changed:', selectedOptions);
 
-    filter.current.setValues(selectedOptions.map((opt) => ['==', getOptionLabel(opt)]));
+    const isFilterPropertyEmpty = filter.current.property === '' || filter.current.property === undefined;
+
+    filter.current.setValues(selectedOptions.map((opt) => [isFilterPropertyEmpty ? '' : '==', getOptionLabel(opt)]));
 
     const newFilters = { ...filters, [filter.current.property]: filter.current };
     setFilters(newFilters);
