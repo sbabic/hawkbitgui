@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import { Distribution } from '@/entities';
 import { DistributionSetsService } from '@/services/distribution-sets-service';
 import { useDistributionsFiltersStore } from '@/stores/distributions-filters-store';
-import { useTargetsFiltersStore } from '@/stores/targets-filters-store';
-import { TargetsService } from '@/services/targets-service';
 
 interface DistributionsTableState {
   distributions: Distribution[];
