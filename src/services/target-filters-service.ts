@@ -2,12 +2,15 @@ import axiosInstance from '@/lib/axios';
 import { TargetFilter } from '@/entities/target-filter';
 import { CreateTargetFilterInput, GetTargetFiltersResponse, UpdateTargetFilterInput } from './target-filters-service.types';
 import { RolloutType } from '@/entities/rollout';
+import { Representation } from './shared';
 
 export class TargetFiltersService {
   static async fetchTargetFilters(): Promise<TargetFilter[]> {
     try {
-      const response = await axiosInstance.get<GetTargetFiltersResponse>(`/targetfilters`);
-      return response.data.content;
+      const response = await axiosInstance.get<GetTargetFiltersResponse>(`/targetfilters`, {
+        params: { representation: Representation.FULL },
+      });
+      return this.mapResponseToDomain(response.data);
     } catch (error) {
       console.error('Failed to fetch target filters', error);
       throw error;
@@ -65,5 +68,33 @@ export class TargetFiltersService {
       console.error('Failed to delete auto assign distribution set', error);
       throw error;
     }
+  }
+
+  private static async mapResponseToDomain(response: GetTargetFiltersResponse): Promise<TargetFilter[]> {
+    const targetFilters = response.content.map((targetFilter) => {
+      let autoAssignDistributionSetName: string | null = null;
+
+      if (targetFilter._links.DS?.href) {
+        try {
+          const url = new URL(targetFilter._links.DS.href);
+          const queryParams = new URLSearchParams(url.search);
+          const qParam = queryParams.get('q');
+          if (qParam) {
+            const parts = qParam.split(';');
+            const name = parts[0].split('==')[1];
+            const version = parts[1].split('==')[1];
+            autoAssignDistributionSetName = `${name}:${version}`;
+          }
+        } catch (error) {
+          console.warn('Failed to parse distribution set URL:', targetFilter._links.DS.href, error);
+        }
+      }
+
+      return {
+        ...targetFilter,
+        autoAssignDistributionSetName,
+      };
+    });
+    return targetFilters;
   }
 }

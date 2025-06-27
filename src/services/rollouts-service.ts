@@ -1,12 +1,7 @@
 import { DeployGroupTarget, Rollout, RolloutDeployGroup } from '@/entities/rollout';
 import axiosInstance from '@/lib/axios';
 import { CreateRolloutInput, GetDeployGroupTargetsResponse, GetRolloutDeployGroupsResponse, GetRolloutsResponse } from './rollouts-service.types';
-
-export const Representation = {
-  COMPACT: 'compact',
-  FULL: 'full',
-} as const;
-export type Representation = (typeof Representation)[keyof typeof Representation];
+import { Representation } from './shared';
 
 export interface RolloutsQueryParams {
   representation?: Representation;

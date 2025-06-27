@@ -1,15 +1,15 @@
-import { TotalTargetCountStatus } from '@/entities/rollout';
+import { RolloutStatus } from '@/entities/rollout';
 import Tooltip from '@/app/components/tooltip';
 import styles from './styles.module.scss';
-import { getTotalTargetStatusIcon, getTotalTargetStatusLabel } from '@/app/x/rollout/utils/utils';
+import { getRolloutStatusIcon, getRolloutStatusLabel } from '@/app/x/rollout/utils/utils';
 
 interface DeployGroupStatusProps {
-  status: TotalTargetCountStatus;
+  status: RolloutStatus;
 }
 
 export function DeployGroupStatusCell({ status }: DeployGroupStatusProps) {
-  const statusIcon = getTotalTargetStatusIcon(status);
-  const statusLabel = getTotalTargetStatusLabel(status);
+  const statusIcon = getRolloutStatusIcon(status);
+  const statusLabel = getRolloutStatusLabel(status);
 
   return (
     <div className={`${styles.container} ${styles[status.toLowerCase()]}`}>

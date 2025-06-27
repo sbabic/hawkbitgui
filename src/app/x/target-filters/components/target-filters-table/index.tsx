@@ -52,11 +52,12 @@ export default function TargetFiltersTable({ modules, isLoading = false, onNameC
         size: 230,
         cell: (cell) => dayjs(cell.getValue()).format('ddd MMM DD HH:mm:ss YYYY'),
       }),
-      columnHelper.accessor('autoAssignDistributionSet', {
+      columnHelper.accessor('autoAssignDistributionSetName', {
         header: 'Auto assignment',
+        size: 250,
         cell: (cell) => {
-          const { autoAssignDistributionSet, autoAssignActionType } = cell.row.original;
-          if (!autoAssignDistributionSet || !autoAssignActionType) {
+          const { autoAssignDistributionSet, autoAssignActionType, autoAssignDistributionSetName } = cell.row.original;
+          if (!autoAssignDistributionSet || !autoAssignActionType || !autoAssignDistributionSetName) {
             return (
               <Button variant='text' onClick={() => onAutoAssignDistributionClick(cell.row.original)}>
                 none
@@ -75,7 +76,7 @@ export default function TargetFiltersTable({ modules, isLoading = false, onNameC
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               {iconsMapper[autoAssignActionType]}
               <Button variant='text' onClick={() => onAutoAssignDistributionClick(cell.row.original)}>
-                {autoAssignDistributionSet}
+                {autoAssignDistributionSetName}
               </Button>
             </div>
           );
@@ -83,6 +84,7 @@ export default function TargetFiltersTable({ modules, isLoading = false, onNameC
       }),
       columnHelper.display({
         header: 'Actions',
+        size: 100,
         cell: (cell) => (
           <ActionIconButtons>
             <TooltipIconButton icon={<TrashIcon />} tooltipContent='Delete' iconButtonProps={{ onClick: () => onDelete(cell.row.original) }} />

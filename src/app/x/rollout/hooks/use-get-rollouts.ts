@@ -1,5 +1,6 @@
 import { Rollout } from '@/entities/rollout';
-import { RolloutsQueryParams, RolloutsService, Representation } from '@/services/rollouts-service';
+import { RolloutsQueryParams, RolloutsService } from '@/services/rollouts-service';
+import { Representation } from '@/services/shared';
 import { ApiError } from '@/types/hawkbit-api/error';
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 

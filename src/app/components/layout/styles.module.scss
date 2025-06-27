@@ -48,7 +48,7 @@ $sidebar-collapsed: 60px;
   display: flex;
   flex-direction: column;
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
   transition: margin-left 0.3s ease-in-out;
 
   &.expanded {
@@ -104,7 +104,6 @@ $sidebar-collapsed: 60px;
     display: flex;
     width: 100%;
     flex-grow: 1;
-    overflow: scroll;
   }
 }
 

@@ -37,7 +37,6 @@ export default function SoftwareModuleTable({ modules, isLoading = false, onRowC
       columnHelper.display({
         id: 'actions',
         header: 'Actions',
-        size: 50,
         cell: (cell) => (
           <ActionIconButtons>
             <TooltipIconButton icon={<EditIcon />} tooltipContent='Edit' iconButtonProps={{ onClick: () => onEditClick(cell.row.original) }} />

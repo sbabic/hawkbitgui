@@ -80,31 +80,36 @@ export default function RolloutsTable({
     return [
       columnHelper.accessor('name', {
         header: 'Name',
+        size: 270,
         cell: (cell) => (
           <Button variant='text' onClick={() => onRolloutNameClick(cell.row.original)}>
             {cell.getValue()}
           </Button>
         ),
       }),
-      columnHelper.accessor('distributionSetId', {
+      columnHelper.accessor('_links.distributionset.name', {
         header: 'Distribution set',
+        size: 180,
         cell: (cell) => cell.getValue(),
       }),
       columnHelper.accessor('status', {
         header: 'Status',
+        size: 100,
         cell: (cell) => <RolloutStatusCell status={cell.getValue()} />,
       }),
       columnHelper.accessor('totalTargetsPerStatus', {
         header: 'Detail status',
-        size: 180,
+        size: 200,
         cell: (cell) => <TotalTargetsPerStatusCell totalTargetsPerStatus={cell.getValue()} />,
       }),
       columnHelper.accessor('totalGroups', {
         header: 'Groups',
+        size: 100,
         cell: (cell) => cell.getValue(),
       }),
       columnHelper.accessor('totalTargets', {
         header: 'Targets',
+        size: 100,
         cell: (cell) => cell.getValue(),
       }),
       columnHelper.display({

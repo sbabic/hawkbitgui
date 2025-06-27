@@ -17,6 +17,7 @@ import { AssignConfig } from '@/services/targets-service.types';
 import ActionHistoryCardContainer from '@/app/x/deployment/containers/action-history-card-container';
 import { useTargetsTableStore } from '@/stores/targets-table-store';
 import { useTargetActionsTableStore } from '@/stores/target-action-table-store';
+import { ExpandableCardProvider } from '@/app/components/card/expandable-card-context';
 
 const mapScheduleFormDataToAssignConfig = (id: string | number, data?: ScheduleFormData): AssignConfig => {
   if (!data) {
@@ -159,40 +160,42 @@ export default function DeploymentDndLayoutContainer() {
   }
 
   return (
-    <div className={styles.cardsContainer}>
-      <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <TargetsCardContainer />
-        <DistributionsCardContainer />
-        <ActionHistoryCardContainer />
-        <DragOverlay>
-          {isDragging ? (
-            <DraggedItemPreview
-              name={isDraggingDistribution ? draggedDistributions.current[0]?.name : draggedTargets.current[0]?.name}
-              count={isDraggingDistribution ? draggedDistributions.current.length : draggedTargets.current.length}
-            />
-          ) : null}
-        </DragOverlay>
-      </DndContext>
-      <ConfirmationModal
-        size={'lg'}
-        title={'Confirm Assignment'}
-        onClose={targetOverDistributionConfirmationModal.close}
-        onConfirm={targetOverDistributionConfirmationModal.confirm}
-        isOpen={targetOverDistributionConfirmationModal.isOpen}
-      >
-        {isDraggingDistribution ? (
-          <p>
-            Are you sure you want to assign if Distribution set <b>{targetOverDistributionConfirmationModal.data?.distributions[0].name}</b> to Target{' '}
-            <b>{targetOverDistributionConfirmationModal.data?.targets[0].name}</b> ?
-          </p>
-        ) : (
-          <p>
-            Are you sure you want to assign if Target <b>{targetOverDistributionConfirmationModal.data?.targets[0].name}</b> to Distribution set{' '}
-            <b>{targetOverDistributionConfirmationModal.data?.distributions[0].name}</b> ?
-          </p>
-        )}
-        <ScheduleForm onChange={(data) => (scheduleFormData.current = data)} />
-      </ConfirmationModal>
-    </div>
+    <ExpandableCardProvider>
+      <div className={styles.cardsContainer}>
+        <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+          <TargetsCardContainer />
+          <DistributionsCardContainer />
+          <ActionHistoryCardContainer />
+          <DragOverlay>
+            {isDragging ? (
+              <DraggedItemPreview
+                name={isDraggingDistribution ? draggedDistributions.current[0]?.name : draggedTargets.current[0]?.name}
+                count={isDraggingDistribution ? draggedDistributions.current.length : draggedTargets.current.length}
+              />
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+        <ConfirmationModal
+          size={'lg'}
+          title={'Confirm Assignment'}
+          onClose={targetOverDistributionConfirmationModal.close}
+          onConfirm={targetOverDistributionConfirmationModal.confirm}
+          isOpen={targetOverDistributionConfirmationModal.isOpen}
+        >
+          {isDraggingDistribution ? (
+            <p>
+              Are you sure you want to assign if Distribution set <b>{targetOverDistributionConfirmationModal.data?.distributions[0].name}</b> to Target{' '}
+              <b>{targetOverDistributionConfirmationModal.data?.targets[0].name}</b> ?
+            </p>
+          ) : (
+            <p>
+              Are you sure you want to assign if Target <b>{targetOverDistributionConfirmationModal.data?.targets[0].name}</b> to Distribution set{' '}
+              <b>{targetOverDistributionConfirmationModal.data?.distributions[0].name}</b> ?
+            </p>
+          )}
+          <ScheduleForm onChange={(data) => (scheduleFormData.current = data)} />
+        </ConfirmationModal>
+      </div>
+    </ExpandableCardProvider>
   );
 }

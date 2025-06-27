@@ -5,6 +5,7 @@ export interface TargetFilter {
   name: string;
   query: string;
   autoAssignDistributionSet: number | null;
+  autoAssignDistributionSetName: string | null;
   autoAssignActionType: RolloutType | null;
   autoAssignWeight: number | null;
   confirmationRequired: boolean | null;
@@ -12,5 +13,12 @@ export interface TargetFilter {
   createdAt: number;
   lastModifiedBy: string;
   lastModifiedAt: number;
-  _links: Record<string, string>;
+  _links: {
+    self: {
+      href: string;
+    };
+    DS?: {
+      href: string;
+    };
+  };
 }
