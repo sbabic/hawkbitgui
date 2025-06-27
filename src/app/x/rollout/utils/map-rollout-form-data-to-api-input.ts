@@ -1,6 +1,7 @@
 import { CreateRolloutInput } from '@/services/rollouts-service.types';
 import { CreateRolloutFormData } from '../components/create-rollout-form/types';
 import { RolloutTypes, StartType } from '@/entities/rollout';
+import dayjs from 'dayjs';
 
 function getErrorConditionExpression(data: CreateRolloutFormData): string {
   if (!data.errorCondition) {
@@ -23,6 +24,9 @@ export function mapFormDataToCreateRolloutInput(data: CreateRolloutFormData): Cr
   }
   if (data.startType !== StartType.SCHEDULED && data.startAt) {
     data.startAt = undefined;
+  }
+  if (data.startType === StartType.AUTO) {
+    data.startAt = dayjs().add(3, 'seconds').toDate();
   }
   if (data.groupsSettings === 'numberOfGroups') {
     data.groups = undefined;
