@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import { environment } from '@/config/env';
 import axios, { AxiosError } from 'axios';
-import { authOptions } from '@/lib/auth-options';
+import { cookies } from 'next/headers';
 
 const handleApiError = (error: unknown) => {
   if (error instanceof AxiosError) {
@@ -37,9 +36,10 @@ const handleApiError = (error: unknown) => {
 
 export async function GET(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const session = await getServerSession(authOptions);
+  const cookieStore = await cookies();
+  const auth = cookieStore.get('auth')?.value;
 
-  if (!session?.user?.auth) {
+  if (!auth) {
     return NextResponse.json(
       {
         exceptionClass: 'UnauthorizedError',
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
 
     const axiosResponse = await axios.get(`${environment.hawkbitApiUrl}/rest/v1/${path}`, {
       headers: {
-        Authorization: `Basic ${session.user.auth}`,
+        Authorization: `Basic ${auth}`,
         Accept: acceptHeader,
       },
       params: queryParams,
@@ -92,9 +92,10 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
 
 export async function POST(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const session = await getServerSession(authOptions);
+  const cookieStore = await cookies();
+  const auth = cookieStore.get('auth')?.value;
 
-  if (!session?.user?.auth) {
+  if (!auth) {
     return NextResponse.json(
       {
         exceptionClass: 'UnauthorizedError',
@@ -112,7 +113,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ pa
 
     let body: FormData | unknown;
     const headers: Record<string, string> = {
-      Authorization: `Basic ${session.user.auth}`,
+      Authorization: `Basic ${auth}`,
       Accept: 'application/json, application/hal+json',
     };
 
@@ -138,9 +139,10 @@ export async function POST(request: NextRequest, context: { params: Promise<{ pa
 
 export async function PUT(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const session = await getServerSession(authOptions);
+  const cookieStore = await cookies();
+  const auth = cookieStore.get('auth')?.value;
 
-  if (!session?.user?.auth) {
+  if (!auth) {
     return NextResponse.json(
       {
         exceptionClass: 'UnauthorizedError',
@@ -158,7 +160,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ pat
 
     const response = await axios.put(`${environment.hawkbitApiUrl}/rest/v1/${path}`, body, {
       headers: {
-        Authorization: `Basic ${session.user.auth}`,
+        Authorization: `Basic ${auth}`,
         Accept: 'application/json, application/hal+json',
         'Content-Type': 'application/json',
       },
@@ -172,9 +174,10 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ pat
 
 export async function DELETE(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const session = await getServerSession(authOptions);
+  const cookieStore = await cookies();
+  const auth = cookieStore.get('auth')?.value;
 
-  if (!session?.user?.auth) {
+  if (!auth) {
     return NextResponse.json(
       {
         exceptionClass: 'UnauthorizedError',
@@ -190,7 +193,7 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
     const path = (await params).path.join('/');
     const response = await axios.delete(`${environment.hawkbitApiUrl}/rest/v1/${path}`, {
       headers: {
-        Authorization: `Basic ${session.user.auth}`,
+        Authorization: `Basic ${auth}`,
         Accept: 'application/json, application/hal+json',
       },
     });
