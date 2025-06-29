@@ -3,7 +3,7 @@
 import { useGetDistributionSets } from '../../hooks/use-get-distribution-sets';
 import DistributionSetsTable from '../../components/distribution-sets-table';
 import { Modal } from '@/app/components/modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DistributionSetInfo from '../../components/distribution-set-info';
 import { useDistributionsSetsTableStore } from '@/stores/distribution-sets-table-store';
 import { Distribution } from '@/entities';
@@ -16,6 +16,15 @@ export default function DistributionSetsTableContainer() {
   const { data: distributionSets, refetch, isLoading } = useGetDistributionSets();
   const setSelectedDistribution = useDistributionsSetsTableStore((state) => state.setSelectedDistribution);
   const selectedDistribution = useDistributionsSetsTableStore((state) => state.selectedDistribution);
+
+  useEffect(() => {
+    if (selectedDistribution) {
+      const updatedDistribution = distributionSets?.find((ds) => ds.id === selectedDistribution.id);
+      if (updatedDistribution) {
+        setSelectedDistribution(updatedDistribution);
+      }
+    }
+  }, [distributionSets, selectedDistribution, setSelectedDistribution]);
 
   const [isDistributionSetInfoModalOpen, setIsDistributionSetInfoModalOpen] = useState(false);
   const [isEditDistributionSetFormOpen, setIsEditDistributionSetFormOpen] = useState(false);

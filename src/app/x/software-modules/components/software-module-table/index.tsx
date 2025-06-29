@@ -48,5 +48,5 @@ export default function SoftwareModuleTable({ modules, isLoading = false, onRowC
     [columnHelper, onNameClick, onEditClick, onDeleteClick]
   );
 
-  return <Table columns={fullColumns} data={modules} onRowClick={(_, data) => onRowClick?.(data)} isLoading={isLoading} />;
+  return <Table columns={fullColumns} data={modules} onRowClick={(_, data) => onRowClick?.(data)} isLoading={isLoading} draggable={true} selectable={true} />;
 }

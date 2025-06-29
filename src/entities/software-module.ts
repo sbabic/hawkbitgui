@@ -62,3 +62,9 @@ export function isSoftwareModule(obj: any): obj is SoftwareModule {
 
   return true;
 }
+
+export function isSoftwareModuleRecord(value: unknown): value is Record<string, SoftwareModule> {
+  if (typeof value !== 'object' || value === null) return false;
+
+  return Object.entries(value).every(([key, val]) => typeof key === 'string' && isSoftwareModule(val));
+}

@@ -28,6 +28,11 @@ export type AssignModulesToDistributionSetInput = {
   softwareModuleIds: number[];
 };
 
+export type UnassignModulesToDistributionSetInput = {
+  distributionSetId: number;
+  softwareModuleId: number;
+};
+
 type MaintenanceWindow = {
   schedule: string;
   duration: string;
