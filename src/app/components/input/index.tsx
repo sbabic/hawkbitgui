@@ -9,7 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   inputSize?: InputSize;
 }
 
-export default function Input({ error, inputSize = 'lg', className, ...inputProps }: InputProps) {
+export default function Input({ error, inputSize = 'lg', className = '', ...inputProps }: InputProps) {
   return (
     <div className={`${styles.container} ${className}`}>
       <input className={`${styles.input} ${styles[inputSize]}`} {...inputProps} />

@@ -1,0 +1,52 @@
+@use 'src/app/styles/variables' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  section {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 16px 0 rgba(60, 60, 100, 0.08);
+    padding: 24px;
+    max-width: 900px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .sectionTitle {
+    margin: 0;
+    color: $light-primary-text-color;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 400;
+    color: $light-primary-text-color;
+    font-size: 16px;
+    border-radius: 12px;
+    transition: background-color 0.2s ease;
+  }
+
+  .warning {
+    color: $status-warning;
+    font-size: 14px;
+    margin: 4px 0 16px 32px;
+    padding-left: 16px;
+  }
+
+  .inlineRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
