@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import ConfigurationForm, { FormStateType } from '@/app/x/configuration/components/configuration-form';
 import { HawkbitSystemConfigKey, HawkbitSystemConfiguration } from '@/services/system-configuration-service.types';
 import { SystemConfigurationService } from '@/services/system-configuration-service';
+import { handleErrorWithToast } from '@/utils/handle-error-with-toast';
 
 function mapSystemConfigToFormState(configs: HawkbitSystemConfiguration): FormStateType {
-  console.log(configs['action.cleanup.enabled']?.value);
   return {
     repository: {
       autocloseRunningActions: Boolean(configs['repository.actions.autoclose.enabled']?.value),
-      allowParallel: false, // not yet mapped
       requestConfirmation: Boolean(configs['user.confirmation.flow.enabled']?.value),
       autoDelete: {
         enabled: Boolean(configs['action.cleanup.enabled']?.value),
@@ -18,6 +17,10 @@ function mapSystemConfigToFormState(configs: HawkbitSystemConfiguration): FormSt
     },
     rollout: {
       approveRollout: Boolean(configs['rollout.approval.enabled']?.value),
+    },
+    assignment: {
+      allowBatchAssignments: Boolean(configs['batch.assignments.enabled']?.value),
+      allowMultiAssignments: Boolean(configs['multi.assignments.enabled']?.value),
     },
     authentication: {
       allowCertAuth: {
@@ -30,7 +33,7 @@ function mapSystemConfigToFormState(configs: HawkbitSystemConfiguration): FormSt
         gatewayToken: String(configs['authentication.gatewaytoken.key']?.value ?? ''),
       },
       allowDownloadWithoutCreds: {
-        enabled: false, // not yet used
+        enabled: Boolean(configs['anonymous.download.enabled']?.value),
       },
     },
     polling: {
@@ -41,6 +44,9 @@ function mapSystemConfigToFormState(configs: HawkbitSystemConfiguration): FormSt
       pollingOverdueTime: {
         enabled: Boolean(configs['pollingOverdueTime']),
         value: String(configs['pollingOverdueTime']?.value ?? ''),
+      },
+      maintenanceWindowPollCount: {
+        value: Number(configs['maintenanceWindowPollCount']?.value),
       },
     },
   };
@@ -61,6 +67,13 @@ function mapFormStateToSystemConfig(form: FormStateType): Partial<Record<Hawkbit
     'authentication.gatewaytoken.key': form.authentication.allowGateway.gatewayToken,
     pollingTime: form.polling.pollingTime.value,
     pollingOverdueTime: form.polling.pollingOverdueTime.value,
+    'anonymous.download.enabled': form.authentication.allowDownloadWithoutCreds.enabled,
+    'batch.assignments.enabled': form.assignment.allowBatchAssignments,
+    'multi.assignments.enabled': form.assignment.allowMultiAssignments,
+    maintenanceWindowPollCount: form.polling.maintenanceWindowPollCount.value,
+    //default.ds.type
+    //minPollingTime
+    //implicit.lock.enabled
   };
 }
 
@@ -114,6 +127,7 @@ export default function ConfigurationFormContainer() {
       console.log('Updated keys:', Object.keys(diff));
     } catch (err) {
       console.error('Error updating system configuration:', err);
+      handleErrorWithToast(err);
     }
   };
 

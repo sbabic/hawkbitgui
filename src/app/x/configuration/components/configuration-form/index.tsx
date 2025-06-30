@@ -8,7 +8,6 @@ import styles from './styles.module.scss';
 export type FormStateType = {
   repository: {
     autocloseRunningActions: boolean;
-    allowParallel: boolean;
     requestConfirmation: boolean;
     autoDelete: {
       enabled: boolean;
@@ -18,6 +17,10 @@ export type FormStateType = {
   };
   rollout: {
     approveRollout: boolean;
+  };
+  assignment: {
+    allowMultiAssignments: boolean;
+    allowBatchAssignments: boolean;
   };
   authentication: {
     allowCertAuth: {
@@ -42,6 +45,9 @@ export type FormStateType = {
       enabled: boolean;
       value: string;
     };
+    maintenanceWindowPollCount: {
+      value?: number;
+    };
   };
 };
 
@@ -61,7 +67,6 @@ export default function ConfigurationForm({ onSubmit, initialValues }: Configura
     initialValues ?? {
       repository: {
         autocloseRunningActions: false,
-        allowParallel: false,
         requestConfirmation: false,
         autoDelete: {
           enabled: false,
@@ -71,6 +76,10 @@ export default function ConfigurationForm({ onSubmit, initialValues }: Configura
       },
       rollout: {
         approveRollout: false,
+      },
+      assignment: {
+        allowMultiAssignments: false,
+        allowBatchAssignments: false,
       },
       authentication: {
         allowCertAuth: {
@@ -95,6 +104,7 @@ export default function ConfigurationForm({ onSubmit, initialValues }: Configura
           enabled: false,
           value: '',
         },
+        maintenanceWindowPollCount: {},
       },
     }
   );
@@ -147,11 +157,6 @@ export default function ConfigurationForm({ onSubmit, initialValues }: Configura
         </label>
 
         <label>
-          <Checkbox checked={form.repository.allowParallel} onChange={(e) => handleNestedChange('repository', 'allowParallel', e.target.checked)} />
-          Allow parallel execution of multiple distribution set assignments and rollouts
-        </label>
-
-        <label>
           <Checkbox checked={form.repository.requestConfirmation} onChange={(e) => handleNestedChange('repository', 'requestConfirmation', e.target.checked)} />
           Request confirmation before download/install
         </label>
@@ -199,6 +204,25 @@ export default function ConfigurationForm({ onSubmit, initialValues }: Configura
         </label>
       </section>
 
+      {/* Assignment Configuration */}
+      <section>
+        <h3 className={styles.sectionTitle}>Assignment Configuration</h3>
+        <label>
+          <Checkbox
+            checked={form.assignment.allowMultiAssignments}
+            onChange={(e) => handleNestedChange('assignment', 'allowMultiAssignments', e.target.checked)}
+          />
+          Defines if multiple distribution sets can be assigned to the same targets.
+        </label>
+        <label>
+          <Checkbox
+            checked={form.assignment.allowBatchAssignments}
+            onChange={(e) => handleNestedChange('assignment', 'allowBatchAssignments', e.target.checked)}
+          />
+          Defines if distribution set can be assigned to multiple targets in a single batch message.
+        </label>
+      </section>
+
       {/* Authentication Configuration */}
       <section>
         <h3 className={styles.sectionTitle}>Authentication Configuration</h3>
@@ -239,13 +263,13 @@ export default function ConfigurationForm({ onSubmit, initialValues }: Configura
           </div>
         )}
 
-        <label>
-          <Checkbox
-            checked={form.authentication.allowDownloadWithoutCreds.enabled}
-            onChange={(e) => handleSubfieldChange('authentication', 'allowDownloadWithoutCreds', 'enabled', e.target.checked)}
-          />
-          Allow artifact download without credentials
-        </label>
+        {/*<label>*/}
+        {/*  <Checkbox*/}
+        {/*    checked={form.authentication.allowDownloadWithoutCreds.enabled}*/}
+        {/*    onChange={(e) => handleSubfieldChange('authentication', 'allowDownloadWithoutCreds', 'enabled', e.target.checked)}*/}
+        {/*  />*/}
+        {/*  Allow artifact download without credentials*/}
+        {/*</label>*/}
       </section>
 
       {/* Polling Configuration */}
@@ -254,39 +278,39 @@ export default function ConfigurationForm({ onSubmit, initialValues }: Configura
 
         <div className={styles.inlineRow}>
           <label>
-            <Checkbox
-              checked={form.polling.pollingTime.enabled}
-              onChange={(e) => handleSubfieldChange('polling', 'pollingTime', 'enabled', e.target.checked)}
-            />
             Polling Time
-          </label>
-          {form.polling.pollingTime.enabled && (
             <Input
-              type='time'
-              step='1'
+              type='text'
+              pattern='\d{2}:\d{2}:\d{2}'
+              placeholder='HH:MM:SS'
               value={form.polling.pollingTime.value}
               onChange={(e) => handleSubfieldChange('polling', 'pollingTime', 'value', e.target.value)}
             />
-          )}
+          </label>
         </div>
 
         <div className={styles.inlineRow}>
           <label>
-            <Checkbox
-              checked={form.polling.pollingOverdueTime.enabled}
-              onChange={(e) => handleSubfieldChange('polling', 'pollingOverdueTime', 'enabled', e.target.checked)}
-            />
             Polling Overdue Time
-          </label>
-          {form.polling.pollingOverdueTime.enabled && (
             <Input
-              type='time'
-              step='1'
+              type='text'
+              pattern='\d{2}:\d{2}:\d{2}'
+              placeholder='HH:MM:SS'
               value={form.polling.pollingOverdueTime.value}
               onChange={(e) => handleSubfieldChange('polling', 'pollingOverdueTime', 'value', e.target.value)}
             />
-          )}
+          </label>
         </div>
+
+        <label>
+          Maintenance Window Poll Count
+          <Input
+            type='number'
+            value={form.polling.maintenanceWindowPollCount.value ?? ''}
+            onChange={(e) => handleSubfieldChange('polling', 'maintenanceWindowPollCount', 'value', Number(e.target.value))}
+            style={{ width: 100 }}
+          />
+        </label>
       </section>
 
       <Button type='submit'>Save Configuration</Button>

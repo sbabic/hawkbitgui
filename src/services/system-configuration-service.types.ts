@@ -29,6 +29,7 @@ export enum HawkbitSystemConfigKey {
   IMPLICIT_LOCK_ENABLED = 'implicit.lock.enabled',
   BATCH_ASSIGNMENTS_ENABLED = 'batch.assignments.enabled',
   MULTI_ASSIGNMENTS_ENABLED = 'multi.assignments.enabled',
+  ANONYMOUS_DOWNLOAD_ENABLED = 'anonymous.download.enabled',
 }
 
 export type GetSystemConfigurationResponse = HawkbitSystemConfiguration;
