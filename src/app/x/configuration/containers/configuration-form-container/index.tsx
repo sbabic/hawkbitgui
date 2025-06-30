@@ -94,19 +94,22 @@ function diffConfigs(
 
 export default function ConfigurationFormContainer() {
   const [initialValues, setInitialValues] = useState<FormStateType | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [originalConfigMap, setOriginalConfigMap] = useState<Partial<Record<HawkbitSystemConfigKey, string | number | boolean>> | null>(null);
 
   useEffect(() => {
     const fetchConfig = async () => {
       try {
+        setIsLoading(true);
         const configs = await SystemConfigurationService.getSystemConfiguration();
         const mappedForm = mapSystemConfigToFormState(configs);
         const originalMapped = mapFormStateToSystemConfig(mappedForm);
-
         setInitialValues(mappedForm);
         setOriginalConfigMap(originalMapped);
       } catch (error) {
         console.error('Failed to load system configuration', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -131,5 +134,5 @@ export default function ConfigurationFormContainer() {
     }
   };
 
-  return initialValues && <ConfigurationForm initialValues={initialValues ?? undefined} onSubmit={handleSubmit} />;
+  return <ConfigurationForm initialValues={initialValues ?? undefined} onSubmit={handleSubmit} loading={isLoading} />;
 }
