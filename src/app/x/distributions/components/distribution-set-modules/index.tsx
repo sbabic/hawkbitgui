@@ -31,14 +31,12 @@ export default function DistributionSetModules({ distributionSet, onModuleDelete
       columnHelper.display({
         id: 'actions',
         size: 60,
-        cell: (cell) => {
-          if (modules.length > 1) {
-            return <TooltipIconButton icon={<TrashIcon />} tooltipContent='Delete' iconButtonProps={{ onClick: () => onModuleDelete(cell.row.original) }} />;
-          }
-        },
+        cell: (cell) => (
+          <TooltipIconButton icon={<TrashIcon />} tooltipContent='Unassign' iconButtonProps={{ onClick: () => onModuleDelete(cell.row.original) }} />
+        ),
       }),
     ];
-  }, [columnHelper, onModuleDelete, modules.length]);
+  }, [columnHelper, onModuleDelete]);
 
   return (
     <div className={styles.container}>

@@ -12,11 +12,14 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => {
     if (response.status === 401) {
-      signOut();
+      signOut({ callbackUrl: '/login?error=unauthorized' });
     }
     return response;
   },
   (error) => {
+    if (error.status === 401) {
+      signOut({ callbackUrl: '/login?error=unauthorized' });
+    }
     if (error.response) {
       return Promise.reject(error.response.data);
     }
@@ -25,7 +28,6 @@ axiosInstance.interceptors.response.use(
       exceptionClass: 'NetworkError',
       errorCode: error.code || 'UNKNOWN_ERROR',
       message: error.message || 'An unexpected error occurred',
-      info: {},
     });
   }
 );

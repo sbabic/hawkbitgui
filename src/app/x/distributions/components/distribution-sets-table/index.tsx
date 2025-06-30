@@ -48,5 +48,5 @@ export default function DistributionSetsTable({ distributionSets, isLoading = fa
     ];
   }, [columnHelper, onNameClick, onEditClick, onDeleteClick]);
 
-  return <Table columns={fullColumns} data={distributionSets} isLoading={isLoading} />;
+  return <Table columns={fullColumns} draggable={true} selectable={true} data={distributionSets} isLoading={isLoading} />;
 }

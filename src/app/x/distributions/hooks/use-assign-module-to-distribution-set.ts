@@ -3,11 +3,11 @@ import { AssignModulesToDistributionSetInput } from '@/services/distribution-set
 import { useMutation } from '@tanstack/react-query';
 
 export const useAssignModuleToDistributionSet = () => {
-    const { mutateAsync: assignModuleToDistributionSet, isPending } = useMutation({
-        mutationFn: async (data: AssignModulesToDistributionSetInput) => {
-            return DistributionSetsService.assignModulesToDistributionSet(data);
-        },
-    });
+  const { mutateAsync: assignModuleToDistributionSet, isPending } = useMutation({
+    mutationFn: async (data: AssignModulesToDistributionSetInput) => {
+      return DistributionSetsService.assignModulesToDistributionSet(data);
+    },
+  });
 
-    return { assignModuleToDistributionSet, isPending };
+  return { assignModuleToDistributionSet, isPending };
 };

@@ -3,16 +3,16 @@
 import { useDistributionsSetsTableStore } from '@/stores/distribution-sets-table-store';
 import DistributionSetModules from '../../components/distribution-set-modules';
 import { SoftwareModule } from '@/entities';
-import { useDeleteSoftwareModule } from '@/app/x/software-modules/hooks/use-delete-software-module';
 import { useConfirmDialog } from '@/app/hooks';
-import { useGetSoftwareModules } from '@/app/x/software-modules/hooks/use-get-software-modules';
-import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
+import { useUnassignModuleToDistributionSet } from '../../hooks/use-unassign-module-to-distribution-set';
+import { useGetDistributionSets } from '../../hooks/use-get-distribution-sets';
+import ConfirmationModal from '@/app/components/confirmation-modal';
 
 export default function DistributionSetModulesContainer() {
   const selectedDistribution = useDistributionsSetsTableStore((state) => state.selectedDistribution);
 
-  const { refetch } = useGetSoftwareModules({ queryOptions: { enabled: false } });
-  const { deleteSoftwareModule } = useDeleteSoftwareModule();
+  const { refetch: refetchDistributionSets } = useGetDistributionSets({ queryOptions: { enabled: false } });
+  const { unassignModuleToDistributionSet } = useUnassignModuleToDistributionSet();
 
   const confirmDialog = useConfirmDialog<SoftwareModule>();
 
@@ -22,19 +22,23 @@ export default function DistributionSetModulesContainer() {
 
   const handleModuleDelete = async (module: SoftwareModule) => {
     confirmDialog.open(module, async () => {
-      await deleteSoftwareModule({ softwareModuleId: module.id });
-      refetch();
+      await unassignModuleToDistributionSet({ distributionSetId: selectedDistribution.id, softwareModuleId: module.id });
+      refetchDistributionSets();
     });
   };
 
   return (
     <>
       <DistributionSetModules distributionSet={selectedDistribution} onModuleDelete={handleModuleDelete} />
-      <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
-        <ConfirmDeleteModal.Message>
-          Are you sure you want to delete module <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.name}</span>?
-        </ConfirmDeleteModal.Message>
-      </ConfirmDeleteModal>
+      {confirmDialog.isOpen && (
+        <ConfirmationModal title='Confirm Unassignment' onClose={confirmDialog.close} onConfirm={confirmDialog.confirm} isOpen={confirmDialog.isOpen}>
+          Are you sure you want to unassign module{' '}
+          <span style={{ fontWeight: 'bold' }}>
+            {confirmDialog.data?.name}
+            {confirmDialog.data?.version}
+          </span>
+        </ConfirmationModal>
+      )}
     </>
   );
 }

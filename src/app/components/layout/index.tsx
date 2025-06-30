@@ -12,12 +12,13 @@ import { usePathname } from 'next/navigation';
 import ClickIcon from '@/app/components/icons/click-icon';
 import WebIcon from '@/app/components/icons/web-icon';
 import GearIcon from '@/app/components/icons/gear-icon';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   const navItems = [
     { href: '/x/deployment', label: 'Deployment', icon: RocketIcon },
@@ -27,6 +28,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { href: '/x/upload', label: 'Upload', icon: UploadIcon },
     { href: '/x/configuration', label: 'Configuration', icon: GearIcon },
   ];
+
+  const userInitial = session?.user?.username?.charAt(0)?.toUpperCase() || 'U';
 
   return (
     <div className={styles.layout}>
@@ -58,7 +61,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className={styles.headerActions}>
-            <div className={styles.profile}>D</div>
+            <div className={styles.profile}>{userInitial}</div>
           </div>
         </header>
 

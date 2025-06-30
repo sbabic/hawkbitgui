@@ -9,6 +9,7 @@ import {
   GetDistributionSetsInput,
   GetDistributionSetsOutput,
   GetDistributionSetsResponse,
+  UnassignModulesToDistributionSetInput,
 } from './distribution-sets-services.types';
 import { FilterFiql, SoftwareModule } from '@/entities';
 import { GetMetadataOutput, GetMetadataResponse } from '@/services/targets-service.types';
@@ -66,6 +67,12 @@ export class DistributionSetsService {
       `/distributionsets/${distributionSetId}/assignedSM`,
       softwareModuleIds.map((id) => ({ id }))
     );
+    return response.data;
+  }
+
+  static async unassignModulesToDistributionSet(data: UnassignModulesToDistributionSetInput): Promise<void> {
+    const { distributionSetId, softwareModuleId } = data;
+    const response = await axiosInstance.delete(`/distributionsets/${distributionSetId}/assignedSM/${softwareModuleId}`);
     return response.data;
   }
 
