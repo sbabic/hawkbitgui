@@ -6,9 +6,6 @@ import Button from '@/app/components/button';
 import styles from './styles.module.scss';
 
 export type FormStateType = {
-  distribution: {
-    distributionSetType: string;
-  };
   repository: {
     autocloseRunningActions: boolean;
     allowParallel: boolean;
@@ -53,19 +50,15 @@ type ConfigurationFormProps = {
   initialValues?: FormStateType;
 };
 
-const distributionSetTypes = [{ value: 'os_app', label: 'os_app (OS with app(s))' }];
 const actionStatuses = [
   { value: 'ERROR', label: 'ERROR' },
   { value: 'CANCELED', label: 'CANCELED' },
-  { value: 'ERROR+CANCELED', label: 'ERROR + CANCELED' },
+  { value: 'CANCELED,ERROR', label: 'ERROR + CANCELED' },
 ];
 
 export default function ConfigurationForm({ onSubmit, initialValues }: ConfigurationFormProps) {
   const [form, setForm] = useState<FormStateType>(
     initialValues ?? {
-      distribution: {
-        distributionSetType: '',
-      },
       repository: {
         autocloseRunningActions: false,
         allowParallel: false,
@@ -141,21 +134,6 @@ export default function ConfigurationForm({ onSubmit, initialValues }: Configura
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      {/* Distribution Configuration */}
-      <section>
-        <h3 className={styles.sectionTitle}>Distribution Configuration</h3>
-        <label>
-          Select the default distribution set type:
-          <Select value={form.distribution.distributionSetType} onChange={(e) => handleNestedChange('distribution', 'distributionSetType', e.target.value)}>
-            {distributionSetTypes.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </Select>
-        </label>
-      </section>
-
       {/* Repository Configuration */}
       <section>
         <h3 className={styles.sectionTitle}>Repository Configuration</h3>
