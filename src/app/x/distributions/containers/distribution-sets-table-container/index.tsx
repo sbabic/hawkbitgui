@@ -16,6 +16,8 @@ export default function DistributionSetsTableContainer() {
   const { data: distributionSetsData, refetch, isLoading } = useGetPaginatedDistributionSets();
   const { distributionSets, totalDistributionSets } = distributionSetsData ?? { distributionSets: [], totalDistributionSets: 0 };
 
+  const visibleColumns = useDistributionsSetsTableStore((state) => state.visibleColumns);
+
   const page = useDistributionsSetsTableStore((state) => state.page);
   const size = useDistributionsSetsTableStore((state) => state.size);
   const setPage = useDistributionsSetsTableStore((state) => state.setPage);
@@ -70,6 +72,7 @@ export default function DistributionSetsTableContainer() {
       <DistributionSetsTable
         distributionSets={distributionSets ?? []}
         isLoading={isLoading}
+        visibleColumns={visibleColumns}
         pagination={{
           page,
           size,

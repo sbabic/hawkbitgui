@@ -18,6 +18,8 @@ export interface SoftwareModule {
   lastModifiedAt: number;
 }
 
+export type SoftwareModuleKey = keyof SoftwareModule;
+
 export function isSoftwareModule(obj: any): obj is SoftwareModule {
   if (typeof obj !== 'object' || obj === null) {
     console.warn('Invalid software module: not an object');

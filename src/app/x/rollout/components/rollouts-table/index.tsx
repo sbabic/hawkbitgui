@@ -19,6 +19,7 @@ import ActionIconButtons from '@/app/components/action-icon-buttons';
 import { VisibleColumn } from '@/types/utils/visible-column';
 import dayjs from 'dayjs';
 import { Pagination } from '@/types/utils/pagination';
+import { transformToColumnVisibility } from '@/utils/columns-visibility';
 
 export type RolloutsTableProps = {
   rollouts: Rollout[];
@@ -86,7 +87,7 @@ export default function RolloutsTable({
   );
 
   const columnVisibility = useMemo(() => {
-    return Object.fromEntries(Object.entries(visibleColumns).map(([id, column]) => [id, column.isSelected]));
+    return transformToColumnVisibility(visibleColumns);
   }, [visibleColumns]);
 
   const columns = useMemo(() => {

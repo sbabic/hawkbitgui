@@ -18,6 +18,8 @@ export default function SoftwareModuleTableContainer() {
   const { data: softwareModulesData, refetch, isLoading } = useGetPaginatedSoftwareModules({ queryParams: { q: query } });
   const { softwareModules, totalSoftwareModules } = softwareModulesData ?? { softwareModules: [], totalSoftwareModules: 0 };
 
+  const visibleColumns = useSoftwareModulesStore((state) => state.visibleColumns);
+
   const page = useSoftwareModulesStore((state) => state.page);
   const size = useSoftwareModulesStore((state) => state.size);
   const setPage = useSoftwareModulesStore((state) => state.setPage);
@@ -66,8 +68,9 @@ export default function SoftwareModuleTableContainer() {
   return (
     <>
       <SoftwareModuleTable
-        modules={softwareModules ?? []}
+        modules={softwareModules}
         isLoading={isLoading}
+        visibleColumns={visibleColumns}
         pagination={{
           page,
           size,

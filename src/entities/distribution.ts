@@ -19,6 +19,8 @@ export interface Distribution {
   lastModifiedAt: number;
 }
 
+export type DistributionKey = keyof Distribution;
+
 export function isDistribution(obj: any): obj is Distribution {
   if (typeof obj !== 'object' || obj === null) {
     console.warn('Invalid distribution: not an object');
