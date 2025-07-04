@@ -4,15 +4,19 @@ import {
   CreateSoftwareModuleInput,
   CreateSoftwareModuleResponse,
   FetchSoftwareModulesInput,
+  FetchSoftwareModulesOutput,
   GetSoftwareModulesResponse,
 } from './software-modules-service.types';
 import { GetMetadataOutput, GetMetadataResponse } from './targets-service.types';
 
 export class SoftwareModulesService {
-  static async fetchSoftwareModules(input?: FetchSoftwareModulesInput): Promise<SoftwareModule[]> {
+  static async fetchSoftwareModules(input?: FetchSoftwareModulesInput): Promise<FetchSoftwareModulesOutput> {
     const { queryParams } = input ?? {};
     const response = await axiosInstance.get<GetSoftwareModulesResponse>(`/softwaremodules`, { params: queryParams });
-    return response.data.content;
+    return {
+      softwareModules: response.data.content,
+      totalSoftwareModules: response.data.total,
+    };
   }
 
   static async createSoftwareModule(data: CreateSoftwareModuleInput[]): Promise<SoftwareModule[]> {

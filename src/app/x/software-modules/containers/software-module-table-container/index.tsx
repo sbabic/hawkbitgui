@@ -1,5 +1,4 @@
 import SoftwareModuleTable from '../../components/software-module-table';
-import { useGetSoftwareModules } from '../../hooks/use-get-software-modules';
 import { FilterFiql, SoftwareModule } from '@/entities';
 import { useDeleteSoftwareModule } from '../../hooks/use-delete-software-module';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
@@ -10,12 +9,18 @@ import { useState } from 'react';
 import SoftwareModuleInfo from '../../components/software-module-info';
 import EditSoftwareModuleFormContainer from '../edit-software-module-form-container';
 import { useSoftwareModuleFiltersStore } from '@/stores/software-module-filters-store';
+import { useGetPaginatedSoftwareModules } from '../../hooks/use-get-paginated-software-modules';
 
 export default function SoftwareModuleTableContainer() {
   const filters = useSoftwareModuleFiltersStore((state) => state.filters);
   const fiqlQueryParam = FilterFiql.parseFiltersToFeedItemQueryLanguage(Object.values(filters) ?? []);
   const query = fiqlQueryParam !== '' ? fiqlQueryParam : undefined;
-  const { data: softwareModules, refetch, isLoading } = useGetSoftwareModules({ queryParams: { q: query } });
+  const { data: softwareModulesData, refetch, isLoading } = useGetPaginatedSoftwareModules({ queryParams: { q: query } });
+  const { softwareModules, totalSoftwareModules } = softwareModulesData ?? { softwareModules: [], totalSoftwareModules: 0 };
+
+  const page = useSoftwareModulesStore((state) => state.page);
+  const size = useSoftwareModulesStore((state) => state.size);
+  const setPage = useSoftwareModulesStore((state) => state.setPage);
 
   const setSelectedSoftwareModule = useSoftwareModulesStore((state) => state.setSelectedSoftwareModule);
   const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
@@ -63,10 +68,16 @@ export default function SoftwareModuleTableContainer() {
       <SoftwareModuleTable
         modules={softwareModules ?? []}
         isLoading={isLoading}
+        pagination={{
+          page,
+          size,
+          totalItems: totalSoftwareModules,
+        }}
         onNameClick={handleNameClick}
         onEditClick={handleEditSoftwareModule}
         onDeleteClick={handleDeleteSoftwareModule}
         onRowClick={handleRowClick}
+        onPageChange={setPage}
       />
       <Modal isOpen={isSoftwareModuleInfoModalOpen} variant='unstyled' size='lg' onClose={closeInfoModal}>
         <SoftwareModuleInfo />

@@ -7,17 +7,29 @@ import TrashIcon from '@/app/components/icons/trash-icon';
 import TooltipIconButton from '@/app/components/tooltip-icon-button';
 import EditIcon from '@/app/components/icons/edit-icon';
 import ActionIconButtons from '@/app/components/action-icon-buttons';
+import { Pagination } from '@/types/utils/pagination';
 
 interface SoftwareModuleTableProps {
   modules: SoftwareModule[];
   isLoading?: boolean;
+  pagination: Pagination;
   onRowClick?: (softwareModule: SoftwareModule) => void;
   onNameClick: (softwareModule: SoftwareModule) => void;
   onEditClick: (softwareModule: SoftwareModule) => void;
   onDeleteClick: (softwareModule: SoftwareModule) => void;
+  onPageChange: (page: number) => void;
 }
 
-export default function SoftwareModuleTable({ modules, isLoading = false, onRowClick, onNameClick, onEditClick, onDeleteClick }: SoftwareModuleTableProps) {
+export default function SoftwareModuleTable({
+  modules,
+  isLoading = false,
+  pagination,
+  onRowClick,
+  onNameClick,
+  onEditClick,
+  onDeleteClick,
+  onPageChange,
+}: SoftwareModuleTableProps) {
   const columnHelper = createColumnHelper<SoftwareModule>();
 
   const fullColumns = useMemo(
@@ -48,5 +60,16 @@ export default function SoftwareModuleTable({ modules, isLoading = false, onRowC
     [columnHelper, onNameClick, onEditClick, onDeleteClick]
   );
 
-  return <Table columns={fullColumns} data={modules} onRowClick={(_, data) => onRowClick?.(data)} isLoading={isLoading} draggable={true} selectable={true} />;
+  return (
+    <Table
+      columns={fullColumns}
+      data={modules}
+      pagination={pagination}
+      isLoading={isLoading}
+      draggable={true}
+      selectable={true}
+      onRowClick={(_, data) => onRowClick?.(data)}
+      onPageChange={onPageChange}
+    />
+  );
 }

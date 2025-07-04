@@ -14,12 +14,23 @@ import {
 import { FilterFiql, SoftwareModule } from '@/entities';
 import { GetMetadataOutput, GetMetadataResponse } from '@/services/targets-service.types';
 
+export interface DistributionSetsQueryParams {
+  offset?: number;
+  limit?: number;
+  sort?: string;
+}
+
 export class DistributionSetsService {
-  static async fetchDistributionSets(input?: GetDistributionSetsInput): Promise<GetDistributionSetsOutput> {
+  static async fetchDistributionSets(input?: GetDistributionSetsInput, queryParams?: DistributionSetsQueryParams): Promise<GetDistributionSetsOutput> {
     try {
-      const fiqlQueryParam = FilterFiql.parseFiltersToFiqlQueryParam(input?.filters || []);
-      const response = await axiosInstance.get<GetDistributionSetsResponse>(`/distributionsets?${fiqlQueryParam}`);
-      return response.data.content;
+      const fiqlQuery = FilterFiql.parseFiltersToFeedItemQueryLanguage(input?.filters || []);
+      const response = await axiosInstance.get<GetDistributionSetsResponse>(`/distributionsets`, {
+        params: { ...queryParams, ...(fiqlQuery ? { q: fiqlQuery } : {}) },
+      });
+      return {
+        distributionSets: response.data.content,
+        totalDistributionSets: response.data.total,
+      };
     } catch (error) {
       console.error('Failed to fetch distribution sets', error);
       throw error;

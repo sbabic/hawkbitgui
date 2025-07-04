@@ -7,24 +7,24 @@ import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
 const DEFAULT_QUERY_PARAMS: RolloutsQueryParams = { representation: Representation.FULL };
 
-export type GetRolloutsOutput = {
+export type UseGetPaginatedRolloutsOutput = {
   rollouts: Rollout[];
   totalRollouts: number;
 };
 
-type UseGetRolloutsParams = {
+type UseGetPaginatedRolloutsParams = {
   queryParams?: RolloutsQueryParams; // query params are not going to retrigger a refetch because they are not part of the query key
-  queryOptions?: Omit<UseQueryOptions<GetRolloutsOutput, ApiError, GetRolloutsOutput>, 'queryKey' | 'queryFn'>;
+  queryOptions?: Omit<UseQueryOptions<UseGetPaginatedRolloutsOutput, ApiError, UseGetPaginatedRolloutsOutput>, 'queryKey' | 'queryFn'>;
 };
 
-export const useGetRollouts = (params?: UseGetRolloutsParams) => {
+export const useGetPaginatedRollouts = (params?: UseGetPaginatedRolloutsParams) => {
   const { queryParams = DEFAULT_QUERY_PARAMS, queryOptions } = params ?? {};
   const page = useRolloutsTableStore((state) => state.page);
   const size = useRolloutsTableStore((state) => state.size);
 
   const queryKey = ['rollouts', page, size];
 
-  const { data, isLoading, error, refetch } = useQuery<GetRolloutsOutput, ApiError>({
+  const { data, isLoading, error, refetch } = useQuery<UseGetPaginatedRolloutsOutput, ApiError>({
     queryKey,
     queryFn: () =>
       RolloutsService.fetchRollouts({

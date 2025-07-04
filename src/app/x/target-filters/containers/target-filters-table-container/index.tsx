@@ -3,16 +3,23 @@
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import TargetFiltersTable from '../../components/target-filters-table';
 import { useDeleteTargetFilter } from '../../hooks/use-delete-target-filter';
-import { useGetTargetFilters } from '../../hooks/use-get-target-filters';
 import { useConfirmDialog } from '@/app/hooks';
 import { TargetFilter } from '@/entities/target-filter';
 import { useTargetFiltersPageStore } from '@/stores/target-filters-page-store';
 import { useState } from 'react';
 import { Modal } from '@/app/components/modal';
 import AutoAssignDistributionFormContainer from '../auto-assign-distribution-form-container';
+import { useGetPaginatedTargetFilters } from '../../hooks/use-get-paginated-target-filters';
+import { useTargetFiltersTableStore } from '@/stores/target-filters-table-store';
 
 export default function TargetFiltersTableContainer() {
-  const { data: targetFilters, refetch, isLoading } = useGetTargetFilters();
+  const { data: targetFiltersData, refetch, isLoading } = useGetPaginatedTargetFilters();
+  const { targetFilters, totalTargetFilters } = targetFiltersData ?? { targetFilters: [], totalTargetFilters: 0 };
+
+  const page = useTargetFiltersTableStore((state) => state.page);
+  const size = useTargetFiltersTableStore((state) => state.size);
+  const setPage = useTargetFiltersTableStore((state) => state.setPage);
+
   const setSelectedTargetFilter = useTargetFiltersPageStore((state) => state.setSelectedTargetFilter);
   const setAutoAssign = useTargetFiltersPageStore((state) => state.setAutoAssign);
 
@@ -48,9 +55,15 @@ export default function TargetFiltersTableContainer() {
       <TargetFiltersTable
         modules={targetFilters ?? []}
         isLoading={isLoading}
+        pagination={{
+          page,
+          size,
+          totalItems: totalTargetFilters,
+        }}
         onNameClick={setSelectedTargetFilter}
         onDelete={handleDelete}
         onAutoAssignDistributionClick={openAutoAssignDistribution}
+        onPageChange={setPage}
       />
       <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
         <ConfirmDeleteModal.Message>

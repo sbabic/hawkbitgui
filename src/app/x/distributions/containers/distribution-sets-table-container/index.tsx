@@ -1,6 +1,5 @@
 'use client';
 
-import { useGetDistributionSets } from '../../hooks/use-get-distribution-sets';
 import DistributionSetsTable from '../../components/distribution-sets-table';
 import { Modal } from '@/app/components/modal';
 import { useEffect, useState } from 'react';
@@ -11,9 +10,16 @@ import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useConfirmDialog } from '@/app/hooks';
 import { useDeleteDistributionSet } from '../../hooks/use-delete-distribution-set';
 import EditDistributionSetFormContainer from '../edit-distribution-set-form-container';
+import { useGetPaginatedDistributionSets } from '../../hooks/use-get-paginated-distribution-sets';
 
 export default function DistributionSetsTableContainer() {
-  const { data: distributionSets, refetch, isLoading } = useGetDistributionSets();
+  const { data: distributionSetsData, refetch, isLoading } = useGetPaginatedDistributionSets();
+  const { distributionSets, totalDistributionSets } = distributionSetsData ?? { distributionSets: [], totalDistributionSets: 0 };
+
+  const page = useDistributionsSetsTableStore((state) => state.page);
+  const size = useDistributionsSetsTableStore((state) => state.size);
+  const setPage = useDistributionsSetsTableStore((state) => state.setPage);
+
   const setSelectedDistribution = useDistributionsSetsTableStore((state) => state.setSelectedDistribution);
   const selectedDistribution = useDistributionsSetsTableStore((state) => state.selectedDistribution);
 
@@ -64,9 +70,15 @@ export default function DistributionSetsTableContainer() {
       <DistributionSetsTable
         distributionSets={distributionSets ?? []}
         isLoading={isLoading}
+        pagination={{
+          page,
+          size,
+          totalItems: totalDistributionSets,
+        }}
         onNameClick={handleNameClick}
         onEditClick={handleEditClick}
         onDeleteClick={handleDeleteClick}
+        onPageChange={setPage}
       />
       {isEditDistributionSetFormOpen && selectedDistribution && (
         <Modal isOpen={isEditDistributionSetFormOpen} onClose={closeEditForm}>

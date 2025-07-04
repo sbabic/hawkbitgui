@@ -5,13 +5,13 @@ import DistributionSetModules from '../../components/distribution-set-modules';
 import { SoftwareModule } from '@/entities';
 import { useConfirmDialog } from '@/app/hooks';
 import { useUnassignModuleToDistributionSet } from '../../hooks/use-unassign-module-to-distribution-set';
-import { useGetDistributionSets } from '../../hooks/use-get-distribution-sets';
 import ConfirmationModal from '@/app/components/confirmation-modal';
+import { useGetPaginatedDistributionSets } from '../../hooks/use-get-paginated-distribution-sets';
 
 export default function DistributionSetModulesContainer() {
   const selectedDistribution = useDistributionsSetsTableStore((state) => state.selectedDistribution);
 
-  const { refetch: refetchDistributionSets } = useGetDistributionSets({ queryOptions: { enabled: false } });
+  const { refetch: refetchDistributionSets } = useGetPaginatedDistributionSets({ queryOptions: { enabled: false } });
   const { unassignModuleToDistributionSet } = useUnassignModuleToDistributionSet();
 
   const confirmDialog = useConfirmDialog<SoftwareModule>();

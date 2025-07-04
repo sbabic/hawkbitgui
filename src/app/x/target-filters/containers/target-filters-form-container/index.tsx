@@ -1,10 +1,10 @@
 import { useCreateTargetFilters } from '../../hooks/use-create-target-filter';
-import { useGetTargetFilters } from '../../hooks/use-get-target-filters';
 import TargetFiltersForm from '../../components/target-filters-form';
 import { CreateTargetFilterFormData } from '../../components/target-filters-form/types';
 import { TargetFilter } from '@/entities/target-filter';
 import { useTargetFiltersPageStore } from '@/stores/target-filters-page-store';
 import { useUpdateTargetFilter } from '../../hooks/use-update-target-filter';
+import { useGetPaginatedTargetFilters } from '../../hooks/use-get-paginated-target-filters';
 
 export interface TargetFiltersFormContainerProps {
   targetFilter?: TargetFilter;
@@ -12,7 +12,7 @@ export interface TargetFiltersFormContainerProps {
 }
 
 export default function TargetFiltersFormContainer({ targetFilter, onSubmitSuccess }: TargetFiltersFormContainerProps) {
-  const { refetch } = useGetTargetFilters({ queryOptions: { enabled: false } });
+  const { refetch } = useGetPaginatedTargetFilters({ queryOptions: { enabled: false } });
   const { createTargetFilter } = useCreateTargetFilters();
   const { updateTargetFilter } = useUpdateTargetFilter();
 

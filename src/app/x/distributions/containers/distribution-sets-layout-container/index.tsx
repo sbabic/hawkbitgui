@@ -10,7 +10,7 @@ import { useConfirmDialog } from '@/app/hooks';
 import ConfirmationModal from '@/app/components/confirmation-modal';
 import { toast } from 'react-hot-toast';
 import { useAssignModuleToDistributionSet } from '../../hooks/use-assign-module-to-distribution-set';
-import { useGetDistributionSets } from '../../hooks/use-get-distribution-sets';
+import { useGetPaginatedDistributionSets } from '../../hooks/use-get-paginated-distribution-sets';
 
 export default function DistributionSetsLayoutContainer() {
   const mouseSensor = useSensor(MouseSensor, {
@@ -27,7 +27,7 @@ export default function DistributionSetsLayoutContainer() {
   const sensors = useSensors(mouseSensor, touchSensor);
 
   const { assignModuleToDistributionSet } = useAssignModuleToDistributionSet();
-  const { refetch: refetchDistributionSets } = useGetDistributionSets({ queryOptions: { enabled: false } });
+  const { refetch: refetchDistributionSets } = useGetPaginatedDistributionSets({ queryOptions: { enabled: false } });
 
   const [isDragging, setIsDragging] = useState(false);
   const draggedEntity = useRef<'Distribution' | 'Module' | undefined>(undefined);

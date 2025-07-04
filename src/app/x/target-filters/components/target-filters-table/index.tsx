@@ -12,16 +12,27 @@ import DownloadIcon from '@/app/components/icons/download-icon';
 import ClockCloudIcon from '@/app/components/icons/clock-cloud-icon';
 import ActionIconButtons from '@/app/components/action-icon-buttons';
 import TooltipIconButton from '@/app/components/tooltip-icon-button';
+import { Pagination } from '@/types/utils/pagination';
 
 interface TargetFiltersTableProps {
   modules: TargetFilter[];
   isLoading?: boolean;
+  pagination: Pagination;
   onNameClick: (targetFilter: TargetFilter) => void;
   onDelete: (targetFilter: TargetFilter) => void;
   onAutoAssignDistributionClick: (targetFilter: TargetFilter) => void;
+  onPageChange: (page: number) => void;
 }
 
-export default function TargetFiltersTable({ modules, isLoading = false, onNameClick, onDelete, onAutoAssignDistributionClick }: TargetFiltersTableProps) {
+export default function TargetFiltersTable({
+  modules,
+  isLoading = false,
+  pagination,
+  onNameClick,
+  onDelete,
+  onAutoAssignDistributionClick,
+  onPageChange,
+}: TargetFiltersTableProps) {
   const columnHelper = createColumnHelper<TargetFilter>();
 
   const fullColumns = useMemo(
@@ -95,5 +106,5 @@ export default function TargetFiltersTable({ modules, isLoading = false, onNameC
     [columnHelper, onDelete, onNameClick, onAutoAssignDistributionClick]
   );
 
-  return <Table columns={fullColumns} data={modules} isLoading={isLoading} />;
+  return <Table columns={fullColumns} data={modules} isLoading={isLoading} pagination={pagination} onPageChange={onPageChange} />;
 }

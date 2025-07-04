@@ -1,16 +1,27 @@
 import axiosInstance from '@/lib/axios';
 import { TargetFilter } from '@/entities/target-filter';
-import { CreateTargetFilterInput, GetTargetFiltersResponse, UpdateTargetFilterInput } from './target-filters-service.types';
+import {
+  CreateTargetFilterInput,
+  FetchTargetFiltersInput,
+  FetchTargetFiltersOutput,
+  GetTargetFiltersResponse,
+  UpdateTargetFilterInput,
+} from './target-filters-service.types';
 import { RolloutType } from '@/entities/rollout';
 import { Representation } from './shared';
 
 export class TargetFiltersService {
-  static async fetchTargetFilters(): Promise<TargetFilter[]> {
+  static async fetchTargetFilters(input?: FetchTargetFiltersInput): Promise<FetchTargetFiltersOutput> {
+    const { queryParams } = input ?? {};
     try {
       const response = await axiosInstance.get<GetTargetFiltersResponse>(`/targetfilters`, {
-        params: { representation: Representation.FULL },
+        params: { representation: Representation.FULL, ...queryParams },
       });
-      return this.mapResponseToDomain(response.data);
+      const targetFilters = await this.mapResponseToDomain(response.data);
+      return {
+        targetFilters,
+        totalTargetFilters: response.data.total,
+      };
     } catch (error) {
       console.error('Failed to fetch target filters', error);
       throw error;

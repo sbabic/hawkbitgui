@@ -2,7 +2,7 @@
 
 import { Rollout, RolloutStatus } from '@/entities/rollout';
 import RolloutsTable from '../../components/rollouts-table';
-import { GetRolloutsOutput, useGetRollouts } from '../../hooks/use-get-rollouts';
+import { UseGetPaginatedRolloutsOutput, useGetPaginatedRollouts } from '../../hooks/use-get-paginated-rollouts';
 import { useConfirmDialog } from '@/app/hooks';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useDeleteRollout } from '../../hooks/use-delete-rollout';
@@ -24,9 +24,9 @@ export default function RolloutsTableContainer() {
     data: rolloutsData,
     refetch,
     isLoading,
-  } = useGetRollouts({
+  } = useGetPaginatedRollouts({
     queryOptions: {
-      refetchInterval: (query: Query<GetRolloutsOutput, ApiError>) => {
+      refetchInterval: (query: Query<UseGetPaginatedRolloutsOutput, ApiError>) => {
         const currentQueryData = query.state.data?.rollouts;
         if (
           currentQueryData?.some(

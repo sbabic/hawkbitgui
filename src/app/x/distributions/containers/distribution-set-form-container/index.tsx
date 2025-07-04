@@ -1,8 +1,8 @@
 import DistributionSetForm from '../../components/distribution-set-form';
 import { useCreateDistributionSet } from '../../hooks/use-create-distribution-set';
-import { useGetDistributionSets } from '../../hooks/use-get-distribution-sets';
 import { useGetDistributionSetTypes } from '@/app/x/distribution-set-types/hooks/use-get-distribution-set-types';
 import { CreateDistributionSetFormData } from '../../components/distribution-set-form/types';
+import { useGetPaginatedDistributionSets } from '../../hooks/use-get-paginated-distribution-sets';
 
 export interface DistributionSetFormContainerProps {
   onSubmitSuccess: () => void;
@@ -10,7 +10,7 @@ export interface DistributionSetFormContainerProps {
 }
 
 export default function DistributionSetFormContainer({ onSubmitSuccess, onCancel }: DistributionSetFormContainerProps) {
-  const { refetch } = useGetDistributionSets({ queryOptions: { enabled: false } });
+  const { refetch } = useGetPaginatedDistributionSets({ queryOptions: { enabled: false } });
   const { data: distributionSetTypes } = useGetDistributionSetTypes();
   const { createDistributionSet } = useCreateDistributionSet();
 

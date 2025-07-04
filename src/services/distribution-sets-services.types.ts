@@ -19,7 +19,7 @@ export interface GetDistributionSetsInput {
 
 export type GetDistributionSetsResponse = ApiResponse<Distribution[]>;
 
-export type GetDistributionSetsOutput = Distribution[];
+export type GetDistributionSetsOutput = { distributionSets: Distribution[]; totalDistributionSets: number };
 
 export type GetAssignedSoftwareModulesResponse = ApiResponse<SoftwareModule[]>;
 

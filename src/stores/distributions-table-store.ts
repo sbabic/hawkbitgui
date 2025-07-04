@@ -37,8 +37,8 @@ export const useDistributionsTableStore = create<DistributionsTableState>((set) 
     set({ isLoading: true });
     try {
       const filters = useDistributionsFiltersStore.getState().filters;
-      const response = await DistributionSetsService.fetchDistributionSets({ filters: Object.values(filters) });
-      set({ distributions: response, filteredDistributions: response });
+      const { distributionSets } = await DistributionSetsService.fetchDistributionSets({ filters: Object.values(filters) });
+      set({ distributions: distributionSets, filteredDistributions: distributionSets });
     } catch (error) {
       console.error('Failed to fetch distributions', error);
     } finally {
@@ -48,8 +48,8 @@ export const useDistributionsTableStore = create<DistributionsTableState>((set) 
   pollDistributions: async () => {
     try {
       const filters = useDistributionsFiltersStore.getState().filters;
-      const response = await DistributionSetsService.fetchDistributionSets({ filters: Object.values(filters) });
-      set({ distributions: response, filteredDistributions: response });
+      const { distributionSets } = await DistributionSetsService.fetchDistributionSets({ filters: Object.values(filters) });
+      set({ distributions: distributionSets, filteredDistributions: distributionSets });
     } catch (error) {
       console.error('Failed to poll targets', error);
     }

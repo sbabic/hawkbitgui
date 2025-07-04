@@ -9,16 +9,27 @@ import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import TooltipIconButton from '@/app/components/tooltip-icon-button';
 import ActionIconButtons from '@/app/components/action-icon-buttons';
+import { Pagination } from '@/types/utils/pagination';
 
 export type DistributionSetsTableProps = {
   distributionSets: Distribution[];
   isLoading?: boolean;
+  pagination: Pagination;
   onNameClick: (distributionSet: Distribution) => void;
   onEditClick: (distributionSet: Distribution) => void;
   onDeleteClick: (distributionSet: Distribution) => void;
+  onPageChange: (page: number) => void;
 };
 
-export default function DistributionSetsTable({ distributionSets, isLoading = false, onNameClick, onEditClick, onDeleteClick }: DistributionSetsTableProps) {
+export default function DistributionSetsTable({
+  distributionSets,
+  isLoading = false,
+  pagination,
+  onNameClick,
+  onEditClick,
+  onDeleteClick,
+  onPageChange,
+}: DistributionSetsTableProps) {
   const columnHelper = createColumnHelper<Distribution>();
 
   const fullColumns = useMemo(() => {
@@ -48,5 +59,15 @@ export default function DistributionSetsTable({ distributionSets, isLoading = fa
     ];
   }, [columnHelper, onNameClick, onEditClick, onDeleteClick]);
 
-  return <Table columns={fullColumns} draggable={true} selectable={true} data={distributionSets} isLoading={isLoading} />;
+  return (
+    <Table
+      columns={fullColumns}
+      draggable={true}
+      selectable={true}
+      data={distributionSets}
+      isLoading={isLoading}
+      pagination={pagination}
+      onPageChange={onPageChange}
+    />
+  );
 }

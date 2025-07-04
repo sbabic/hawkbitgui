@@ -1,7 +1,6 @@
 import { useGetDistributionSets } from '@/app/x/distributions/hooks/use-get-distribution-sets';
 import CreateRolloutForm from '../../components/create-rollout-form';
 import { useCreateRollout } from '../../hooks/use-create-rollout';
-import { useGetRollouts } from '../../hooks/use-get-rollouts';
 import { CreateRolloutFormData } from '../../components/create-rollout-form/types';
 import { useGetTargetFilters } from '@/app/x/target-filters/hooks/use-get-target-filters';
 import { mapFormDataToCreateRolloutInput } from '../../utils/map-rollout-form-data-to-api-input';
@@ -10,6 +9,7 @@ import { mapRolloutToFormData } from '../../utils/map-rollout-to-form-data';
 import { useGetRolloutDeployGroups } from '../../hooks/use-get-rollout-deploy-groups';
 import React, { useMemo } from 'react';
 import { isEqual } from 'lodash-es';
+import { useGetPaginatedRollouts } from '../../hooks/use-get-paginated-rollouts';
 
 export interface CopyRolloutFormContainerProps {
   rollout: Rollout;
@@ -18,7 +18,7 @@ export interface CopyRolloutFormContainerProps {
 }
 
 function CopyRolloutFormContainer({ rollout, onSubmitSuccess, onCancel }: CopyRolloutFormContainerProps) {
-  const { refetch } = useGetRollouts({ queryOptions: { enabled: false } });
+  const { refetch } = useGetPaginatedRollouts({ queryOptions: { enabled: false } });
   const { data: distributionSets } = useGetDistributionSets();
   const { data: targetFilters } = useGetTargetFilters();
 

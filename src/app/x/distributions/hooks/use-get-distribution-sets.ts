@@ -13,7 +13,10 @@ export const useGetDistributionSets = (params?: UseGetDistributionSetsParams) =>
 
   return useQuery<Distribution[], ApiError>({
     queryKey,
-    queryFn: () => DistributionSetsService.fetchDistributionSets(),
+    queryFn: async () => {
+      const { distributionSets } = await DistributionSetsService.fetchDistributionSets();
+      return distributionSets;
+    },
     ...queryOptions,
   });
 };

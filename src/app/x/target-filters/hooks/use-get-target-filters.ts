@@ -13,7 +13,10 @@ export const useGetTargetFilters = (params?: UseGetTargetFiltersParams) => {
 
   const { data, isLoading, error, refetch } = useQuery<TargetFilter[], ApiError>({
     queryKey,
-    queryFn: () => TargetFiltersService.fetchTargetFilters(),
+    queryFn: async () => {
+      const { targetFilters } = await TargetFiltersService.fetchTargetFilters();
+      return targetFilters;
+    },
     ...queryOptions,
   });
 

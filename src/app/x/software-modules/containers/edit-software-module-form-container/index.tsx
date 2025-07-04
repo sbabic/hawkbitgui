@@ -1,5 +1,5 @@
 import SoftwareModuleForm from '../../components/software-module-form';
-import { useGetSoftwareModules } from '../../hooks/use-get-software-modules';
+import { useGetPaginatedSoftwareModules } from '../../hooks/use-get-paginated-software-modules';
 import { useGetSoftwareModuleTypes } from '@/app/x/software-module-types/hooks/use-get-software-module-types';
 import { CreateSoftwareModuleFormData } from '../../components/software-module-form/types';
 import { SoftwareModule } from '@/entities';
@@ -12,7 +12,7 @@ export interface EditSoftwareModuleFormContainerProps {
 }
 
 export default function EditSoftwareModuleFormContainer({ softwareModule, onSubmitSuccess, onCancel }: EditSoftwareModuleFormContainerProps) {
-  const { refetch } = useGetSoftwareModules({ queryOptions: { enabled: false } });
+  const { refetch } = useGetPaginatedSoftwareModules({ queryOptions: { enabled: false } });
   const { updateSoftwareModule } = useUpdateSoftwareModule();
 
   const { data: softwareModuleTypes } = useGetSoftwareModuleTypes();

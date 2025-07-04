@@ -1,8 +1,8 @@
 import SoftwareModuleForm from '../../components/software-module-form';
-import { useGetSoftwareModules } from '../../hooks/use-get-software-modules';
 import { useCreateSoftwareModule } from '../../hooks/use-create-software-module';
 import { useGetSoftwareModuleTypes } from '@/app/x/software-module-types/hooks/use-get-software-module-types';
 import { CreateSoftwareModuleFormData } from '../../components/software-module-form/types';
+import { useGetPaginatedSoftwareModules } from '../../hooks/use-get-paginated-software-modules';
 
 export interface SoftwareModuleFormContainerProps {
   onSubmitSuccess: () => void;
@@ -10,7 +10,7 @@ export interface SoftwareModuleFormContainerProps {
 }
 
 export default function SoftwareModuleFormContainer({ onSubmitSuccess, onCancel }: SoftwareModuleFormContainerProps) {
-  const { refetch } = useGetSoftwareModules({ queryOptions: { enabled: false } });
+  const { refetch } = useGetPaginatedSoftwareModules({ queryOptions: { enabled: false } });
   const { createSoftwareModule } = useCreateSoftwareModule();
 
   const { data: softwareModuleTypes } = useGetSoftwareModuleTypes();
