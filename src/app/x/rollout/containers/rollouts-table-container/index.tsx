@@ -2,7 +2,7 @@
 
 import { Rollout, RolloutStatus } from '@/entities/rollout';
 import RolloutsTable from '../../components/rollouts-table';
-import { useGetRollouts } from '../../hooks/use-get-rollouts';
+import { GetRolloutsOutput, useGetRollouts } from '../../hooks/use-get-rollouts';
 import { useConfirmDialog } from '@/app/hooks';
 import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
 import { useDeleteRollout } from '../../hooks/use-delete-rollout';
@@ -21,13 +21,13 @@ import { useRolloutsTableStore } from '@/stores/rollouts-table-store';
 
 export default function RolloutsTableContainer() {
   const {
-    data: rollouts,
+    data: rolloutsData,
     refetch,
     isLoading,
   } = useGetRollouts({
     queryOptions: {
-      refetchInterval: (query: Query<Rollout[], ApiError>) => {
-        const currentQueryData = query.state.data;
+      refetchInterval: (query: Query<GetRolloutsOutput, ApiError>) => {
+        const currentQueryData = query.state.data?.rollouts;
         if (
           currentQueryData?.some(
             (rollout) =>
@@ -46,10 +46,16 @@ export default function RolloutsTableContainer() {
       },
     },
   });
+  const { rollouts, totalRollouts } = rolloutsData ?? { rollouts: [], totalRollouts: 0 };
+
   const selectedRollout = useRolloutsPageStore((state) => state.selectedRollout);
   const setSelectedRollout = useRolloutsPageStore((state) => state.setSelectedRollout);
   const visibleColumns = useRolloutsTableStore((state) => state.visibleColumns);
   const setTableType = useRolloutsPageStore((state) => state.setTableType);
+  const page = useRolloutsTableStore((state) => state.page);
+  const size = useRolloutsTableStore((state) => state.size);
+  const setPage = useRolloutsTableStore((state) => state.setPage);
+
   const [isEditRolloutFormOpen, setIsEditRolloutFormOpen] = useState(false);
   const [isCopyRolloutFormOpen, setIsCopyRolloutFormOpen] = useState(false);
 
@@ -143,7 +149,18 @@ export default function RolloutsTableContainer() {
 
   return (
     <>
-      <RolloutsTable rollouts={rollouts ?? []} isLoading={isLoading} visibleColumns={visibleColumns} {...actions} />
+      <RolloutsTable
+        rollouts={rollouts ?? []}
+        isLoading={isLoading}
+        visibleColumns={visibleColumns}
+        pagination={{
+          page,
+          size,
+          totalItems: totalRollouts,
+        }}
+        onPageChange={setPage}
+        {...actions}
+      />
       {isEditRolloutFormOpen && (
         <Modal size='xl' isOpen={isEditRolloutFormOpen} onClose={closeEditForm}>
           <Modal.Header>Edit rollout</Modal.Header>

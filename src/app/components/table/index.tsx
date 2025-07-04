@@ -7,6 +7,8 @@ import styles from './styles.module.scss';
 import DraggableDroppableRow from '@/app/components/draggable-droppable-row';
 import { isEqual } from 'lodash-es';
 import { isDefined } from '@/utils/is-defined';
+import type { Pagination } from '@/types/utils/pagination';
+import PageNavigation from '../pagination';
 
 export type TableProps<T> = {
   data: T[];
@@ -16,8 +18,10 @@ export type TableProps<T> = {
   draggable?: boolean;
   selectable?: boolean;
   columnVisibility?: VisibilityState;
+  pagination?: Pagination;
   onRowClick?: (rowId: string, data: T, event: React.MouseEvent) => void;
   onRowSelect?: (rowId: string, data: T) => void;
+  onPageChange?: (page: number) => void;
 };
 
 export default function Table<T>({
@@ -28,8 +32,10 @@ export default function Table<T>({
   draggable = false,
   selectable = false,
   columnVisibility: defaultColumnVisibility,
+  pagination,
   onRowClick,
   onRowSelect,
+  onPageChange,
 }: TableProps<T>) {
   const uuid = useMemo(() => `table-${Math.random().toString(36).substr(2, 9)}`, []);
   const [selectedRows, setSelectedRows] = useState<Record<string, T>>({});
@@ -81,77 +87,80 @@ export default function Table<T>({
   };
 
   return (
-    <div className={`${styles.tableContainer} ${tableClassName}`}>
-      <div className={styles.table}>
-        <div className={styles.thead}>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <div className={styles.tr} key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <div
-                  className={styles.th}
-                  key={header.id}
-                  style={{
-                    width: header.getSize(),
-                    minWidth: header.column.columnDef.minSize,
-                    maxWidth: header.column.columnDef.maxSize,
-                  }}
-                >
-                  {header.isPlaceholder ? null : (
-                    <>
-                      {flexRender(header.column.columnDef.header, header.getContext())}
-                      {header.column.getCanResize() && (
-                        <div
-                          onMouseDown={header.getResizeHandler()}
-                          onTouchStart={header.getResizeHandler()}
-                          className={styles.resizer}
-                          style={{ cursor: 'col-resize' }}
-                        />
-                      )}
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+    <div className={styles.container}>
+      <div className={`${styles.tableContainer} ${tableClassName}`}>
+        <div className={styles.table}>
+          <div className={styles.thead}>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <div className={styles.tr} key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <div
+                    className={styles.th}
+                    key={header.id}
+                    style={{
+                      width: header.getSize(),
+                      minWidth: header.column.columnDef.minSize,
+                      maxWidth: header.column.columnDef.maxSize,
+                    }}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <>
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {header.column.getCanResize() && (
+                          <div
+                            onMouseDown={header.getResizeHandler()}
+                            onTouchStart={header.getResizeHandler()}
+                            className={styles.resizer}
+                            style={{ cursor: 'col-resize' }}
+                          />
+                        )}
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
 
-        <div className={styles.tbody}>
-          {!isLoading ? (
-            table.getRowModel().rows.map((row) => {
-              const isSelected = !!selectedRows[row.id];
-              return (
-                <DraggableDroppableRow
-                  className={styles.tr}
-                  key={row.id}
-                  id={`${uuid}-${row.id}`}
-                  dragData={{ ...selectedRows, [row.id]: row.original }}
-                  dropData={row.original}
-                  draggable={draggable}
-                  droppable={draggable}
-                  isSelected={isSelected}
-                  onClick={(event) => handleRowClick(row.id, row.original, event)}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <div
-                      className={styles.td}
-                      key={cell.id}
-                      style={{
-                        width: cell.column.getSize(),
-                        minWidth: cell.column.columnDef.minSize,
-                        maxWidth: cell.column.columnDef.maxSize,
-                      }}
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </div>
-                  ))}
-                </DraggableDroppableRow>
-              );
-            })
-          ) : (
-            <Skeleton width={'100%'} height={50} count={5} />
-          )}
+          <div className={styles.tbody}>
+            {!isLoading ? (
+              table.getRowModel().rows.map((row) => {
+                const isSelected = !!selectedRows[row.id];
+                return (
+                  <DraggableDroppableRow
+                    className={styles.tr}
+                    key={row.id}
+                    id={`${uuid}-${row.id}`}
+                    dragData={{ ...selectedRows, [row.id]: row.original }}
+                    dropData={row.original}
+                    draggable={draggable}
+                    droppable={draggable}
+                    isSelected={isSelected}
+                    onClick={(event) => handleRowClick(row.id, row.original, event)}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <div
+                        className={styles.td}
+                        key={cell.id}
+                        style={{
+                          width: cell.column.getSize(),
+                          minWidth: cell.column.columnDef.minSize,
+                          maxWidth: cell.column.columnDef.maxSize,
+                        }}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </div>
+                    ))}
+                  </DraggableDroppableRow>
+                );
+              })
+            ) : (
+              <Skeleton width={'100%'} height={50} count={5} />
+            )}
+          </div>
         </div>
       </div>
+      {!isLoading && isDefined(pagination) && <PageNavigation pagination={pagination} onPageChange={onPageChange} />}
     </div>
   );
 }

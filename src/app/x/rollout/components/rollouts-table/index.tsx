@@ -18,11 +18,13 @@ import TooltipIconButton from '@/app/components/tooltip-icon-button';
 import ActionIconButtons from '@/app/components/action-icon-buttons';
 import { VisibleColumn } from '@/types/utils/visible-column';
 import dayjs from 'dayjs';
+import { Pagination } from '@/types/utils/pagination';
 
 export type RolloutsTableProps = {
   rollouts: Rollout[];
   isLoading?: boolean;
   visibleColumns: Record<string, VisibleColumn>;
+  pagination: Pagination;
   onRolloutNameClick: (rollout: Rollout) => void;
   onPlayClick: (rollout: Rollout) => void;
   onPauseClick: (rollout: Rollout) => void;
@@ -31,12 +33,14 @@ export type RolloutsTableProps = {
   onEditClick: (rollout: Rollout) => void;
   onCopyClick: (rollout: Rollout) => void;
   onDeleteClick: (rollout: Rollout) => void;
+  onPageChange: (page: number) => void;
 };
 
 export default function RolloutsTable({
   rollouts = [],
   isLoading = false,
   visibleColumns,
+  pagination,
   onRolloutNameClick,
   onPlayClick,
   onPauseClick,
@@ -45,6 +49,7 @@ export default function RolloutsTable({
   onEditClick,
   onCopyClick,
   onDeleteClick,
+  onPageChange,
 }: RolloutsTableProps) {
   const columnHelper = createColumnHelper<Rollout>();
 
@@ -241,5 +246,7 @@ export default function RolloutsTable({
     isActionAllowed,
   ]);
 
-  return <Table columns={columns} data={rollouts} isLoading={isLoading} columnVisibility={columnVisibility} />;
+  return (
+    <Table columns={columns} data={rollouts} isLoading={isLoading} columnVisibility={columnVisibility} pagination={pagination} onPageChange={onPageChange} />
+  );
 }

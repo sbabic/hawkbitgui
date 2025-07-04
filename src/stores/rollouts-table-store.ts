@@ -3,11 +3,16 @@ import { RolloutKey } from '@/entities/rollout';
 import { VisibleColumn } from '@/types/utils/visible-column';
 
 interface RolloutsTableState {
+  page: number;
+  size: number;
   visibleColumns: Partial<Record<RolloutKey, VisibleColumn>>;
+  setPage: (page: number) => void;
   setVisibleColumns: (columns: Record<string, VisibleColumn>) => void;
 }
 
 export const useRolloutsTableStore = create<RolloutsTableState>((set) => ({
+  page: 0,
+  size: 20,
   visibleColumns: {
     description: {
       id: 'description',
@@ -74,6 +79,9 @@ export const useRolloutsTableStore = create<RolloutsTableState>((set) => ({
       label: 'Last modified at',
       isSelected: false,
     },
+  },
+  setPage: (page) => {
+    set({ page });
   },
   setVisibleColumns: (columns) => {
     set({ visibleColumns: columns });

@@ -5,6 +5,9 @@ import { Representation } from './shared';
 
 export interface RolloutsQueryParams {
   representation?: Representation;
+  offset?: number;
+  limit?: number;
+  sort?: string;
 }
 
 export class RolloutsService {
@@ -18,12 +21,15 @@ export class RolloutsService {
     }
   }
 
-  static async fetchRollouts({ queryParams }: { queryParams?: RolloutsQueryParams }): Promise<Rollout[]> {
+  static async fetchRollouts({ queryParams }: { queryParams?: RolloutsQueryParams }): Promise<{ rollouts: Rollout[]; totalRollouts: number }> {
     try {
       const response = await axiosInstance.get<GetRolloutsResponse>(`/rollouts`, {
         params: queryParams && { ...queryParams },
       });
-      return response.data.content;
+      return {
+        rollouts: response.data.content,
+        totalRollouts: response.data.total,
+      };
     } catch (error) {
       console.error('Failed to fetch rollouts', error);
       throw error;

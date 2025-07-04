@@ -1,5 +1,11 @@
 @use 'src/app/styles/variables' as *;
 
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .tableContainer {
   display: flex;
   width: 100%;

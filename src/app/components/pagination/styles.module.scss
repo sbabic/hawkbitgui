@@ -1,0 +1,26 @@
+@use 'src/app/styles/variables' as *;
+
+.pagination {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  color: $text-disabled-color;
+  margin-top: 24px;
+
+  .actions {
+    color: $icon-disabled-color;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .backIcon {
+      transform: rotate(90deg);
+    }
+
+    .forwardIcon {
+      transform: rotate(-90deg);
+    }
+  }
+}
