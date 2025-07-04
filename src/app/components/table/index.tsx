@@ -6,6 +6,7 @@ import Skeleton from 'react-loading-skeleton';
 import styles from './styles.module.scss';
 import DraggableDroppableRow from '@/app/components/draggable-droppable-row';
 import { isEqual } from 'lodash-es';
+import { isDefined } from '@/utils/is-defined';
 
 export type TableProps<T> = {
   data: T[];
@@ -50,8 +51,8 @@ export default function Table<T>({
   });
 
   useEffect(() => {
-    if (!isEqual(columnVisibility, defaultColumnVisibility)) {
-      setColumnVisibility(defaultColumnVisibility ?? {});
+    if (isDefined(defaultColumnVisibility) && !isEqual(columnVisibility, defaultColumnVisibility)) {
+      setColumnVisibility(defaultColumnVisibility);
     }
   }, [columnVisibility, defaultColumnVisibility]);
 
