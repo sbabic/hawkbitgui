@@ -98,8 +98,12 @@ export interface Rollout {
   createdAt: number;
   lastModifiedBy: string;
   lastModifiedAt: number;
+  approvalRemark: string;
+  approveDecidedBy: string;
   _links: RolloutLinks;
 }
+
+export type RolloutKey = keyof Rollout;
 
 export interface RolloutLinks {
   start: {

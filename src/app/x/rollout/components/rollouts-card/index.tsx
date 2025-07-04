@@ -4,7 +4,6 @@ import Card from '@/app/components/card';
 import Button from '@/app/components/button';
 import IconButton from '@/app/components/icon-button';
 import SearchIcon from '@/app/components/icons/search-icon';
-import ChevronDownIcon from '@/app/components/icons/chevron-down-icon';
 import RolloutsTableContainer from '../../containers/rollouts-table-container';
 import PlusIcon from '@/app/components/icons/plus-icon';
 import { Modal } from '@/app/components/modal';
@@ -16,12 +15,16 @@ import RolloutDeployGroupDetailsContainer from '../../containers/rollout-deploy-
 import { RolloutsDeployGroupTargetDetailsCardHeader } from '../rollout-deploy-group-target-details-header';
 import CreateRolloutFormContainer from '../../containers/create-rollout-form-container';
 import StaticCard from '@/app/components/static-card';
+import ManageColumnsButton from '@/app/components/manage-columns-button';
+import { useRolloutsTableStore } from '@/stores/rollouts-table-store';
 
 export default function RolloutsCard() {
   const [isCreateRolloutFormOpen, setIsCreateRolloutFormOpen] = useState(false);
   const selectedRollout = useRolloutsPageStore((state) => state.selectedRollout);
   const selectedDeployGroup = useRolloutsPageStore((state) => state.selectedDeployGroup);
   const tableType = useRolloutsPageStore((state) => state.tableType);
+  const visibleColumns = useRolloutsTableStore((state) => state.visibleColumns);
+  const setVisibleColumns = useRolloutsTableStore((state) => state.setVisibleColumns);
   const setTableType = useRolloutsPageStore((state) => state.setTableType);
 
   const openForm = () => {
@@ -57,9 +60,7 @@ export default function RolloutsCard() {
             <Button leftIcon={<PlusIcon width={18} height={18} />} onClick={openForm}>
               Create new rollout
             </Button>
-            <Button variant='ghost' rightIcon={<ChevronDownIcon width={18} height={18} />}>
-              Manage columns
-            </Button>
+            <ManageColumnsButton columns={visibleColumns} setVisibleColumns={setVisibleColumns} />
           </StaticCard.Actions>
         </StaticCard.Header>
         <Card.Body>

@@ -16,10 +16,13 @@ import { RolloutStatusCell } from './components/rollout-status-cell';
 import Button from '@/app/components/button';
 import TooltipIconButton from '@/app/components/tooltip-icon-button';
 import ActionIconButtons from '@/app/components/action-icon-buttons';
+import { VisibleColumn } from '@/types/utils/visible-column';
+import dayjs from 'dayjs';
 
 export type RolloutsTableProps = {
   rollouts: Rollout[];
   isLoading?: boolean;
+  visibleColumns: Record<string, VisibleColumn>;
   onRolloutNameClick: (rollout: Rollout) => void;
   onPlayClick: (rollout: Rollout) => void;
   onPauseClick: (rollout: Rollout) => void;
@@ -33,6 +36,7 @@ export type RolloutsTableProps = {
 export default function RolloutsTable({
   rollouts = [],
   isLoading = false,
+  visibleColumns,
   onRolloutNameClick,
   onPlayClick,
   onPauseClick,
@@ -76,6 +80,10 @@ export default function RolloutsTable({
     [isActionAllowed]
   );
 
+  const columnVisibility = useMemo(() => {
+    return Object.fromEntries(Object.entries(visibleColumns).map(([id, column]) => [id, column.isSelected]));
+  }, [visibleColumns]);
+
   const columns = useMemo(() => {
     return [
       columnHelper.accessor('name', {
@@ -87,7 +95,13 @@ export default function RolloutsTable({
           </Button>
         ),
       }),
+      columnHelper.accessor('description', {
+        header: 'Description',
+        size: 270,
+        cell: (cell) => cell.getValue(),
+      }),
       columnHelper.accessor('_links.distributionset.name', {
+        id: '_links.distributionset.name',
         header: 'Distribution set',
         size: 180,
         cell: (cell) => cell.getValue(),
@@ -96,6 +110,11 @@ export default function RolloutsTable({
         header: 'Status',
         size: 100,
         cell: (cell) => <RolloutStatusCell status={cell.getValue()} />,
+      }),
+      columnHelper.accessor('type', {
+        header: 'Type',
+        size: 100,
+        cell: (cell) => cell.getValue(),
       }),
       columnHelper.accessor('totalTargetsPerStatus', {
         header: 'Detail status',
@@ -111,6 +130,36 @@ export default function RolloutsTable({
         header: 'Targets',
         size: 100,
         cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.accessor('approveDecidedBy', {
+        header: 'Decided by',
+        size: 120,
+        cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.accessor('approvalRemark', {
+        header: 'Approval remark',
+        size: 160,
+        cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.accessor('createdBy', {
+        header: 'Created by',
+        size: 120,
+        cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.accessor('createdAt', {
+        header: 'Created at',
+        size: 120,
+        cell: (cell) => dayjs(cell.getValue()).format('ddd MMM DD HH:mm:ss YYYY'),
+      }),
+      columnHelper.accessor('lastModifiedBy', {
+        header: 'Last modified by',
+        size: 150,
+        cell: (cell) => cell.getValue(),
+      }),
+      columnHelper.accessor('lastModifiedAt', {
+        header: 'Last modified at',
+        size: 150,
+        cell: (cell) => dayjs(cell.getValue()).format('ddd MMM DD HH:mm:ss YYYY'),
       }),
       columnHelper.display({
         id: 'actions',
@@ -192,5 +241,5 @@ export default function RolloutsTable({
     isActionAllowed,
   ]);
 
-  return <Table columns={columns} data={rollouts} isLoading={isLoading} />;
+  return <Table columns={columns} data={rollouts} isLoading={isLoading} columnVisibility={columnVisibility} />;
 }

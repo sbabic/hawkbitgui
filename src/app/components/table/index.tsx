@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { useReactTable, getCoreRowModel, ColumnDef, flexRender } from '@tanstack/react-table';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useReactTable, getCoreRowModel, ColumnDef, flexRender, VisibilityState } from '@tanstack/react-table';
 import Skeleton from 'react-loading-skeleton';
 import styles from './styles.module.scss';
 import DraggableDroppableRow from '@/app/components/draggable-droppable-row';
+import { isEqual } from 'lodash-es';
 
 export type TableProps<T> = {
   data: T[];
@@ -13,6 +14,7 @@ export type TableProps<T> = {
   variant?: 'default' | 'unstyled';
   draggable?: boolean;
   selectable?: boolean;
+  columnVisibility?: VisibilityState;
   onRowClick?: (rowId: string, data: T, event: React.MouseEvent) => void;
   onRowSelect?: (rowId: string, data: T) => void;
 };
@@ -24,12 +26,14 @@ export default function Table<T>({
   variant = 'default',
   draggable = false,
   selectable = false,
+  columnVisibility: defaultColumnVisibility,
   onRowClick,
   onRowSelect,
 }: TableProps<T>) {
   const uuid = useMemo(() => `table-${Math.random().toString(36).substr(2, 9)}`, []);
   const [selectedRows, setSelectedRows] = useState<Record<string, T>>({});
   const [columnSizing, setColumnSizing] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const table = useReactTable({
     data,
@@ -37,9 +41,19 @@ export default function Table<T>({
     columnResizeMode: 'onChange',
     enableColumnResizing: true,
     getCoreRowModel: getCoreRowModel(),
-    state: { columnSizing },
+    state: {
+      columnSizing,
+      columnVisibility,
+    },
     onColumnSizingChange: setColumnSizing,
+    onColumnVisibilityChange: setColumnVisibility,
   });
+
+  useEffect(() => {
+    if (!isEqual(columnVisibility, defaultColumnVisibility)) {
+      setColumnVisibility(defaultColumnVisibility ?? {});
+    }
+  }, [columnVisibility, defaultColumnVisibility]);
 
   const tableClassName = variant === 'unstyled' ? styles.unstyledTable : styles.defaultTable;
 

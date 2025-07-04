@@ -17,6 +17,7 @@ import { ApiError } from '@/types/hawkbit-api/error';
 import { usePauseRollout } from '../../hooks/use-pause-rollout';
 import { useTriggerNextGroup } from '../../hooks/use-trigger-next-group';
 import { useApproveRollout } from '../../hooks/use-approve-rollout';
+import { useRolloutsTableStore } from '@/stores/rollouts-table-store';
 
 export default function RolloutsTableContainer() {
   const {
@@ -47,6 +48,7 @@ export default function RolloutsTableContainer() {
   });
   const selectedRollout = useRolloutsPageStore((state) => state.selectedRollout);
   const setSelectedRollout = useRolloutsPageStore((state) => state.setSelectedRollout);
+  const visibleColumns = useRolloutsTableStore((state) => state.visibleColumns);
   const setTableType = useRolloutsPageStore((state) => state.setTableType);
   const [isEditRolloutFormOpen, setIsEditRolloutFormOpen] = useState(false);
   const [isCopyRolloutFormOpen, setIsCopyRolloutFormOpen] = useState(false);
@@ -141,7 +143,7 @@ export default function RolloutsTableContainer() {
 
   return (
     <>
-      <RolloutsTable rollouts={rollouts ?? []} isLoading={isLoading} {...actions} />
+      <RolloutsTable rollouts={rollouts ?? []} isLoading={isLoading} visibleColumns={visibleColumns} {...actions} />
       {isEditRolloutFormOpen && (
         <Modal size='xl' isOpen={isEditRolloutFormOpen} onClose={closeEditForm}>
           <Modal.Header>Edit rollout</Modal.Header>

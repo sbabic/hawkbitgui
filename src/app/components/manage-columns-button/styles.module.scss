@@ -1,0 +1,54 @@
+@use '@/app/styles/variables' as *;
+
+.manageColumnsContainer {
+  position: relative;
+}
+
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.dialogContent {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 357px;
+  padding: 24px;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  z-index: 100;
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.dialogTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: $accent-color;
+  margin: 0;
+}
+
+.columnsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.actionsContainer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+}
