@@ -5,8 +5,13 @@ import { ActionLog } from '@/entities/action-log';
 
 export interface FetchTargetsInput {
   filters: FilterFiql[];
-  query?: string;
+  queryParams?: { offset?: number; limit?: number; sort?: string; query?: string };
 }
+
+export type FetchTargetsOutput = {
+  targets: Target[];
+  totalTargets: number;
+};
 
 export interface CreateTargetInput {
   name: string;

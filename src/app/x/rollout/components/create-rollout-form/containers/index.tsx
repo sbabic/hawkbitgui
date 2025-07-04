@@ -6,7 +6,7 @@ import FormControl from '@/app/components/form-control';
 import Select from '@/app/components/select';
 import { TargetFilter } from '@/entities/target-filter';
 import { useEffect, useState } from 'react';
-import { useGetTargets } from '@/app/x/deployment/hooks/use-get-targets';
+import { useGetPaginatedTargets } from '@/app/x/deployment/hooks/use-get-paginated-targets';
 
 interface SelectTargetFilterContainerProps {
   targetFilters: TargetFilter[];
@@ -16,10 +16,11 @@ interface SelectTargetFilterContainerProps {
 
 export function SelectTargetFilterContainer({ targetFilters, disabled = false, onSelectedTargetsChange }: SelectTargetFilterContainerProps) {
   const [targetFilterQuery, setTargetFilterQuery] = useState<string | undefined>(undefined);
-  const { data: selectedTargets } = useGetTargets({
+  const { data: selectedTargetsData } = useGetPaginatedTargets({
     queryParams: { q: targetFilterQuery },
     queryOptions: { enabled: !!targetFilterQuery },
   });
+  const { totalTargets: selectedTargetsCount } = selectedTargetsData ?? {};
 
   const {
     control,
@@ -27,11 +28,11 @@ export function SelectTargetFilterContainer({ targetFilters, disabled = false, o
   } = useFormContext<CreateRolloutFormData>();
 
   useEffect(() => {
-    if (selectedTargets) {
-      onSelectedTargetsChange(selectedTargets.length);
+    if (selectedTargetsCount) {
+      onSelectedTargetsChange(selectedTargetsCount);
       setTargetFilterQuery(undefined);
     }
-  }, [selectedTargets, onSelectedTargetsChange]);
+  }, [selectedTargetsCount, onSelectedTargetsChange]);
 
   const handleSelectTargetFilterQuery = (targetFilterQuery: string) => {
     setTargetFilterQuery(targetFilterQuery);

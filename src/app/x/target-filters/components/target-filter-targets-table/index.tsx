@@ -7,14 +7,17 @@ import { Target } from '@/entities';
 import dayjs from 'dayjs';
 import Button from '@/app/components/button';
 import TargetStatusCell from '@/app/components/target-status-cell';
+import { Pagination } from '@/types/utils/pagination';
 
 export type TargetFilterTargetsTableProps = {
   targets: Target[];
   isLoading?: boolean;
+  pagination: Pagination;
   onControllerIdClick: (controllerId: string) => void;
+  onPageChange: (page: number) => void;
 };
 
-export default function TargetFilterTargetsTable({ targets, isLoading = false, onControllerIdClick }: TargetFilterTargetsTableProps) {
+export default function TargetFilterTargetsTable({ targets, isLoading = false, pagination, onControllerIdClick, onPageChange }: TargetFilterTargetsTableProps) {
   const columnHelper = createColumnHelper<Target>();
 
   const columns = useMemo(() => {
@@ -60,5 +63,5 @@ export default function TargetFilterTargetsTable({ targets, isLoading = false, o
     ];
   }, [columnHelper, onControllerIdClick]);
 
-  return <Table columns={columns} data={targets} isLoading={isLoading} />;
+  return <Table columns={columns} data={targets} isLoading={isLoading} pagination={pagination} onPageChange={onPageChange} />;
 }

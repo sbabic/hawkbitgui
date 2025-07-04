@@ -4,6 +4,7 @@ import {
   AssignDistributionsToTargetInput,
   CreateTargetInput,
   FetchTargetsInput,
+  FetchTargetsOutput,
   GetActionLogOutput,
   GetActionLogResponse,
   GetActionsOutput,
@@ -21,15 +22,29 @@ import {
 } from '@/services/targets-service.types';
 
 export class TargetsService {
-  static async fetchTargets(input?: FetchTargetsInput): Promise<Target[]> {
+  static async fetchTargets(input?: FetchTargetsInput): Promise<FetchTargetsOutput> {
     try {
-      const { query, filters } = input ?? {};
-      let fiqlQueryParam = FilterFiql.parseFiltersToFiqlQueryParam(filters || []);
+      const { queryParams, filters } = input ?? {};
+      const { query, ...restQueryParams } = queryParams ?? {};
+      const fiqlQuery = FilterFiql.parseFiltersToFeedItemQueryLanguage(filters || []);
+
+      let q = '';
       if (query && query !== '') {
-        fiqlQueryParam = `q=${query}`;
+        q = query;
+      } else {
+        q = fiqlQuery;
       }
-      const response = await axiosInstance.get<GetTargetsResponse>(`/targets?${fiqlQueryParam}`);
-      return response.data.content;
+
+      const response = await axiosInstance.get<GetTargetsResponse>(`/targets`, {
+        params: {
+          ...restQueryParams,
+          ...(q ? { q } : {}),
+        },
+      });
+      return {
+        targets: response.data.content,
+        totalTargets: response.data.total,
+      };
     } catch (error) {
       console.error('Failed to fetch targets', error);
       throw error;

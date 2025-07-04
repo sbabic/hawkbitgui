@@ -23,8 +23,8 @@ export const useTargetsCustomsFiltersStore = create<TargetFiltersState>((set) =>
   resetFilters: () => set({ selectedFilters: [] }),
   fetchAllFilters: async () => {
     set({ isLoading: true });
-    const allFilters = await TargetFiltersService.fetchTargetFilters();
-    set({ allFilters, isLoading: false });
-    return allFilters;
+    const { targetFilters } = await TargetFiltersService.fetchTargetFilters();
+    set({ allFilters: targetFilters, isLoading: false });
+    return targetFilters;
   },
 }));

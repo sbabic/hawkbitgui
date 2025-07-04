@@ -45,8 +45,8 @@ export const useTargetsTableStore = create<TargetsTableState>((set) => ({
     set({ isLoading: true });
     try {
       const filters = useTargetsFiltersStore.getState().filters;
-      const response = await TargetsService.fetchTargets({ filters: Object.values(filters) });
-      set({ targets: response, filteredTargets: response });
+      const { targets } = await TargetsService.fetchTargets({ filters: Object.values(filters) });
+      set({ targets, filteredTargets: targets });
     } catch (error) {
       console.error('Failed to fetch targets', error);
     } finally {
@@ -57,8 +57,8 @@ export const useTargetsTableStore = create<TargetsTableState>((set) => ({
   pollTargets: async () => {
     try {
       const filters = useTargetsFiltersStore.getState().filters;
-      const response = await TargetsService.fetchTargets({ filters: Object.values(filters) });
-      set({ targets: response, filteredTargets: response });
+      const { targets } = await TargetsService.fetchTargets({ filters: Object.values(filters) });
+      set({ targets, filteredTargets: targets });
     } catch (error) {
       console.error('Failed to poll targets', error);
     }
