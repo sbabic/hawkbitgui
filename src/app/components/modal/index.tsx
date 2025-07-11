@@ -4,11 +4,12 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import IconButton from '@/app/components/icon-button';
 import XIcon from '@/app/components/icons/x-icon';
+import Text from '../text';
 
 function ModalHeader({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.modalHeader}>
-      <h2>{children}</h2>
+      <Text variant='heading-2'>{children}</Text>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { useDistributionsSetsTableStore } from '@/stores/distribution-sets-table
 import { useGetDistributionSetTags } from '../../hooks/use-get-distribution-set-tags';
 import { useGetDistributionSetTagsById } from '../../hooks/use-get-distribution-set-tags-by-id';
 import { isDefined } from '@/utils/is-defined';
-import styles from './styles.module.scss';
+import Text from '@/app/components/text';
 
 export default function DistributionSetTagsSelectContainer() {
   const selectedDistribution = useDistributionsSetsTableStore((state) => state.selectedDistribution);
@@ -45,8 +45,8 @@ export default function DistributionSetTagsSelectContainer() {
   );
 
   return (
-    <div className={styles.container}>
-      <h2>Tags</h2>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <Text variant='heading-2'>Tags</Text>
       <MultipleSelect
         options={allTags ?? []}
         selectedOptions={selectedTags}

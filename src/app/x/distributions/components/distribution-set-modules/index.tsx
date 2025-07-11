@@ -4,9 +4,9 @@ import Table from '@/app/components/table';
 import { Distribution, SoftwareModule } from '@/entities';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import styles from './styles.module.scss';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import TooltipIconButton from '@/app/components/tooltip-icon-button';
+import Text from '@/app/components/text';
 
 type DistributionSetModulesProps = {
   distributionSet: Distribution;
@@ -39,8 +39,8 @@ export default function DistributionSetModules({ distributionSet, onModuleDelete
   }, [columnHelper, onModuleDelete]);
 
   return (
-    <div className={styles.container}>
-      <h2>Modules</h2>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <Text variant='heading-2'>Modules</Text>
       <Table columns={columns} data={modules} />
     </div>
   );

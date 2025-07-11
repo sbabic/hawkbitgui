@@ -6,6 +6,7 @@ import IconButton from '@/app/components/icon-button';
 import ExpandIcon from '@/app/components/icons/expand-icon';
 import MinimizeIcon from '@/app/components/icons/minimize-icon';
 import { ReactNode } from 'react';
+import Text from '../text';
 
 export type PanelCardRootProps = {
   defaultWidth?: 'fit-content' | '100%';
@@ -33,7 +34,9 @@ function PanelCardHeader({ title, onToggleExpand, isExpanded, children }: Header
   return (
     <>
       <div className={styles.header}>
-        <h2>{title}</h2>
+        <Text variant='heading-2' color='title-secondary'>
+          {title}
+        </Text>
         <div className={styles.headerButtons}>
           {children}
           <IconButton width='30px' height='30px' onClick={onToggleExpand}>

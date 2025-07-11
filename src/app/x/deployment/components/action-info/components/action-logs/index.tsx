@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { Chip } from '@/app/components/chip';
 import Skeleton from 'react-loading-skeleton';
 import React from 'react';
+import Text from '@/app/components/text';
 
 export interface ActionLogsProps {
   logs: ActionLog[];
@@ -16,7 +17,7 @@ export interface ActionLogsProps {
 export default function ActionLogs({ logs, isLoading }: ActionLogsProps) {
   return (
     <div className={styles.container}>
-      <h2>Logs</h2>
+      <Text variant='heading-2'>Logs</Text>
       <div className={styles.logsContainer}>
         {!isLoading ? (
           logs.map((log) => (
