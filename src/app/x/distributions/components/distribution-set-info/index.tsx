@@ -4,6 +4,7 @@ import DistributionSetDetailsContainer from '../../containers/distribution-set-d
 import DistributionSetModulesContainer from '../../containers/distribution-set-modules-container';
 import DistributionSetLogsContainer from '../../containers/distribution-set-logs-container';
 import DistributionSetMetadataContainer from '../../containers/distribution-set-metadata-container';
+import DistributionSetTagsSelectContainer from '../../containers/distribution-set-tags-select-container';
 
 export default function DistributionSetInfo() {
   return (
@@ -16,7 +17,7 @@ export default function DistributionSetInfo() {
         },
         {
           title: 'Tags',
-          component: <></>,
+          component: <DistributionSetTagsSelectContainer />,
         },
         {
           title: 'Logs',

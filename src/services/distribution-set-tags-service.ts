@@ -58,9 +58,9 @@ export class DistributionSetTagsService {
     }
   }
 
-  static async assignTagToDistribution(tagId: number, distributionSetIds: number[]): Promise<void> {
+  static async assignTagToDistribution(distributionId: string | number, tagId: string | number): Promise<void> {
     try {
-      await axiosInstance.put(`/distributionsettags/${tagId}/assigned`, distributionSetIds);
+      await axiosInstance.post(`/distributionsettags/${tagId}/assigned/${distributionId}`);
     } catch (error) {
       console.error('Failed to assign distribution sets to tag:', error);
       throw error;

@@ -15,6 +15,7 @@ import { FilterFiql, SoftwareModule } from '@/entities';
 import { GetMetadataOutput, GetMetadataResponse } from '@/services/targets-service.types';
 
 export interface DistributionSetsQueryParams {
+  query?: string;
   offset?: number;
   limit?: number;
   sort?: string;
@@ -23,9 +24,21 @@ export interface DistributionSetsQueryParams {
 export class DistributionSetsService {
   static async fetchDistributionSets(input?: GetDistributionSetsInput, queryParams?: DistributionSetsQueryParams): Promise<GetDistributionSetsOutput> {
     try {
+      const { query, ...restQueryParams } = queryParams ?? {};
       const fiqlQuery = FilterFiql.parseFiltersToFeedItemQueryLanguage(input?.filters || []);
+
+      let q = '';
+      if (query && query !== '') {
+        q = query;
+      } else {
+        q = fiqlQuery;
+      }
+
       const response = await axiosInstance.get<GetDistributionSetsResponse>(`/distributionsets`, {
-        params: { ...queryParams, ...(fiqlQuery ? { q: fiqlQuery } : {}) },
+        params: {
+          ...restQueryParams,
+          ...(q ? { q } : {}),
+        },
       });
       return {
         distributionSets: response.data.content,

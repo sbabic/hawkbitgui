@@ -4,9 +4,11 @@ import { useGetArtifacts } from '../../hooks/use-get-artifacts';
 import { useSoftwareModulesStore } from '@/stores/software-modules-store';
 import { useDownloadArtifact } from '../../hooks/use-download-artifact';
 import { useDeleteArtifact } from '../../hooks/use-delete-artifact';
+import { useArtifactsTableStore } from '@/stores/artifacts-table-store';
 
 export default function ArtifactsTableContainer() {
   const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
+  const visibleColumns = useArtifactsTableStore((state) => state.visibleColumns);
 
   const {
     data: artifacts,
@@ -50,5 +52,13 @@ export default function ArtifactsTableContainer() {
     }
   };
 
-  return <ArtifactsTable artifacts={artifacts ?? []} isLoading={isLoading} onDownloadClick={handleDownloadArtifact} onDeleteClick={handleDeleteArtifact} />;
+  return (
+    <ArtifactsTable
+      artifacts={artifacts ?? []}
+      isLoading={isLoading}
+      visibleColumns={visibleColumns}
+      onDownloadClick={handleDownloadArtifact}
+      onDeleteClick={handleDeleteArtifact}
+    />
+  );
 }

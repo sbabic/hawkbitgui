@@ -11,10 +11,13 @@ import ExpandableSearchBarContainer from '@/app/x/deployment/containers/expandab
 import FilterIcon from '@/app/components/icons/filter-icon';
 import { useDistributionsSetsTableStore } from '@/stores/distribution-sets-table-store';
 import ManageColumnsButton from '@/app/components/manage-columns-button';
+import { useModal } from '@/app/hooks';
+import DistributionSetsFilters from '../distribution-set-filters';
 
 export default function DistributionSetsCard() {
   const [isCreateDistributionSetFormOpen, setIsCreateDistributionSetFormOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const filtersModal = useModal();
 
   const visibleColumns = useDistributionsSetsTableStore((state) => state.visibleColumns);
   const setVisibleColumns = useDistributionsSetsTableStore((state) => state.setVisibleColumns);
@@ -51,7 +54,7 @@ export default function DistributionSetsCard() {
         <PanelCard.Actions>
           <Button onClick={openForm}>+ New Distribution</Button>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={filtersModal.open} style={{ padding: '4px' }}>
               <FilterIcon />
             </IconButton>
             {isExpanded && <ManageColumnsButton columns={visibleColumns} setVisibleColumns={setVisibleColumns} />}
@@ -68,6 +71,11 @@ export default function DistributionSetsCard() {
           <DistributionSetFormContainer onSubmitSuccess={closeForm} onCancel={closeForm} />
         </Modal.Content>
       </Modal>
+      {filtersModal.isOpen && (
+        <Modal isOpen={filtersModal.isOpen} onClose={filtersModal.close} size={'fitContent'}>
+          <DistributionSetsFilters />
+        </Modal>
+      )}
     </>
   );
 }
