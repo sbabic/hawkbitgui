@@ -5,6 +5,7 @@ import Input from '@/app/components/input';
 import Button from '@/app/components/button';
 import styles from './styles.module.scss';
 import Skeleton from 'react-loading-skeleton';
+import Text from '@/app/components/text';
 
 export type FormStateType = {
   repository: {
@@ -164,7 +165,9 @@ export default function ConfigurationForm({ onSubmit, initialValues, loading = f
     <form className={styles.form} onSubmit={handleSubmit} onReset={handleReset}>
       {/* Repository */}
       <section>
-        <h3 className={styles.sectionTitle}>Repository Configuration</h3>
+        <Text variant='heading-3' color='text-secondary'>
+          Repository Configuration
+        </Text>
         {maybeSkeleton(
           <label>
             <Checkbox
@@ -226,7 +229,9 @@ export default function ConfigurationForm({ onSubmit, initialValues, loading = f
 
       {/* Rollout */}
       <section>
-        <h3 className={styles.sectionTitle}>Rollout Configuration</h3>
+        <Text variant='heading-3' color='text-secondary'>
+          Rollout Configuration
+        </Text>
         {maybeSkeleton(
           <label>
             <Checkbox checked={form.rollout.approveRollout} onChange={(e) => handleNestedChange('rollout', 'approveRollout', e.target.checked)} />
@@ -237,7 +242,9 @@ export default function ConfigurationForm({ onSubmit, initialValues, loading = f
 
       {/* Assignment */}
       <section>
-        <h3 className={styles.sectionTitle}>Assignment Configuration</h3>
+        <Text variant='heading-3' color='text-secondary'>
+          Assignment Configuration
+        </Text>
         {maybeSkeleton(
           <label>
             <Checkbox
@@ -261,7 +268,9 @@ export default function ConfigurationForm({ onSubmit, initialValues, loading = f
 
       {/* Authentication */}
       <section>
-        <h3 className={styles.sectionTitle}>Authentication Configuration</h3>
+        <Text variant='heading-3' color='text-secondary'>
+          Authentication Configuration
+        </Text>
         {maybeSkeleton(
           <label>
             <Checkbox
@@ -314,7 +323,9 @@ export default function ConfigurationForm({ onSubmit, initialValues, loading = f
 
       {/* Polling */}
       <section>
-        <h3 className={styles.sectionTitle}>Polling Configuration</h3>
+        <Text variant='heading-3' color='text-secondary'>
+          Polling Configuration
+        </Text>
 
         {maybeSkeleton(
           <label>

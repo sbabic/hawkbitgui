@@ -7,6 +7,7 @@ import { ActionButtons } from '@/app/components/action-buttons';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { ChromePicker } from 'react-color';
+import Text from '@/app/components/text';
 
 export interface FormData {
   name: string;
@@ -46,7 +47,7 @@ export default function TargetTypeForm({ onSubmit, onCancel, defaultValues, mode
   return (
     <>
       <div className={styles.container}>
-        <h3>{isEditing ? 'Edit Type' : 'Create New Type'}</h3>
+        <Text variant='heading-2'>{isEditing ? 'Edit Type' : 'Create New Type'}</Text>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div className={styles.inputContainer}>
             <label className={styles.label}>

@@ -1,11 +1,16 @@
+import Text from '../text';
 import styles from './styles.module.scss';
 
 function PageTitle({ children }: { children: React.ReactNode }) {
-    return <h1 className={styles.title}>{children}</h1>;
+  return (
+    <Text variant='heading-1' style={{ marginBottom: '28px' }}>
+      {children}
+    </Text>
+  );
 }
 
 export function PageWrapper({ children }: { children: React.ReactNode }) {
-    return <div className={`${styles.page}`}>{children}</div>;
+  return <div className={`${styles.page}`}>{children}</div>;
 }
 
 PageWrapper.Title = PageTitle;

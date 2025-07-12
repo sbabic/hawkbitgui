@@ -34,7 +34,7 @@ function PanelCardHeader({ title, onToggleExpand, isExpanded, children }: Header
   return (
     <>
       <div className={styles.header}>
-        <Text variant='heading-2' color='title-secondary'>
+        <Text variant='heading-3' color='text-secondary'>
           {title}
         </Text>
         <div className={styles.headerButtons}>

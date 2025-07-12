@@ -8,6 +8,7 @@ import { LoginFormData, LoginFormSchema } from './types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/app/components/button';
 import Form from '@/app/components/form';
+import Text from '@/app/components/text';
 
 export interface LoginFormProps {
   className?: string;
@@ -26,8 +27,10 @@ export default function LoginForm({ className, onSubmit }: LoginFormProps) {
   return (
     <div className={`${styles.container} ${className}`}>
       <div className={styles.card}>
-        <h2 className={styles.title}>Login to Account</h2>
-        <p className={styles.subtitle}>Please enter your username and password to continue</p>
+        <Text variant='heading-1'>Login to Account</Text>
+        <Text variant='heading-4' color='text-secondary'>
+          Please enter your username and password to continue
+        </Text>
         <Form onSubmit={handleSubmit(onSubmit)} style={{ gap: '40px' }}>
           <FormControl id='username' label='Username' errorMessage={errors.username?.message}>
             <Input {...register('username')} />

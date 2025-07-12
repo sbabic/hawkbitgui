@@ -5,31 +5,65 @@
 }
 
 .heading-1 {
-  font-size: 28px;
   font-weight: 700;
+  font-size: 28px;
   line-height: 36px;
   color: $accent-color;
 }
 
 .heading-2 {
-  font-size: 24px;
   font-weight: 700;
+  font-size: 24px;
   line-height: 32px;
   color: $accent-color;
 }
 
-.body-1 {
-  font-size: 16px;
+.heading-3 {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: $accent-color;
+}
+
+.heading-4 {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 26px;
+  color: $accent-color;
+}
+
+.paragraph {
   font-weight: 400;
+  font-size: 16px;
   line-height: 24px;
   color: $primary-text-color;
 }
 
-.body-2 {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
+.paragraph-bold {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0%;
   color: $primary-text-color;
+}
+
+.paragraph-sm {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: $primary-text-color;
+}
+
+.btn-text-lg {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.btn-text-sm {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
 }
 
 .caption {
@@ -47,10 +81,18 @@
   color: $light-primary-text-color;
 }
 
-.title-primary {
+.text-disabled {
+  color: $secondary-text-color;
+}
+
+.text-inverse {
+  color: $text-color-inverse;
+}
+
+.text-accent {
   color: $accent-color;
 }
 
-.title-secondary {
-  color: $light-primary-text-color;
+.text-muted {
+  color: $secondary-text-color;
 }

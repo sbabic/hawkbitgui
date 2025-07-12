@@ -8,6 +8,7 @@ import { TargetType } from '@/entities';
 import { useEffect } from 'react';
 import Input from '@/app/components/input';
 import { ActionButtons } from '@/app/components/action-buttons';
+import Text from '@/app/components/text';
 
 export interface FormData {
   controllerId: string;
@@ -44,7 +45,7 @@ export default function TargetForm({ onSubmit, onCancel, targetTypes, defaultVal
 
   return (
     <div className={styles.container}>
-      <h3>{isEditing ? 'Edit Target' : 'Create New Target'}</h3>
+      <Text variant='heading-2'>{isEditing ? 'Edit Target' : 'Create New Target'}</Text>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <div className={styles.inputContainer}>
           <label className={styles.label}>

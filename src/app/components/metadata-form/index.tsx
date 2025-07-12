@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import Button from '@/app/components/button';
 import Input from '../input';
 import TextArea from '@/app/components/text-area';
+import Text from '../text';
 
 export interface FormData {
   key: string;
@@ -34,7 +35,7 @@ export default function CreateMetadataForm({ onSubmit, onCancel, defaultValues, 
 
   return (
     <div className={styles.container}>
-      <h3>{isEditMode ? 'Edit Metadata' : 'Create Metadata'}</h3>
+      <Text variant='heading-2'>{isEditMode ? 'Edit Metadata' : 'Create Metadata'}</Text>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <div className={styles.inputContainer}>
           <label className={styles.label}>

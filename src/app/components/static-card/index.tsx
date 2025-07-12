@@ -1,9 +1,14 @@
 'use client';
 
+import Text from '../text';
 import styles from './styles.module.scss';
 
 function CardTitle({ children }: { children?: React.ReactNode }) {
-  return <h2 className={styles.title}>{children}</h2>;
+  return (
+    <Text variant='heading-3' color='text-secondary'>
+      {children}
+    </Text>
+  );
 }
 
 function CardActions({ children }: { children?: React.ReactNode }) {

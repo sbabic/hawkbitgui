@@ -4,9 +4,14 @@ import { motion } from 'framer-motion';
 import styles from './styles.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import { useExpandableCardContext } from './expandable-card-context';
+import Text from '../text';
 
 function CardTitle({ children }: { children?: React.ReactNode }) {
-  return <h2 className={styles.title}>{children}</h2>;
+  return (
+    <Text variant='heading-3' color='text-secondary'>
+      {children}
+    </Text>
+  );
 }
 
 function CardActions({ children }: { children?: React.ReactNode }) {

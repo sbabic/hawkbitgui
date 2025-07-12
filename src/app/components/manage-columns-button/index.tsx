@@ -9,6 +9,7 @@ import Button from '../button';
 import XIcon from '../icons/x-icon';
 import IconButton from '../icon-button';
 import { VisibleColumn } from '@/types/utils/visible-column';
+import Text from '../text';
 
 export interface ManageColumnsButtonProps {
   columns: Record<string, VisibleColumn>;
@@ -52,7 +53,7 @@ export default function ManageColumnsButton(props: ManageColumnsButtonProps) {
           <div className={styles.dialogOverlay} onClick={handleOverlayClick} />
           <div className={styles.dialogContent}>
             <div className={styles.dialogHeader}>
-              <h2 className={styles.dialogTitle}>Manage Columns</h2>
+              <Text variant='heading-2'>Manage Columns</Text>
               <IconButton onClick={() => setOpen(false)}>
                 <XIcon width={24} height={24} />
               </IconButton>
