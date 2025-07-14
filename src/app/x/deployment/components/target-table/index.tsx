@@ -10,12 +10,14 @@ import EditIcon from '@/app/components/icons/edit-icon';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import dayjs from 'dayjs';
 import TargetStatusCell from '@/app/components/target-status-cell';
+import { Pagination } from '@/types/utils/pagination';
 
 export type TargetTableProps = {
   isLoading?: boolean;
   expanded?: boolean;
   onTargetNameClick?: (target: Target) => void;
   targets?: Target[];
+  pagination?: Pagination;
   onEditClick?: (target: Target) => void;
   onDeleteClick?: (target: Target) => void;
   onPinClick?: (target: Target) => void;
@@ -28,6 +30,7 @@ export default function TargetTable({
   targets = [],
   onEditClick,
   onDeleteClick,
+  pagination,
   // onPinClick,
   onRowClick,
   isLoading,
@@ -135,6 +138,7 @@ export default function TargetTable({
         data={targets}
         draggable={true}
         selectable={true}
+        pagination={pagination}
         onRowClick={(_, target) => onRowClick?.(target)}
         isLoading={isLoading}
       />
