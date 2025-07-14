@@ -12,7 +12,9 @@ interface TargetsTableState {
   selectedTarget?: Target;
   page: number;
   size: number;
+  total: number;
   setPage: (page: number) => void;
+  setTotal: (total: number) => void;
   setSelectedTarget: (target: Target) => void;
   setFilteredTargets: (filteredTargets: Target[]) => void;
   resetSelectedTarget: () => void;
@@ -32,7 +34,9 @@ export const useTargetsTableStore = create<TargetsTableState>((set) => ({
   selectedTarget: undefined,
   page: 0,
   size: DEFAULT_PAGE_SIZE,
+  total: 0,
   setPage: (page) => set({ page }),
+  setTotal: (total: number) => set({ total }),
   setSelectedTarget: (target) => set({ selectedTarget: target }),
   setFilteredTargets: (filteredTargets) => set({ filteredTargets }),
   resetSelectedTarget: () => set({ selectedTarget: undefined }),
@@ -45,8 +49,12 @@ export const useTargetsTableStore = create<TargetsTableState>((set) => ({
     set({ isLoading: true });
     try {
       const filters = useTargetsFiltersStore.getState().filters;
-      const { targets } = await TargetsService.fetchTargets({ filters: Object.values(filters) });
-      set({ targets, filteredTargets: targets });
+      const { page, size } = useTargetsTableStore.getState();
+      const { targets, totalTargets } = await TargetsService.fetchTargets({
+        filters: Object.values(filters),
+        queryParams: { offset: page * size, limit: size, sort: 'name:ASC' },
+      });
+      set({ targets, filteredTargets: targets, total: totalTargets });
     } catch (error) {
       console.error('Failed to fetch targets', error);
     } finally {
@@ -57,8 +65,12 @@ export const useTargetsTableStore = create<TargetsTableState>((set) => ({
   pollTargets: async () => {
     try {
       const filters = useTargetsFiltersStore.getState().filters;
-      const { targets } = await TargetsService.fetchTargets({ filters: Object.values(filters) });
-      set({ targets, filteredTargets: targets });
+      const { page, size } = useTargetsTableStore.getState();
+      const { targets, totalTargets } = await TargetsService.fetchTargets({
+        filters: Object.values(filters),
+        queryParams: { offset: page * size, limit: size, sort: 'name:ASC' },
+      });
+      set({ targets, filteredTargets: targets, total: totalTargets });
     } catch (error) {
       console.error('Failed to poll targets', error);
     }

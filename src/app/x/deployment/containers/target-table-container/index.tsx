@@ -17,6 +17,10 @@ export default function TargetTableContainer() {
   const isLoading = useTargetsTableStore((state) => state.isLoading);
   const isExpanded = useTargetsTableStore((state) => state.isExpanded);
   const fetchTargets = useTargetsTableStore((state) => state.fetchTargets);
+  const page = useTargetsTableStore((state) => state.page);
+  const size = useTargetsTableStore((state) => state.size);
+  const total = useTargetsTableStore((state) => state.total);
+  const setPage = useTargetsTableStore((state) => state.setPage);
   const targetsTableStore = useTargetsTableStore();
   const setTargetActionTargetId = useTargetActionsTableStore((state) => state.setSelectedTargetId);
 
@@ -42,6 +46,11 @@ export default function TargetTableContainer() {
     setTargetActionTargetId(target.controllerId);
   };
 
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    fetchTargets();
+  };
+
   useTargetsPolling();
 
   return (
@@ -56,10 +65,16 @@ export default function TargetTableContainer() {
           targetsTableStore.setSelectedTarget(target);
           setIsTargetInfoModalOpen(true);
         }}
+        pagination={{
+          page,
+          size,
+          totalItems: total,
+        }}
         onDeleteClick={handleDeleteClick}
         onEditClick={handleEditClick}
         onRowClick={handleOnRowClick}
         isLoading={isLoading}
+        onPageChange={handlePageChange}
       />
       <Modal isOpen={isTargetInfoModalOpen} variant='unstyled' size='lg' onClose={() => setIsTargetInfoModalOpen(false)}>
         <TargetInfo />

@@ -22,6 +22,7 @@ export type TargetTableProps = {
   onDeleteClick?: (target: Target) => void;
   onPinClick?: (target: Target) => void;
   onRowClick?: (target: Target) => void;
+  onPageChange?: (page: number) => void;
 };
 
 export default function TargetTable({
@@ -31,6 +32,7 @@ export default function TargetTable({
   onEditClick,
   onDeleteClick,
   pagination,
+  onPageChange,
   // onPinClick,
   onRowClick,
   isLoading,
@@ -141,6 +143,7 @@ export default function TargetTable({
         pagination={pagination}
         onRowClick={(_, target) => onRowClick?.(target)}
         isLoading={isLoading}
+        onPageChange={onPageChange}
       />
     </>
   );
