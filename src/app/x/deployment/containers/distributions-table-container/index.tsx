@@ -16,6 +16,10 @@ export default function DistributionsTableContainer() {
   const isLoading = useDistributionsTableStore((state) => state.isLoading);
   const isExpanded = useDistributionsTableStore((state) => state.isExpanded);
   const fetchDistributions = useDistributionsTableStore((state) => state.fetchDistributions);
+  const page = useDistributionsTableStore((state) => state.page);
+  const size = useDistributionsTableStore((state) => state.size);
+  const total = useDistributionsTableStore((state) => state.total);
+  const setPage = useDistributionsTableStore((state) => state.setPage);
   const distributionsTableStore = useDistributionsTableStore();
 
   const [isDistributionInfoModalOpen, setIsDistributionInfoModalOpen] = useState(false);
@@ -28,6 +32,11 @@ export default function DistributionsTableContainer() {
       await fetchDistributions();
       distributionsTableStore.resetSelectedDistribution();
     });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    fetchDistributions();
   };
 
   useDistributionsPolling();
@@ -44,8 +53,14 @@ export default function DistributionsTableContainer() {
           distributionsTableStore.setSelectedDistribution(distribution);
           setIsDistributionInfoModalOpen(true);
         }}
+        pagination={{
+          page,
+          size,
+          totalItems: total,
+        }}
         onDeleteClick={handleDeleteClick}
         isLoading={isLoading}
+        onPageChange={handlePageChange}
       />
       <Modal isOpen={isDistributionInfoModalOpen} variant='unstyled' size='lg' onClose={() => setIsDistributionInfoModalOpen(false)}>
         <DistributionInfo />

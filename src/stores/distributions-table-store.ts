@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { Distribution } from '@/entities';
 import { DistributionSetsService } from '@/services/distribution-sets-service';
 import { useDistributionsFiltersStore } from '@/stores/distributions-filters-store';
+import { DEFAULT_PAGE_SIZE } from '@/utils/pagination';
 
 interface DistributionsTableState {
   distributions: Distribution[];
@@ -9,6 +10,11 @@ interface DistributionsTableState {
   isExpanded: boolean;
   isLoading: boolean;
   selectedDistribution?: Distribution;
+  page: number;
+  size: number;
+  total: number;
+  setPage: (page: number) => void;
+  setTotal: (total: number) => void;
   setSelectedDistribution: (distribution: Distribution) => void;
   setFilteredDistributions: (filtered: Distribution[]) => void;
   resetSelectedDistribution: () => void;
@@ -26,6 +32,11 @@ export const useDistributionsTableStore = create<DistributionsTableState>((set) 
   isExpanded: false,
   isLoading: false,
   selectedDistribution: undefined,
+  page: 0,
+  size: DEFAULT_PAGE_SIZE,
+  total: 0,
+  setPage: (page) => set({ page }),
+  setTotal: (total: number) => set({ total }),
   setSelectedDistribution: (distribution) => set({ selectedDistribution: distribution }),
   setFilteredDistributions: (filtered) => set({ filteredDistributions: filtered }),
   resetSelectedDistribution: () => set({ selectedDistribution: undefined }),
@@ -37,8 +48,12 @@ export const useDistributionsTableStore = create<DistributionsTableState>((set) 
     set({ isLoading: true });
     try {
       const filters = useDistributionsFiltersStore.getState().filters;
-      const { distributionSets } = await DistributionSetsService.fetchDistributionSets({ filters: Object.values(filters) });
-      set({ distributions: distributionSets, filteredDistributions: distributionSets });
+      const { page, size } = useDistributionsTableStore.getState();
+      const { distributionSets, totalDistributionSets } = await DistributionSetsService.fetchDistributionSets(
+        { filters: Object.values(filters) },
+        { offset: page * size, limit: size, sort: 'name:ASC' }
+      );
+      set({ distributions: distributionSets, filteredDistributions: distributionSets, total: totalDistributionSets });
     } catch (error) {
       console.error('Failed to fetch distributions', error);
     } finally {
@@ -48,10 +63,14 @@ export const useDistributionsTableStore = create<DistributionsTableState>((set) 
   pollDistributions: async () => {
     try {
       const filters = useDistributionsFiltersStore.getState().filters;
-      const { distributionSets } = await DistributionSetsService.fetchDistributionSets({ filters: Object.values(filters) });
-      set({ distributions: distributionSets, filteredDistributions: distributionSets });
+      const { page, size } = useDistributionsTableStore.getState();
+      const { distributionSets, totalDistributionSets } = await DistributionSetsService.fetchDistributionSets(
+        { filters: Object.values(filters) },
+        { offset: page * size, limit: size, sort: 'name:ASC' }
+      );
+      set({ distributions: distributionSets, filteredDistributions: distributionSets, total: totalDistributionSets });
     } catch (error) {
-      console.error('Failed to poll targets', error);
+      console.error('Failed to poll distributions', error);
     }
   },
 }));

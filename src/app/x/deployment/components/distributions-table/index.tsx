@@ -9,6 +9,7 @@ import IconButton from '@/app/components/icon-button';
 import TrashIcon from '@/app/components/icons/trash-icon';
 import dayjs from 'dayjs';
 import BlockIcon from '@/app/components/icons/block-icon';
+import type { Pagination } from '@/types/utils/pagination';
 
 export type DistributionsTableProps = {
   isLoading?: boolean;
@@ -18,6 +19,8 @@ export type DistributionsTableProps = {
   onInvalidateClick?: (distribution: Distribution) => void;
   onDeleteClick?: (distribution: Distribution) => void;
   onPinClick?: (distribution: Distribution) => void;
+  pagination?: Pagination;
+  onPageChange?: (page: number) => void;
 };
 
 export default function DistributionsTable({
@@ -28,6 +31,8 @@ export default function DistributionsTable({
   onDeleteClick,
   // onPinClick,
   isLoading,
+  pagination,
+  onPageChange,
 }: DistributionsTableProps) {
   const columnHelper = createColumnHelper<Distribution>();
 
@@ -123,7 +128,15 @@ export default function DistributionsTable({
 
   return (
     <>
-      <Table columns={expanded ? fullColumns : shortColumns} data={distributions} draggable={true} selectable={true} isLoading={isLoading} />
+      <Table 
+        columns={expanded ? fullColumns : shortColumns} 
+        data={distributions} 
+        draggable={true} 
+        selectable={true} 
+        isLoading={isLoading}
+        pagination={pagination}
+        onPageChange={onPageChange}
+      />
     </>
   );
 }
