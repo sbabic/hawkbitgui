@@ -130,7 +130,11 @@ $sidebar-collapsed: 60px;
     margin-top: 0;
   }
 
-  &:hover,
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: $primary-text-color;
+  }
+
   &.active {
     background: $accent-color;
     color: $bright-text-color;
