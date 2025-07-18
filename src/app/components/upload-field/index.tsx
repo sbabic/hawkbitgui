@@ -65,7 +65,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ isLoading, isDisabled, onFi
     >
       <div className={styles.content}>
         <p className={styles.text}>Drop Files to upload</p>
-        <Button variant='outline' className={styles.uploadButton} onClick={handleButtonClick} type='button' leftIcon={<UploadIcon />}>
+        <Button variant='outline' className={styles.uploadButton} onClick={handleButtonClick} type='button' leftIcon={<UploadIcon />} isLoading={isLoading}>
           Upload File
         </Button>
 
