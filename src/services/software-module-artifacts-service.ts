@@ -1,5 +1,6 @@
 import axiosInstance from '@/lib/axios';
 import { md5 } from 'js-md5';
+import { SHA1, SHA256 } from 'crypto-js';
 import {
   DeleteArtifactInput,
   DownloadArtifactInput,
@@ -8,13 +9,29 @@ import {
   UploadArtifactInput,
   UploadArtifactResponse,
 } from './software-module-artifacts-service.types';
+import { isDefined } from '@/utils/is-defined';
+
+function arrayBufferToString(arrayBuffer: ArrayBuffer): string {
+  return Array.from(new Uint8Array(arrayBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
 
 async function calculateHash(file: File | Blob, algorithm: 'SHA-1' | 'SHA-256'): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
-  const hashBuffer = await crypto.subtle.digest(algorithm, arrayBuffer);
-  return Array.from(new Uint8Array(hashBuffer))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+  if (isDefined(crypto.subtle)) {
+    const hashBuffer = await crypto.subtle.digest(algorithm, arrayBuffer);
+    return arrayBufferToString(hashBuffer);
+  }
+
+  // Insecure contexts (http) for local usage purposes only
+  if (algorithm === 'SHA-1') {
+    return SHA1(arrayBufferToString(arrayBuffer)).toString();
+  } else if (algorithm === 'SHA-256') {
+    return SHA256(arrayBufferToString(arrayBuffer)).toString();
+  }
+
+  throw new Error('Not supported hashing algorithm');
 }
 
 async function calculateMD5(file: File | Blob): Promise<string> {

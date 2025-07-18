@@ -5,6 +5,8 @@ import { useSoftwareModulesStore } from '@/stores/software-modules-store';
 import { useDownloadArtifact } from '../../hooks/use-download-artifact';
 import { useDeleteArtifact } from '../../hooks/use-delete-artifact';
 import { useArtifactsTableStore } from '@/stores/artifacts-table-store';
+import ConfirmDeleteModal from '@/app/components/confirm-delete-modal';
+import { useConfirmDialog } from '@/app/hooks';
 
 export default function ArtifactsTableContainer() {
   const selectedSoftwareModule = useSoftwareModulesStore((state) => state.selectedSoftwareModule);
@@ -21,6 +23,8 @@ export default function ArtifactsTableContainer() {
 
   const { downloadArtifact } = useDownloadArtifact();
   const { deleteArtifact } = useDeleteArtifact();
+
+  const confirmDialog = useConfirmDialog<SoftwareModuleArtifact>();
 
   const handleDownloadArtifact = (artifact: SoftwareModuleArtifact) => {
     if (selectedSoftwareModule) {
@@ -41,24 +45,29 @@ export default function ArtifactsTableContainer() {
 
   const handleDeleteArtifact = (artifact: SoftwareModuleArtifact) => {
     if (selectedSoftwareModule) {
-      deleteArtifact(
-        { softwareModuleId: selectedSoftwareModule.id, artifactId: artifact.id },
-        {
-          onSuccess: () => {
-            refetchArtifacts();
-          },
-        }
-      );
+      confirmDialog.open(artifact, async () => {
+        await deleteArtifact({ softwareModuleId: selectedSoftwareModule.id, artifactId: artifact.id });
+        await refetchArtifacts();
+      });
     }
   };
 
   return (
-    <ArtifactsTable
-      artifacts={artifacts ?? []}
-      isLoading={isLoading}
-      visibleColumns={visibleColumns}
-      onDownloadClick={handleDownloadArtifact}
-      onDeleteClick={handleDeleteArtifact}
-    />
+    <>
+      <ArtifactsTable
+        artifacts={artifacts ?? []}
+        isLoading={isLoading}
+        visibleColumns={visibleColumns}
+        onDownloadClick={handleDownloadArtifact}
+        onDeleteClick={handleDeleteArtifact}
+      />
+      {confirmDialog.isOpen && (
+        <ConfirmDeleteModal isOpen={confirmDialog.isOpen} onConfirm={confirmDialog.confirm} onClose={confirmDialog.close}>
+          <ConfirmDeleteModal.Message>
+            Are you sure you want to delete artifact <span style={{ fontWeight: 'bold' }}>{confirmDialog.data?.providedFilename}</span>?
+          </ConfirmDeleteModal.Message>
+        </ConfirmDeleteModal>
+      )}
+    </>
   );
 }

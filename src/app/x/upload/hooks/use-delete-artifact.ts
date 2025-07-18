@@ -14,7 +14,7 @@ type UseDeleteArtifactParams = {
 export const useDeleteArtifact = (params?: UseDeleteArtifactParams) => {
   const { mutationOptions } = params ?? {};
 
-  const { mutate: deleteArtifact, isPending } = useMutation<void, ApiError, DeleteArtifactParams>({
+  const { mutateAsync: deleteArtifact, isPending } = useMutation<void, ApiError, DeleteArtifactParams>({
     mutationFn: (params) => SoftwareModuleArtifactsService.deleteArtifact(params),
     ...mutationOptions,
   });

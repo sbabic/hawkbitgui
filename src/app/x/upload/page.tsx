@@ -29,7 +29,9 @@ export default function UploadPage() {
             <UploadArtifactCardContainer />
           </CardsContainerGrid>
           <CardsContainerGrid distributionInPercentages={[100]}>
-            <ArtifactsCardContainer />
+            <div style={{ width: '100%', overflow: 'auto' }}>
+              <ArtifactsCardContainer />
+            </div>
           </CardsContainerGrid>
         </div>
       </ExpandableCardProvider>

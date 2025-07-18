@@ -73,9 +73,5 @@ export default function ArtifactsTable({ artifacts, isLoading = false, visibleCo
     return transformToColumnVisibility(visibleColumns);
   }, [visibleColumns]);
 
-  return (
-    <>
-      <Table columns={fullColumns} data={artifacts} isLoading={isLoading} columnVisibility={columnVisibility} />
-    </>
-  );
+  return <Table columns={fullColumns} data={artifacts} isLoading={isLoading} columnVisibility={columnVisibility} />;
 }

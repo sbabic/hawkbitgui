@@ -19,6 +19,7 @@
         "@types/lodash-es": "^4.17.12",
         "axios": "^1.8.4",
         "caniuse-lite": "^1.0.30001715",
+        "crypto-js": "^4.2.0",
         "dayjs": "^1.11.13",
         "framer-motion": "^12.7.4",
         "js-md5": "^0.8.3",
@@ -40,6 +41,7 @@
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.1",
         "@tanstack/eslint-plugin-query": "^5.68.0",
+        "@types/crypto-js": "^4.2.2",
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-color": "^3.0.13",
