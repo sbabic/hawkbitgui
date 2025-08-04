@@ -16,7 +16,6 @@ export type ActionHistoryTableProps = {
   expanded?: boolean;
   onRowClick?: (targetAction: TargetAction) => void;
   targetActions?: TargetAction[];
-  onForceQuitClick?: (targetAction: TargetAction) => void;
   onCancelClick?: (targetAction: TargetAction) => void;
   onForceClick?: (targetAction: TargetAction) => void;
   onActionIdClick?: (targetAction: TargetAction) => void;
@@ -28,7 +27,6 @@ export default function ActionHistoryTable({
   targetActions = [],
   onForceClick,
   onCancelClick,
-  onForceQuitClick,
   isLoading,
   onActionIdClick,
 }: ActionHistoryTableProps) {
@@ -76,14 +74,11 @@ export default function ActionHistoryTable({
             <IconButton height={'30px'} width={'30px'} onClick={() => onCancelClick?.(info.row.original)}>
               <XIcon />
             </IconButton>
-            <IconButton height={'30px'} width={'30px'} onClick={() => onForceQuitClick?.(info.row.original)}>
-              <XIcon />
-            </IconButton>
           </div>
         ),
       }),
     ];
-  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick, onForceQuitClick]);
+  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick]);
 
   const fullColumns = useMemo(() => {
     return [
@@ -151,14 +146,11 @@ export default function ActionHistoryTable({
             <IconButton height={'30px'} width={'30px'} onClick={() => onCancelClick?.(info.row.original)}>
               <XIcon />
             </IconButton>
-            <IconButton height={'30px'} width={'30px'} onClick={() => onForceQuitClick?.(info.row.original)}>
-              <XIcon />
-            </IconButton>
           </div>
         ),
       }),
     ];
-  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick, onForceQuitClick]);
+  }, [columnHelper, onActionIdClick, onCancelClick, onForceClick]);
 
   return (
     <>

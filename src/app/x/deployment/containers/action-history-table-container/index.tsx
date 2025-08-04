@@ -1,12 +1,16 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ActionHistoryTable from '@/app/x/deployment/components/action-history-table';
 import { useTargetActionsTableStore } from '@/stores/target-action-table-store';
 import { TargetAction } from '@/entities/target-action';
 import { Modal } from '@/app/components/modal';
 import { useModal } from '@/app/hooks';
 import ActionInfo from '@/app/x/deployment/components/action-info';
+import ConfirmationModal from '@/app/components/confirmation-modal';
+import { useConfirmDialog } from '@/app/hooks/use-confirm-dialog';
+import { TargetsService } from '@/services/targets-service';
+import { handleErrorWithToast } from '@/utils/handle-error-with-toast';
 
 export default function ActionHistoryTableContainer() {
   const targetActions = useTargetActionsTableStore((state) => state.actions);
@@ -18,6 +22,9 @@ export default function ActionHistoryTableContainer() {
 
   const { isOpen, open, close } = useModal();
 
+  const [isCancelling, setIsCancelling] = useState(false);
+  const confirmDialog = useConfirmDialog<TargetAction>();
+
   const handleActionIdClick = (targetAction: TargetAction) => {
     if (!selectedTargetId) {
       console.warn('No target ID selected. Skipping action history fetch.');
@@ -25,6 +32,21 @@ export default function ActionHistoryTableContainer() {
     }
     setSelectedAction(targetAction);
     open();
+  };
+
+  const handleCancelClick = (targetAction: TargetAction) => {
+    confirmDialog.open(targetAction, async () => {
+      if (!selectedTargetId) return;
+      setIsCancelling(true);
+      try {
+        await TargetsService.cancelAction(selectedTargetId, targetAction.id);
+        fetchTargetActions(selectedTargetId);
+      } catch (e) {
+        handleErrorWithToast(e, 'Failed to cancel action');
+      } finally {
+        setIsCancelling(false);
+      }
+    });
   };
 
   useEffect(() => {
@@ -37,10 +59,27 @@ export default function ActionHistoryTableContainer() {
 
   return (
     <>
-      <ActionHistoryTable targetActions={targetActions} expanded={isExpanded} isLoading={isLoading} onActionIdClick={handleActionIdClick} />
+      <ActionHistoryTable
+        targetActions={targetActions}
+        expanded={isExpanded}
+        isLoading={isLoading}
+        onActionIdClick={handleActionIdClick}
+        onCancelClick={handleCancelClick}
+      />
       <Modal isOpen={isOpen} variant='unstyled' size='lg' onClose={close}>
         <ActionInfo />
       </Modal>
+      <ConfirmationModal
+        isOpen={confirmDialog.isOpen}
+        onClose={confirmDialog.close}
+        onConfirm={confirmDialog.confirm}
+        title='Cancel Action'
+        confirmButtonText={isCancelling ? 'Cancelling...' : 'Yes, Cancel'}
+        cancelButtonText='No'
+        size='sm'
+      >
+        <p>Are you sure you want to cancel this action?</p>
+      </ConfirmationModal>
     </>
   );
 }

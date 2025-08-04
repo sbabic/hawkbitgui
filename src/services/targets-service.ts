@@ -178,4 +178,14 @@ export class TargetsService {
       throw error;
     }
   }
+
+  static async cancelAction(controllerId: string | number, actionId: string | number): Promise<void> {
+    try {
+      await axiosInstance.delete<GetActionLogResponse>(`/targets/${controllerId}/actions/${actionId}`);
+      console.log(`Action ${actionId} cancelled for target ${controllerId}`);
+    } catch (error) {
+      console.error(`Failed to cancel action ${actionId} for target ${controllerId}`, error);
+      throw error;
+    }
+  }
 }
