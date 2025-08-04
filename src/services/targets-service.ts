@@ -188,4 +188,17 @@ export class TargetsService {
       throw error;
     }
   }
+
+  static async targetForceAction(controllerId: string | number, actionId: string | number): Promise<GetActionLogOutput> {
+    try {
+      const response = await axiosInstance.put<GetActionLogResponse>(`/targets/${controllerId}/actions/${actionId}`, {
+        forceType: 'forced',
+      });
+      console.log(`Force action ${actionId} executed for target ${controllerId}`);
+      return response.data.content;
+    } catch (error) {
+      console.error(`Failed to force action ${actionId} for target ${controllerId}`, error);
+      throw error;
+    }
+  }
 }

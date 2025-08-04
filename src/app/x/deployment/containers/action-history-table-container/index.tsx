@@ -23,7 +23,8 @@ export default function ActionHistoryTableContainer() {
   const { isOpen, open, close } = useModal();
 
   const [isCancelling, setIsCancelling] = useState(false);
-  const confirmDialog = useConfirmDialog<TargetAction>();
+  const confirmCancelDialog = useConfirmDialog<TargetAction>();
+  const confirmForceDialog = useConfirmDialog<TargetAction>();
 
   const handleActionIdClick = (targetAction: TargetAction) => {
     if (!selectedTargetId) {
@@ -35,7 +36,7 @@ export default function ActionHistoryTableContainer() {
   };
 
   const handleCancelClick = (targetAction: TargetAction) => {
-    confirmDialog.open(targetAction, async () => {
+    confirmCancelDialog.open(targetAction, async () => {
       if (!selectedTargetId) return;
       setIsCancelling(true);
       try {
@@ -43,6 +44,21 @@ export default function ActionHistoryTableContainer() {
         fetchTargetActions(selectedTargetId);
       } catch (e) {
         handleErrorWithToast(e, 'Failed to cancel action');
+      } finally {
+        setIsCancelling(false);
+      }
+    });
+  };
+
+  const handleForceClick = (targetAction: TargetAction) => {
+    confirmForceDialog.open(targetAction, async () => {
+      if (!selectedTargetId) return;
+      setIsCancelling(true);
+      try {
+        await TargetsService.targetForceAction(selectedTargetId, targetAction.id);
+        fetchTargetActions(selectedTargetId);
+      } catch (e) {
+        handleErrorWithToast(e, 'Failed to force action');
       } finally {
         setIsCancelling(false);
       }
@@ -65,20 +81,32 @@ export default function ActionHistoryTableContainer() {
         isLoading={isLoading}
         onActionIdClick={handleActionIdClick}
         onCancelClick={handleCancelClick}
+        onForceClick={handleForceClick}
       />
       <Modal isOpen={isOpen} variant='unstyled' size='lg' onClose={close}>
         <ActionInfo />
       </Modal>
       <ConfirmationModal
-        isOpen={confirmDialog.isOpen}
-        onClose={confirmDialog.close}
-        onConfirm={confirmDialog.confirm}
+        isOpen={confirmCancelDialog.isOpen}
+        onClose={confirmCancelDialog.close}
+        onConfirm={confirmCancelDialog.confirm}
         title='Cancel Action'
         confirmButtonText={isCancelling ? 'Cancelling...' : 'Yes, Cancel'}
         cancelButtonText='No'
         size='sm'
       >
         <p>Are you sure you want to cancel this action?</p>
+      </ConfirmationModal>
+      <ConfirmationModal
+        isOpen={confirmForceDialog.isOpen}
+        onClose={confirmForceDialog.close}
+        onConfirm={confirmForceDialog.confirm}
+        title='Force Action'
+        confirmButtonText={isCancelling ? 'Forcing...' : 'Yes'}
+        cancelButtonText='No'
+        size='sm'
+      >
+        <p>Are you sure you want to force?</p>
       </ConfirmationModal>
     </>
   );
