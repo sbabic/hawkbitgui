@@ -41,5 +41,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Configuration
 
-You have to set in `.env` the URL for the Hawkbit Server by setting the `NEXT_PUBLIC_HAWKBIT_API_URL` variable.
+You have to set in `.env` the URL for the Hawkbit Server by setting the `HAWKBIT_API_URL` variable.
 
