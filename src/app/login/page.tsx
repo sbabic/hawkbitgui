@@ -3,6 +3,12 @@ import Image from 'next/image';
 import LoginFormContainer from '@/app/login/containers/login-form-container';
 
 export default function Login() {
+    // Read server-side env vars to pass OIDC availability to the client container.
+    const oidcEnabled =
+        !!process.env.OIDC_ISSUER_URL &&
+        !!process.env.OIDC_CLIENT_ID &&
+        !!process.env.OIDC_CLIENT_SECRET;
+
     return (
         <div className={`${styles.page}`}>
             <div className={`${styles.logoSection}`}>
@@ -28,7 +34,7 @@ export default function Login() {
                 </div>
             </div>
             <div className={`${styles.loginSection}`}>
-                <LoginFormContainer className={styles.form} />
+                <LoginFormContainer className={styles.form} oidcEnabled={oidcEnabled} />
                 <div className={styles.policiesSection}>
                     <div>
                         <a href={'https://www.eclipse.org/org/'}>About Us</a>
