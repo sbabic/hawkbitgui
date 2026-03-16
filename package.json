@@ -6,7 +6,7 @@
         "dev": "next dev --turbopack",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
+        "lint": "eslint .",
         "format": "prettier --write .",
         "format:check": "prettier --check ."
     },
@@ -39,16 +39,15 @@
         "zustand": "^5.0.9"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "^3.3.1",
         "@tanstack/eslint-plugin-query": "^5.68.0",
         "@types/crypto-js": "^4.2.2",
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-color": "^3.0.13",
         "@types/react-dom": "^19",
-        "eslint": "^9",
-        "eslint-config-next": "15.3.1",
-        "eslint-config-prettier": "^10.1.2",
+        "eslint": "^9.39.4",
+        "eslint-config-next": "16.1.6",
+        "eslint-config-prettier": "^10.1.8",
         "typescript": "^5"
     }
 }
