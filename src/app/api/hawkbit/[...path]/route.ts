@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { environment } from '@/config/env';
 import axios, { AxiosError } from 'axios';
 import { cookies } from 'next/headers';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth-options';
 
 const handleApiError = (error: unknown) => {
   if (error instanceof AxiosError) {
@@ -34,29 +36,59 @@ const handleApiError = (error: unknown) => {
   );
 };
 
+/**
+ * Returns the Basic Auth credential string for HawkBit API calls.
+ *
+ * Priority:
+ * 1. `auth` cookie — set on login with HawkBit credentials (Credentials provider)
+ * 2. OIDC service account — when the user authenticated via an OIDC provider and
+ *    HAWKBIT_SERVICE_USERNAME / HAWKBIT_SERVICE_PASSWORD are configured.
+ *
+ * Returns null if neither is available (unauthenticated request).
+ */
+async function getAuth(): Promise<string | null> {
+  const cookieStore = await cookies();
+  const cookieAuth = cookieStore.get('auth')?.value;
+  if (cookieAuth) {
+    return cookieAuth;
+  }
+
+  // OIDC path: user has a valid NextAuth session but no per-user HawkBit credentials.
+  // Fall back to the configured service account.
+  const serviceUser = environment.hawkbitServiceUsername;
+  const servicePass = environment.hawkbitServicePassword;
+  if (serviceUser && servicePass) {
+    const session = await getServerSession(authOptions);
+    if (session?.user) {
+      return Buffer.from(`${serviceUser}:${servicePass}`).toString('base64');
+    }
+  }
+
+  return null;
+}
+
+const unauthorizedResponse = () =>
+  NextResponse.json(
+    {
+      exceptionClass: 'UnauthorizedError',
+      errorCode: 'UNAUTHORIZED',
+      message: 'Unauthorized',
+      info: {},
+    },
+    { status: 401 }
+  );
+
 export async function GET(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const cookieStore = await cookies();
-  const auth = cookieStore.get('auth')?.value;
-
-  console.log('auth', auth);
+  const auth = await getAuth();
 
   if (!auth) {
-    return NextResponse.json(
-      {
-        exceptionClass: 'UnauthorizedError',
-        errorCode: 'UNAUTHORIZED',
-        message: 'Unauthorized',
-        info: {},
-      },
-      { status: 401 }
-    );
+    return unauthorizedResponse();
   }
 
   try {
     const path = (await params).path.join('/');
 
-    // Extract query params from the request URL
     const url = new URL(request.url);
     const queryParams: Record<string, string> = {};
     url.searchParams.forEach((value, key) => {
@@ -64,8 +96,10 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
     });
 
     const acceptHeader = request.headers.get('accept') ?? 'application/json, application/hal+json';
-
-    const isBinaryExpected = acceptHeader.includes('application/octet-stream') || acceptHeader.includes('image') || acceptHeader === '*/*';
+    const isBinaryExpected =
+      acceptHeader.includes('application/octet-stream') ||
+      acceptHeader.includes('image') ||
+      acceptHeader === '*/*';
 
     const axiosResponse = await axios.get(`${environment.hawkbitApiUrl}/rest/v1/${path}`, {
       headers: {
@@ -94,19 +128,10 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
 
 export async function POST(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const cookieStore = await cookies();
-  const auth = cookieStore.get('auth')?.value;
+  const auth = await getAuth();
 
   if (!auth) {
-    return NextResponse.json(
-      {
-        exceptionClass: 'UnauthorizedError',
-        errorCode: 'UNAUTHORIZED',
-        message: 'Unauthorized',
-        info: {},
-      },
-      { status: 401 }
-    );
+    return unauthorizedResponse();
   }
 
   try {
@@ -123,7 +148,6 @@ export async function POST(request: NextRequest, context: { params: Promise<{ pa
       const formData = await request.formData();
       body = formData;
     } else {
-      // Check if request has a body before parsing
       const text = await request.text();
       body = text ? JSON.parse(text) : {};
       headers['Content-Type'] = 'application/json';
@@ -141,19 +165,10 @@ export async function POST(request: NextRequest, context: { params: Promise<{ pa
 
 export async function PUT(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const cookieStore = await cookies();
-  const auth = cookieStore.get('auth')?.value;
+  const auth = await getAuth();
 
   if (!auth) {
-    return NextResponse.json(
-      {
-        exceptionClass: 'UnauthorizedError',
-        errorCode: 'UNAUTHORIZED',
-        message: 'Unauthorized',
-        info: {},
-      },
-      { status: 401 }
-    );
+    return unauthorizedResponse();
   }
 
   try {
@@ -176,23 +191,15 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ pat
 
 export async function DELETE(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const cookieStore = await cookies();
-  const auth = cookieStore.get('auth')?.value;
+  const auth = await getAuth();
 
   if (!auth) {
-    return NextResponse.json(
-      {
-        exceptionClass: 'UnauthorizedError',
-        errorCode: 'UNAUTHORIZED',
-        message: 'Unauthorized',
-        info: {},
-      },
-      { status: 401 }
-    );
+    return unauthorizedResponse();
   }
 
   try {
     const path = (await params).path.join('/');
+
     const response = await axios.delete(`${environment.hawkbitApiUrl}/rest/v1/${path}`, {
       headers: {
         Authorization: `Basic ${auth}`,

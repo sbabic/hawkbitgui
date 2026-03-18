@@ -7,12 +7,15 @@ import LoginForm from '@/app/login/components/login-form';
 import toast from 'react-hot-toast';
 import { handleErrorWithToast } from '@/utils/handle-error-with-toast';
 import { useEffect } from 'react';
+import Button from '@/app/components/button';
+import Text from '@/app/components/text';
 
 export type LoginFormContainerProps = {
   className?: string;
+  oidcEnabled?: boolean;
 };
 
-export default function LoginFormContainer({ className }: LoginFormContainerProps) {
+export default function LoginFormContainer({ className, oidcEnabled = false }: LoginFormContainerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -53,5 +56,25 @@ export default function LoginFormContainer({ className }: LoginFormContainerProp
     }
   };
 
-  return <LoginForm onSubmit={onSubmit} className={className}></LoginForm>;
+  const onOidcSignIn = () => {
+    signIn('oidc', { callbackUrl: AppRoutes.deployment });
+  };
+
+  return (
+    <div className={className} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <LoginForm onSubmit={onSubmit} />
+      {oidcEnabled && (
+        <>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <hr style={{ flex: 1 }} />
+            <Text variant='caption' color='text-secondary'>or</Text>
+            <hr style={{ flex: 1 }} />
+          </div>
+          <Button type='button' onClick={onOidcSignIn} variant='outline'>
+            Sign in via OIDC
+          </Button>
+        </>
+      )}
+    </div>
+  );
 }
