@@ -42,7 +42,7 @@ export const authOptions: AuthOptions = {
             username: response.data.username,
           };
         } catch (error) {
-          console.log(error);
+          console.error('Authentication failed');
           return null;
         }
       },

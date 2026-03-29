@@ -39,8 +39,6 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
   const cookieStore = await cookies();
   const auth = cookieStore.get('auth')?.value;
 
-  console.log('auth', auth);
-
   if (!auth) {
     return NextResponse.json(
       {
