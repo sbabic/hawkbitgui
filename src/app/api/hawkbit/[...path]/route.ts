@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { environment } from '@/config/env';
 import axios, { AxiosError } from 'axios';
-import { cookies } from 'next/headers';
+import { getToken } from 'next-auth/jwt';
+
+const resolveAuthHeaderValue = async (request: NextRequest) => {
+  const token = await getToken({ req: request });
+  return token?.hawkbitAuth && typeof token.hawkbitAuth === 'string' ? token.hawkbitAuth : undefined;
+};
 
 const handleApiError = (error: unknown) => {
   if (error instanceof AxiosError) {
@@ -36,8 +41,7 @@ const handleApiError = (error: unknown) => {
 
 export async function GET(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const cookieStore = await cookies();
-  const auth = cookieStore.get('auth')?.value;
+  const auth = await resolveAuthHeaderValue(request);
 
   if (!auth) {
     return NextResponse.json(
@@ -92,8 +96,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
 
 export async function POST(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const cookieStore = await cookies();
-  const auth = cookieStore.get('auth')?.value;
+  const auth = await resolveAuthHeaderValue(request);
 
   if (!auth) {
     return NextResponse.json(
@@ -139,8 +142,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ pa
 
 export async function PUT(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const cookieStore = await cookies();
-  const auth = cookieStore.get('auth')?.value;
+  const auth = await resolveAuthHeaderValue(request);
 
   if (!auth) {
     return NextResponse.json(
@@ -174,8 +176,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ pat
 
 export async function DELETE(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { params } = context;
-  const cookieStore = await cookies();
-  const auth = cookieStore.get('auth')?.value;
+  const auth = await resolveAuthHeaderValue(request);
 
   if (!auth) {
     return NextResponse.json(

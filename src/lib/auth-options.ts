@@ -2,7 +2,6 @@ import { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import axios from 'axios';
 import { environment } from '@/config/env';
-import { cookies } from 'next/headers';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -26,20 +25,11 @@ export const authOptions: AuthOptions = {
             return null;
           }
 
-          const auth = `${credentials?.username}:${credentials?.password}`;
-          const cookieStore = await cookies();
-          cookieStore.set('auth', Buffer.from(auth).toString('base64'), {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            maxAge: 3600, // 1 hour
-            sameSite: 'strict',
-            path: '/',
-          });
-
           return {
             id: response.data.tenant + response.data.username,
             tenant: response.data.tenant,
             username: response.data.username,
+            hawkbitAuth: Buffer.from(`${credentials?.username}:${credentials?.password}`).toString('base64'),
           };
         } catch (error) {
           console.error('Authentication failed');
@@ -61,6 +51,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.tenant = user.tenant;
         token.username = user.username;
+        token.hawkbitAuth = user.hawkbitAuth;
       }
       return token;
     },
