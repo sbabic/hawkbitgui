@@ -11,7 +11,13 @@ export function withSessionRedirectsMiddleware(middleware: CustomMiddleware) {
     const pathname = request.nextUrl.pathname;
     const token = await getToken({ req: request });
 
+    const isApiRoute = pathname.startsWith('/api');
+    if (isApiRoute) {
+      return middleware(request, event, response);
+    }
+
     const isAuthenticationRoute = pathname.startsWith(AppRoutes.login);
+
     if (!token && !isAuthenticationRoute) {
       const loginUrl = new URL(AppRoutes.login, request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
