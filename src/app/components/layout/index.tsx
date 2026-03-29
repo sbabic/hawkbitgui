@@ -13,6 +13,7 @@ import ClickIcon from '@/app/components/icons/click-icon';
 import WebIcon from '@/app/components/icons/web-icon';
 import GearIcon from '@/app/components/icons/gear-icon';
 import { signOut, useSession } from 'next-auth/react';
+import { AppRoutes } from '@/utils/routes';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -48,7 +49,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className={styles.logout}>
-          <NavItem href='/logout' label='Logout' icon={LogoutIcon} expanded={sidebarOpen} onClick={signOut} />
+          <NavItem href={AppRoutes.login} label='Logout' icon={LogoutIcon} expanded={sidebarOpen} onClick={() => signOut({ callbackUrl: AppRoutes.login })} />
         </div>
       </aside>
 

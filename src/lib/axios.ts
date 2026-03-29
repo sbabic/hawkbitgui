@@ -1,6 +1,18 @@
 import axios from 'axios';
 import { signOut } from 'next-auth/react';
 
+const UNAUTHORIZED_CALLBACK_URL = '/login?error=unauthorized';
+let isSigningOut = false;
+
+const signOutOnUnauthorized = () => {
+  if (isSigningOut) {
+    return;
+  }
+
+  isSigningOut = true;
+  void signOut({ callbackUrl: UNAUTHORIZED_CALLBACK_URL });
+};
+
 const axiosInstance = axios.create({
   baseURL: '/api/hawkbit',
   headers: {
@@ -11,14 +23,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    if (response.status === 401) {
-      signOut({ callbackUrl: '/login?error=unauthorized' });
-    }
     return response;
   },
   (error) => {
-    if (error.status === 401) {
-      signOut({ callbackUrl: '/login?error=unauthorized' });
+    if (error.response?.status === 401) {
+      signOutOnUnauthorized();
     }
     if (error.response) {
       return Promise.reject(error.response.data);
