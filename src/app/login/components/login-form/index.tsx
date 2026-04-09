@@ -31,7 +31,7 @@ export default function LoginForm({ className, onSubmit }: LoginFormProps) {
         <Text variant='heading-4' color='text-secondary'>
           Please enter your username and password to continue
         </Text>
-        <Form onSubmit={handleSubmit(onSubmit)} style={{ gap: '40px' }}>
+        <Form method='post' onSubmit={handleSubmit(onSubmit)} style={{ gap: '40px' }}>
           <FormControl id='username' label='Username' errorMessage={errors.username?.message}>
             <Input {...register('username')} />
           </FormControl>
