@@ -4,14 +4,18 @@ import SearchIcon from '@/app/components/icons/search-icon';
 import PlusIcon from '@/app/components/icons/plus-icon';
 
 import TargetFiltersTableContainer from '../../containers/target-filters-table-container';
-import ChevronDownIcon from '@/app/components/icons/chevron-down-icon';
 import StaticCard from '@/app/components/static-card';
+import ManageColumnsButton from '@/app/components/manage-columns-button';
+import { useTargetFiltersTableStore } from '@/stores/target-filters-table-store';
 
 interface TargetFiltersCardProps {
   onCreateClick: () => void;
 }
 
 export default function TargetFiltersCard({ onCreateClick }: TargetFiltersCardProps) {
+  const visibleColumns = useTargetFiltersTableStore((state) => state.visibleColumns);
+  const setVisibleColumns = useTargetFiltersTableStore((state) => state.setVisibleColumns);
+
   return (
     <StaticCard>
       <StaticCard.Header>
@@ -23,9 +27,7 @@ export default function TargetFiltersCard({ onCreateClick }: TargetFiltersCardPr
           <Button leftIcon={<PlusIcon width={18} height={18} />} onClick={onCreateClick}>
             Create new filter
           </Button>
-          <Button variant='ghost' rightIcon={<ChevronDownIcon width={18} height={18} />}>
-            Manage columns
-          </Button>
+          <ManageColumnsButton columns={visibleColumns} setVisibleColumns={setVisibleColumns} />
         </StaticCard.Actions>
       </StaticCard.Header>
       <StaticCard.Body>

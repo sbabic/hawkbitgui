@@ -13,10 +13,16 @@ import ClockCloudIcon from '@/app/components/icons/clock-cloud-icon';
 import ActionIconButtons from '@/app/components/action-icon-buttons';
 import TooltipIconButton from '@/app/components/tooltip-icon-button';
 import { Pagination } from '@/types/utils/pagination';
+import { VisibleColumn } from '@/types/utils/visible-column';
+import { TargetFilterKey } from '@/entities/target-filter';
+import { transformToColumnVisibility } from '@/utils/columns-visibility';
+
+type TargetFiltersColumnKey = TargetFilterKey | 'actions';
 
 interface TargetFiltersTableProps {
   modules: TargetFilter[];
   isLoading?: boolean;
+  visibleColumns: Partial<Record<TargetFiltersColumnKey, VisibleColumn>>;
   pagination: Pagination;
   onNameClick: (targetFilter: TargetFilter) => void;
   onDelete: (targetFilter: TargetFilter) => void;
@@ -27,6 +33,7 @@ interface TargetFiltersTableProps {
 export default function TargetFiltersTable({
   modules,
   isLoading = false,
+  visibleColumns,
   pagination,
   onNameClick,
   onDelete,
@@ -34,6 +41,7 @@ export default function TargetFiltersTable({
   onPageChange,
 }: TargetFiltersTableProps) {
   const columnHelper = createColumnHelper<TargetFilter>();
+  const columnVisibility = useMemo(() => transformToColumnVisibility(visibleColumns), [visibleColumns]);
 
   const fullColumns = useMemo(
     () => [
@@ -94,7 +102,8 @@ export default function TargetFiltersTable({
         },
       }),
       columnHelper.display({
-        header: 'Actions',
+        id: 'actions',
+        header: 'Delete',
         size: 100,
         cell: (cell) => (
           <ActionIconButtons>
@@ -106,5 +115,7 @@ export default function TargetFiltersTable({
     [columnHelper, onDelete, onNameClick, onAutoAssignDistributionClick]
   );
 
-  return <Table columns={fullColumns} data={modules} isLoading={isLoading} pagination={pagination} onPageChange={onPageChange} />;
+  return (
+    <Table columns={fullColumns} data={modules} isLoading={isLoading} columnVisibility={columnVisibility} pagination={pagination} onPageChange={onPageChange} />
+  );
 }

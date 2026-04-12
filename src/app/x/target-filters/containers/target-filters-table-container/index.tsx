@@ -18,6 +18,7 @@ export default function TargetFiltersTableContainer() {
 
   const page = useTargetFiltersTableStore((state) => state.page);
   const size = useTargetFiltersTableStore((state) => state.size);
+  const visibleColumns = useTargetFiltersTableStore((state) => state.visibleColumns);
   const setPage = useTargetFiltersTableStore((state) => state.setPage);
 
   const setSelectedTargetFilter = useTargetFiltersPageStore((state) => state.setSelectedTargetFilter);
@@ -55,6 +56,7 @@ export default function TargetFiltersTableContainer() {
       <TargetFiltersTable
         modules={targetFilters ?? []}
         isLoading={isLoading}
+        visibleColumns={visibleColumns}
         pagination={{
           page,
           size,

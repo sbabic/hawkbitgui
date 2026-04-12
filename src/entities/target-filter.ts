@@ -22,3 +22,5 @@ export interface TargetFilter {
     };
   };
 }
+
+export type TargetFilterKey = keyof TargetFilter;
