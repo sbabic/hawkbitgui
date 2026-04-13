@@ -7,8 +7,10 @@ type TargetFiltersColumnKey = TargetFilterKey | 'actions';
 interface TargetFiltersTableState {
   page: number;
   size: number;
+  searchQuery?: string;
   visibleColumns: Partial<Record<TargetFiltersColumnKey, VisibleColumn>>;
   setPage: (page: number) => void;
+  setSearchQuery: (searchQuery?: string) => void;
   setVisibleColumns: (columns: Record<string, VisibleColumn>) => void;
 }
 
@@ -53,7 +55,9 @@ const DEFAULT_VISIBLE_COLUMNS: Partial<Record<TargetFiltersColumnKey, VisibleCol
 export const useTargetFiltersTableStore = create<TargetFiltersTableState>((set) => ({
   page: 0,
   size: 20,
+  searchQuery: undefined,
   visibleColumns: DEFAULT_VISIBLE_COLUMNS,
   setPage: (page) => set({ page }),
+  setSearchQuery: (searchQuery) => set({ searchQuery }),
   setVisibleColumns: (columns) => set({ visibleColumns: columns }),
 }));

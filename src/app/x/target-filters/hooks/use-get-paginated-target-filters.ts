@@ -18,12 +18,22 @@ export const useGetPaginatedTargetFilters = (params?: UseGetPaginatedTargetFilte
 
   const page = useTargetFiltersTableStore((state) => state.page);
   const size = useTargetFiltersTableStore((state) => state.size);
+  const searchQuery = useTargetFiltersTableStore((state) => state.searchQuery);
+  const escapedSearchQuery = searchQuery?.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
+  const fiqlSearchQuery = escapedSearchQuery ? `name=="*${escapedSearchQuery}*"` : undefined;
 
-  const queryKey = ['target-filters', page, size];
+  const queryKey = ['target-filters', page, size, fiqlSearchQuery];
 
   const { data, isLoading, error, refetch } = useQuery<UseGetPaginatedTargetFiltersOutput, ApiError>({
     queryKey,
-    queryFn: () => TargetFiltersService.fetchTargetFilters(),
+    queryFn: () =>
+      TargetFiltersService.fetchTargetFilters({
+        queryParams: {
+          q: fiqlSearchQuery,
+          offset: page * size,
+          limit: size,
+        },
+      }),
     ...queryOptions,
   });
 
