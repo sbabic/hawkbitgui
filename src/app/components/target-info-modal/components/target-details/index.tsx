@@ -25,7 +25,7 @@ export default function TargetDetails({
 }) {
     const items = [
         { title: 'Controller ID', value: controllerId },
-        { title: 'Last Poll', value: lastPoll?.toString() },
+        { title: 'Last Poll', value: lastPoll?.toLocaleString() },
         { title: 'Address', value: address },
         { title: 'Security Token', value: securityToken },
         { title: 'Description', value: description },
