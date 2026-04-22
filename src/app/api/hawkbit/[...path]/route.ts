@@ -82,8 +82,8 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
       return new NextResponse(axiosResponse.data, {
         status: axiosResponse.status,
         headers: {
-          'Content-Type': axiosResponse.headers['content-type'] ?? 'application/octet-stream',
-          'Content-Disposition': axiosResponse.headers['content-disposition'] ?? '',
+          'Content-Type': (axiosResponse.headers['content-type'] as string) ?? 'application/octet-stream',
+          'Content-Disposition': (axiosResponse.headers['content-disposition'] as string) ?? '',
         },
       });
     }
