@@ -4,7 +4,7 @@ import DistributionSetsCard from '../../components/distribution-sets-card';
 import SoftwareModulesCard from '@/app/x/software-modules/components/software-module-card';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import DraggedItemPreview from '@/app/components/dragged-item-preview';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Distribution, isDistribution, isDistributionRecord, isSoftwareModule, isSoftwareModuleRecord, SoftwareModule } from '@/entities';
 import { useConfirmDialog } from '@/app/hooks';
 import ConfirmationModal from '@/app/components/confirmation-modal';
@@ -30,10 +30,10 @@ export default function DistributionSetsLayoutContainer() {
   const { refetch: refetchDistributionSets } = useGetPaginatedDistributionSets({ queryOptions: { enabled: false } });
 
   const [isDragging, setIsDragging] = useState(false);
-  const draggedEntity = useRef<'Distribution' | 'Module' | undefined>(undefined);
+  const [draggedEntity, setDraggedEntity] = useState<'Distribution' | 'Module' | undefined>(undefined);
 
-  const draggedDistributions = useRef<Distribution[]>([]);
-  const draggedModules = useRef<SoftwareModule[]>([]);
+  const [draggedDistributions, setDraggedDistributions] = useState<Distribution[]>([]);
+  const [draggedModules, setDraggedModules] = useState<SoftwareModule[]>([]);
 
   const assignConfirmationModal = useConfirmDialog<{ softwareModules: SoftwareModule[]; distributions: Distribution[] }>();
 
@@ -42,14 +42,14 @@ export default function DistributionSetsLayoutContainer() {
     setIsDragging(true);
 
     if (isSoftwareModuleRecord(draggedData)) {
-      draggedEntity.current = 'Module';
-      draggedModules.current = Object.values(draggedData);
-      draggedDistributions.current = [];
+      setDraggedEntity('Module');
+      setDraggedModules(Object.values(draggedData));
+      setDraggedDistributions([]);
     }
     if (isDistributionRecord(draggedData)) {
-      draggedEntity.current = 'Distribution';
-      draggedDistributions.current = Object.values(draggedData);
-      draggedModules.current = [];
+      setDraggedEntity('Distribution');
+      setDraggedDistributions(Object.values(draggedData));
+      setDraggedModules([]);
     }
   }
 
@@ -88,7 +88,7 @@ export default function DistributionSetsLayoutContainer() {
 
   function resetDragging() {
     setIsDragging(false);
-    draggedEntity.current = undefined;
+    setDraggedEntity(undefined);
   }
 
   async function handleAssignModulesToDistributions(params: { distributions: Distribution[]; softwareModules: SoftwareModule[] }) {
@@ -106,19 +106,19 @@ export default function DistributionSetsLayoutContainer() {
   }
 
   const getDraggedItemPreviewProps = useCallback(() => {
-    if (draggedEntity.current === 'Distribution') {
+    if (draggedEntity === 'Distribution') {
       return {
-        name: draggedDistributions.current[0]?.name,
-        count: draggedDistributions.current.length,
+        name: draggedDistributions[0]?.name,
+        count: draggedDistributions.length,
       };
     }
-    if (draggedEntity.current === 'Module') {
+    if (draggedEntity === 'Module') {
       return {
-        name: draggedModules.current[0]?.name,
-        count: draggedModules.current.length,
+        name: draggedModules[0]?.name,
+        count: draggedModules.length,
       };
     }
-  }, []);
+  }, [draggedEntity, draggedDistributions, draggedModules]);
 
   const getDraggedItemsContent = useCallback(() => {
     if (!assignConfirmationModal.data) {

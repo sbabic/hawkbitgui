@@ -64,8 +64,8 @@ export default function DeploymentDndLayoutContainer() {
 
   const [isDragging, setIsDragging] = useState(false);
   const [isDraggingDistribution, setIsDraggingDistribution] = useState(false);
-  const draggedTargets = useRef<Target[]>([]);
-  const draggedDistributions = useRef<Distribution[]>([]);
+  const [draggedTargets, setDraggedTargets] = useState<Target[]>([]);
+  const [draggedDistributions, setDraggedDistributions] = useState<Distribution[]>([]);
 
   const selectedTarget = useTargetsTableStore((state) => state.selectedTarget);
 
@@ -77,13 +77,13 @@ export default function DeploymentDndLayoutContainer() {
     console.log('draggedData', draggedData);
 
     if (isTargetRecord(draggedData)) {
-      draggedTargets.current = Object.values(draggedData);
-      draggedDistributions.current = [];
+      setDraggedTargets(Object.values(draggedData));
+      setDraggedDistributions([]);
     }
     if (isDistributionRecord(draggedData)) {
       setIsDraggingDistribution(true);
-      draggedDistributions.current = Object.values(draggedData);
-      draggedTargets.current = [];
+      setDraggedDistributions(Object.values(draggedData));
+      setDraggedTargets([]);
     }
   }
 
@@ -169,8 +169,8 @@ export default function DeploymentDndLayoutContainer() {
           <DragOverlay>
             {isDragging ? (
               <DraggedItemPreview
-                name={isDraggingDistribution ? draggedDistributions.current[0]?.name : draggedTargets.current[0]?.name}
-                count={isDraggingDistribution ? draggedDistributions.current.length : draggedTargets.current.length}
+                name={isDraggingDistribution ? draggedDistributions[0]?.name : draggedTargets[0]?.name}
+                count={isDraggingDistribution ? draggedDistributions.length : draggedTargets.length}
               />
             ) : null}
           </DragOverlay>

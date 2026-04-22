@@ -5,7 +5,7 @@ import Input from '@/app/components/input';
 import TextArea from '@/app/components/text-area';
 import { ActionButtons } from '@/app/components/action-buttons';
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ChromePicker } from 'react-color';
 import Text from '@/app/components/text';
 
@@ -27,22 +27,19 @@ export default function TargetTagForm({ onSubmit, onCancel, defaultValues, mode 
     register,
     handleSubmit,
     formState: { errors },
-    reset,
     setValue,
   } = useForm<FormData>({
-    defaultValues,
+    values: defaultValues as FormData | undefined,
   });
 
-  const [color, setColor] = useState<string>('#FFFFFF');
+  const [color, setColor] = useState<string>(defaultValues?.color ?? '#FFFFFF');
+  const [prevDefaultColor, setPrevDefaultColor] = useState(defaultValues?.color);
+  if (defaultValues?.color !== prevDefaultColor) {
+    setPrevDefaultColor(defaultValues?.color);
+    if (defaultValues?.color) setColor(defaultValues.color);
+  }
 
   const isEditing = mode === 'edit';
-
-  useEffect(() => {
-    if (defaultValues) {
-      reset(defaultValues);
-      if (defaultValues.color) setColor(defaultValues.color);
-    }
-  }, [defaultValues, reset]);
 
   return (
     <>

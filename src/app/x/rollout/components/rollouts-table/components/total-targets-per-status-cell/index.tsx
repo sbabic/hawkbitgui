@@ -30,16 +30,11 @@ export function TotalTargetsPerStatusCell({ totalTargetsPerStatus }: TotalTarget
     return null;
   }
 
-  for (const status in totalTargetsPerStatus) {
-    const statusKey = status as TotalTargetCountStatus;
-    if (totalTargetsPerStatus[statusKey] === 0) {
-      delete totalTargetsPerStatus[statusKey];
-    }
-  }
+  const nonZeroTargetsPerStatus = Object.entries(totalTargetsPerStatus).filter(([, count]) => count !== 0);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-      {Object.entries(totalTargetsPerStatus).map(([status, count]) => (
+      {nonZeroTargetsPerStatus.map(([status, count]) => (
         <TotalTargetsPerStatus key={status} status={status as TotalTargetCountStatus} count={count} />
       ))}
     </div>
