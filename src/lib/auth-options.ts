@@ -31,7 +31,7 @@ export const authOptions: AuthOptions = {
             username: response.data.username,
             hawkbitAuth: Buffer.from(`${credentials?.username}:${credentials?.password}`).toString('base64'),
           };
-        } catch (error) {
+        } catch {
           console.error('Authentication failed');
           return null;
         }
