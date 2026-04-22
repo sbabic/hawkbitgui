@@ -27,10 +27,15 @@ export function SelectTargetFilterContainer({ targetFilters, disabled = false, o
     formState: { errors },
   } = useFormContext<CreateRolloutFormData>();
 
+  const [prevHandledCount, setPrevHandledCount] = useState<number | undefined>(undefined);
+  if (selectedTargetsCount !== undefined && selectedTargetsCount !== prevHandledCount) {
+    setPrevHandledCount(selectedTargetsCount);
+    setTargetFilterQuery(undefined);
+  }
+
   useEffect(() => {
     if (selectedTargetsCount) {
       onSelectedTargetsChange(selectedTargetsCount);
-      setTargetFilterQuery(undefined);
     }
   }, [selectedTargetsCount, onSelectedTargetsChange]);
 

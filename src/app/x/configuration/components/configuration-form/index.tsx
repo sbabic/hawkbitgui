@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Checkbox from '@/app/components/checkbox';
 import Select from '@/app/components/select';
 import Input from '@/app/components/input';
@@ -111,6 +111,11 @@ export default function ConfigurationForm({ onSubmit, initialValues, loading = f
   };
 
   const [form, setForm] = useState<FormStateType>(initialValues ?? defaultFormState);
+  const [prevInitialValues, setPrevInitialValues] = useState(initialValues);
+  if (initialValues !== prevInitialValues) {
+    setPrevInitialValues(initialValues);
+    setForm(initialValues ?? defaultFormState);
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -154,12 +159,6 @@ export default function ConfigurationForm({ onSubmit, initialValues, loading = f
 
   const maybeSkeleton = (content: React.ReactNode, width: string | number = '100%', height: string | number = 24) =>
     loading ? <Skeleton width={width} height={height} /> : content;
-
-  useEffect(() => {
-    if (initialValues) {
-      setForm(initialValues);
-    }
-  }, [initialValues]);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} onReset={handleReset}>
