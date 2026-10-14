@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
+import { useForm, useWatch, Controller, FormProvider } from 'react-hook-form';
 import styles from './styles.module.scss';
 import Input from '@/app/components/input';
 import Select from '@/app/components/select';
@@ -61,7 +61,6 @@ export default function CreateRolloutForm({ defaultValues, type = 'create', dist
     handleSubmit,
     control,
     formState: { errors },
-    watch,
     setValue,
     trigger,
     reset,
@@ -74,9 +73,9 @@ export default function CreateRolloutForm({ defaultValues, type = 'create', dist
   }, [defaultValues, reset]);
 
   const isEdit = type === 'edit';
-  const groupsSettings = watch('groupsSettings');
-  const actionType = watch('type');
-  const startType = watch('startType');
+  const groupsSettings = useWatch({ control, name: 'groupsSettings' });
+  const actionType = useWatch({ control, name: 'type' });
+  const startType = useWatch({ control, name: 'startType' });
   const actionTypeOptions = [
     { id: RolloutTypes.FORCED, label: 'Forced', icon: <ThunderCloudIcon /> },
     { id: RolloutTypes.SOFT, label: 'Soft', icon: <CloudIcon /> },

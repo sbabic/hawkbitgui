@@ -23,12 +23,22 @@
   }
 
   &__content {
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+
+    &.open {
+      grid-template-rows: 1fr;
+    }
   }
 
   &__inner {
-    padding: 1rem;
+    min-height: 0;
+    overflow: hidden;
     background: #fff;
+  }
+
+  &__body {
+    padding: 1rem;
   }
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useEffectEvent, useMemo, useRef } from 'react';
 import { FilterFiql } from '@/entities';
 
 interface UseFilterMultipleSelectProps<T> {
@@ -36,17 +36,21 @@ export function useFilterMultipleSelect<T>({
     [optionMap, setSelectedOptions]
   );
 
-  useEffect(() => {
-    console.log('Selected options changed:', selectedOptions);
+  const applyFilter = useEffectEvent((options: T[]) => {
+    console.log('Selected options changed:', options);
 
     const isFilterPropertyEmpty = filter.current.property === '' || filter.current.property === undefined;
 
-    filter.current.setValues(selectedOptions.map((opt) => [isFilterPropertyEmpty ? '' : '==', getOptionLabel(opt)]));
+    filter.current.setValues(options.map((opt) => [isFilterPropertyEmpty ? '' : '==', getOptionLabel(opt)]));
 
     const newFilters = { ...filters, [filter.current.property]: filter.current };
     setFilters(newFilters);
 
     onFilterChanged(newFilters);
+  });
+
+  useEffect(() => {
+    applyFilter(selectedOptions);
   }, [selectedOptions]);
 
   return {

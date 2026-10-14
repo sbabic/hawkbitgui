@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import styles from './styles.module.scss';
 import TimeZonePicker from '@/app/components/timezone-picker';
 
@@ -17,7 +17,7 @@ export type FormData = {
 export default function ScheduleForm({ onChange }: { onChange?: (data: FormData) => void }) {
   const {
     register,
-    watch,
+    control,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -27,7 +27,7 @@ export default function ScheduleForm({ onChange }: { onChange?: (data: FormData)
     },
   });
 
-  const watchedFields = watch();
+  const watchedFields = useWatch({ control }) as FormData;
 
   useEffect(() => {
     onChange?.(watchedFields);

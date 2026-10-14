@@ -1,39 +1,34 @@
-FROM node:22.13.0-bullseye as common-build-stage
-
-ARG NEXTAUTH_SECRET
-ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
-
-ARG NEXTAUTH_URL
-ENV NEXTAUTH_URL=$NEXTAUTH_URL
-
-ARG NEXT_PUBLIC_HAWKBIT_API_URL
-ENV NEXT_PUBLIC_HAWKBIT_API_URL=$NEXT_PUBLIC_HAWKBIT_API_URL
+FROM node:22.13.0-bullseye AS common-build-stage
 
 RUN npm install -g bun@1.2.5
 
 WORKDIR /app
 
-COPY package.json bun.lockb* ./
+RUN chown node:node /app
 
-COPY . .
+USER node
+
+COPY --chown=node:node package.json bun.lockb* ./
+
+COPY --chown=node:node . .
 
 RUN bun install --no-frozen-lockfile
 
 
 
 # Development build stage
-FROM common-build-stage as development-build-stage
+FROM common-build-stage AS development-build-stage
 
-ENV NODE_ENV development
+ENV NODE_ENV=development
 
 EXPOSE 3000
 
 CMD ["bun", "run", "dev"]
 
 # Production build stage
-FROM common-build-stage as production-build-stage
+FROM common-build-stage AS production-build-stage
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 RUN bun run build
 

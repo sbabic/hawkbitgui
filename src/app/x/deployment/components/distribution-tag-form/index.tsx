@@ -33,14 +33,18 @@ export default function DistributionTagForm({ onSubmit, onCancel, defaultValues,
     defaultValues,
   });
 
-  const [color, setColor] = useState<string>('#FFFFFF');
+  const [color, setColor] = useState<string>(defaultValues?.color || '#FFFFFF');
+  const [prevDefaultValues, setPrevDefaultValues] = useState(defaultValues);
+  if (defaultValues !== prevDefaultValues) {
+    setPrevDefaultValues(defaultValues);
+    if (defaultValues?.color) setColor(defaultValues.color);
+  }
 
   const isEditing = mode === 'edit';
 
   useEffect(() => {
     if (defaultValues) {
       reset(defaultValues);
-      if (defaultValues.color) setColor(defaultValues.color);
     }
   }, [defaultValues, reset]);
 

@@ -1,6 +1,6 @@
 import Form from '@/app/components/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { AutoAssignDistributionFormData, AutoAssignDistributionSchema } from './types';
 import Checkbox from '@/app/components/checkbox';
 import FormControl from '@/app/components/form-control';
@@ -27,7 +27,6 @@ export default function AutoAssignDistributionForm({ defaultValues, distribution
     formState: { errors },
     register,
     handleSubmit,
-    watch,
     setValue,
   } = useForm({
     defaultValues: {
@@ -37,7 +36,7 @@ export default function AutoAssignDistributionForm({ defaultValues, distribution
     resolver: zodResolver(AutoAssignDistributionSchema),
   });
 
-  const enableAutoAssign = watch('enableAutoAssign');
+  const enableAutoAssign = useWatch({ control, name: 'enableAutoAssign' });
 
   const actionTypeOptions = [
     { id: RolloutTypes.FORCED, label: 'Forced', icon: <ThunderCloudIcon /> },

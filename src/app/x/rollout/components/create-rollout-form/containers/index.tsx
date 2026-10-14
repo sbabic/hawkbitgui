@@ -5,8 +5,8 @@ import { CreateRolloutFormData } from '../types';
 import FormControl from '@/app/components/form-control';
 import Select from '@/app/components/select';
 import { TargetFilter } from '@/entities/target-filter';
-import { useEffect, useState } from 'react';
-import { useGetPaginatedTargets } from '@/app/x/deployment/hooks/use-get-paginated-targets';
+import { useQueryClient } from '@tanstack/react-query';
+import { TargetsService } from '@/services/targets-service';
 
 interface SelectTargetFilterContainerProps {
   targetFilters: TargetFilter[];
@@ -15,27 +15,26 @@ interface SelectTargetFilterContainerProps {
 }
 
 export function SelectTargetFilterContainer({ targetFilters, disabled = false, onSelectedTargetsChange }: SelectTargetFilterContainerProps) {
-  const [targetFilterQuery, setTargetFilterQuery] = useState<string | undefined>(undefined);
-  const { data: selectedTargetsData } = useGetPaginatedTargets({
-    queryParams: { q: targetFilterQuery },
-    queryOptions: { enabled: !!targetFilterQuery },
-  });
-  const { totalTargets: selectedTargetsCount } = selectedTargetsData ?? {};
+  const queryClient = useQueryClient();
 
   const {
     control,
     formState: { errors },
   } = useFormContext<CreateRolloutFormData>();
 
-  useEffect(() => {
-    if (selectedTargetsCount) {
-      onSelectedTargetsChange(selectedTargetsCount);
-      setTargetFilterQuery(undefined);
+  const handleSelectTargetFilterQuery = async (targetFilterQuery: string) => {
+    if (!targetFilterQuery) return;
+    try {
+      const { totalTargets } = await queryClient.fetchQuery({
+        queryKey: ['targets', targetFilterQuery, 'count'],
+        queryFn: () => TargetsService.fetchTargets({ queryParams: { query: targetFilterQuery, offset: 0, limit: 1 }, filters: [] }),
+      });
+      if (totalTargets) {
+        onSelectedTargetsChange(totalTargets);
+      }
+    } catch {
+      return;
     }
-  }, [selectedTargetsCount, onSelectedTargetsChange]);
-
-  const handleSelectTargetFilterQuery = (targetFilterQuery: string) => {
-    setTargetFilterQuery(targetFilterQuery);
   };
 
   return (
